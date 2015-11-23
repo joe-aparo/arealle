@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<bean id="townFeatureReader" class="net.jsa.arealle.task.process.TownFeatureReader"
+		p:shapeFileName="C:\\arealle\\staging\\MA\\towns\\TOWNSSURVEY_POLYM.shp"
+		p:featureType="TOWN"/>
+		
+	<bean id="townFeatureStager" class="net.jsa.arealle.task.process.FeatureStager"
+		p:featureType="TOWN"/>
+
+	<bean id="townFeatureCacher" class="net.jsa.arealle.task.process.DomainFeatureCacher"
+		p:featureType="TOWN"
+		p:pushDomain="true"/>
+		
+	<bean id="openSpaceFeatureReader" class="net.jsa.arealle.task.process.OpenSpaceFeatureReader"
+		p:shapeFileName="C:\\arealle\\staging\\MA\\openspace\\OPENSPACE_POLY.shp"
+		p:featureType="SPACE"/>
+		
+	<bean id="openSpaceFeatureStager" class="net.jsa.arealle.task.process.FeatureStager"
+		p:featureType="SPACE"/>
+
+	<bean id="pondLakeFeatureReader" class="net.jsa.arealle.task.process.PondLakeFeatureReader"
+		p:shapeFileName="C:\\arealle\\staging\\MA\\hydro\\HYDRO100K_POLY.shp" 
+		p:featureType="POND"/>
+		
+	<bean id="pondLakeFeatureStager" class="net.jsa.arealle.task.process.FeatureStager"
+		p:featureType="POND"/>
+
+	<bean id="riverStreamFeatureReader" class="net.jsa.arealle.task.process.RiverStreamFeatureReader"
+		p:shapeFileName="C:\\arealle\\staging\\MA\\places\\GEONAMES_LINE_HYDRO.shp" 
+		p:featureType="RIVER"/>
+
+	<bean id="riverStreamFeatureStager" class="net.jsa.arealle.task.process.FeatureStager"
+		p:featureType="RIVER"/>
+
+	<bean id="trainStationFeatureReader" class="net.jsa.arealle.task.process.TrainStationFeatureReader"
+		p:shapeFileName="C:\\arealle\\staging\\MA\\trains\\TRAINS_NODE.shp" 
+		p:featureType="STATION"/>
+
+	<bean id="trainStationFeatureStager" class="net.jsa.arealle.task.process.FeatureStager"
+		p:featureType="STATION"/>
+
+	<bean id="busStopFeatureReader" class="net.jsa.arealle.task.process.BusStopFeatureReader"
+		p:shapeFileName="C:\\arealle\\staging\\MA\\busstops\\MBTABUSSTOPS_PT.shp" 
+		p:featureType="BUSSTOP"/>
+
+	<bean id="busStopFeatureStager" class="net.jsa.arealle.task.process.FeatureStager"
+		p:featureType="BUSSTOP"/>
+
+	<bean id="tStopFeatureReader" class="net.jsa.arealle.task.process.TStopFeatureReader"
+		p:shapeFileName="C:\\arealle\\staging\\MA\\tstops\\MBTA_NODE.shp" 
+		p:featureType="TSTOP"/>
+
+	<bean id="tStopFeatureStager" class="net.jsa.arealle.task.process.FeatureStager"
+		p:featureType="TSTOP"/>
+
+	<bean id="bikeTrailFeatureReader" class="net.jsa.arealle.task.process.BikeTrailFeatureReader"
+		p:shapeFileName="C:\\arealle\\staging\\MA\\biketrails\\biketrails_arc.shp" 
+		p:featureType="BIKETRAIL"/>
+
+	<bean id="bikeTrailFeatureStager" class="net.jsa.arealle.task.process.FeatureStager"
+		p:featureType="BIKETRAIL"/>
+
+	<bean id="coastLineFeatureReader" class="net.jsa.arealle.task.process.CoastLineFeatureReader"
+		p:shapeFileName="C:\\arealle\\staging\\MA\\coastline\\COAST25K_ARC.shp" 
+		p:featureType="COAST"/>
+
+	<bean id="coastLineFeatureStager" class="net.jsa.arealle.task.process.FeatureStager"
+		p:featureType="COAST"/>
+
+	<bean id="parcelFeatureReader" class="net.jsa.arealle.task.process.ParcelFeatureReader"
+		p:shapeFileName="C:\\arealle\\staging\\MA\\Gloucester\\M107TaxPar.shp" 
+		p:featureType="PARCEL"/>
+
+	<bean id="parcelFeatureStager" class="net.jsa.arealle.task.process.FeatureStager"
+		p:featureType="PARCEL"/>
+		
+	<bean id="massGISPropertyReader" class="net.jsa.arealle.task.process.MassGISPropertyReader"
+		p:fileNamePattern="C:\\arealle\\staging\\MA\\Gloucester\\M107Assess.dbf"/>
+		
+	<bean id="stageTownFeaturesProcessor" class="net.jsa.arealle.task.process.BasicSteppedProcessor">
+		<constructor-arg value="Open Space Loader"/>
+		<property name="steps">
+			<list>
+				<ref bean="townFeatureReader"/>
+				<ref bean="townFeatureStager"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="stageWaterFeaturesProcessor" class="net.jsa.arealle.task.process.BasicSteppedProcessor">
+		<constructor-arg value="Open Space Loader"/>
+		<property name="steps">
+			<list>
+				<ref bean="townFeatureCacher"/>
+				<ref bean="pondLakeFeatureReader"/>
+				<ref bean="riverStreamFeatureReader"/>
+				<ref bean="coastLineFeatureReader"/>
+				<ref bean="pondLakeFeatureStager"/>
+				<ref bean="riverStreamFeatureStager"/>
+				<ref bean="coastLineFeatureStager"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="stageRecreationFeaturesProcessor" class="net.jsa.arealle.task.process.BasicSteppedProcessor">
+		<constructor-arg value="Open Space Loader"/>
+		<property name="steps">
+			<list>
+				<ref bean="townFeatureCacher"/>
+				<ref bean="openSpaceFeatureReader"/>
+				<ref bean="bikeTrailFeatureReader"/>
+				<ref bean="openSpaceFeatureStager"/>
+				<ref bean="bikeTrailFeatureStager"/>
+			</list>
+		</property>
+	</bean>
+		
+	<bean id="stagePubTransFeaturesProcessor" class="net.jsa.arealle.task.process.BasicSteppedProcessor">
+		<constructor-arg value="Open Space Loader"/>
+		<property name="steps">
+			<list>
+				<ref bean="townFeatureCacher"/>
+				<ref bean="trainStationFeatureReader"/>
+				<ref bean="busStopFeatureReader"/>
+				<ref bean="tStopFeatureReader"/>
+				<ref bean="trainStationFeatureStager"/>
+				<ref bean="busStopFeatureStager"/>
+				<ref bean="tStopFeatureStager"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="stageParcelFeaturesProcessor" class="net.jsa.arealle.task.process.BasicSteppedProcessor">
+		<constructor-arg value="Open Space Loader"/>
+		<property name="steps">
+			<list>
+				<ref bean="townFeatureCacher"/>
+				<ref bean="parcelFeatureReader"/>
+				<ref bean="parcelFeatureStager"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="stagePropertyFeaturesProcessor" class="net.jsa.arealle.task.process.BasicSteppedProcessor">
+		<constructor-arg value="Property Processor"/>
+		<property name="steps">
+			<list>
+				<ref bean="massGISPropertyReader"/>
+				<!-- ref bean="theMLSPropertyReader"/ -->
+				<ref bean="propertyStager"/>
+			</list>
+		</property>
+	</bean>	
+
+	<bean id="loadFeaturesProcessor" class="net.jsa.arealle.task.process.BasicSteppedProcessor">
+		<constructor-arg value="Feature Loader"/>
+		<property name="steps">
+			<list>
+				<ref bean="featureLoader"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="loadPropertiesProcessor" class="net.jsa.arealle.task.process.BasicSteppedProcessor">
+		<constructor-arg value="Property Loader"/>
+		<property name="steps">
+			<list>
+				<ref bean="propertyLoader"/>
+			</list>
+		</property>
+	</bean>
+
+</beans>

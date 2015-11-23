@@ -1,0 +1,4 @@
+rootProject.name="jsa-shared"
+
+include "jsa-common"
+include "jsa-crib-ds"

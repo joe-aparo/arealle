@@ -1,0 +1,6 @@
+rootProject.name="jsa-arealle"
+
+include "jsa-arealle-dto"
+include "jsa-arealle-service"
+include "jsa-arealle-task"
+include "jsa-arealle-web"

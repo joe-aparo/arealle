@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+
+	<!-- Scan for DataSet annotations -->
+    <context:component-scan base-package="net.jsa.crib.ds.impl" />
+
+	<bean id="typeRegistry" class="net.jsa.crib.ds.impl.LogicalTypeRegistry" init-method="initialize">
+		<constructor-arg>
+			<list>
+				<bean class="net.jsa.arealle.task.ds.TypeInitializer" />
+			</list>
+		</constructor-arg>	
+	</bean>
+	
+	<bean id="guidKeyGenerator" class="net.jsa.crib.ds.impl.GuidKeyGenerator" />
+
+	<bean id="dsStateSelection" class="net.jsa.crib.ds.impl.sql.MySqlDataSet" init-method="initialize"
+		p:name="statePicks"
+		p:dbClient-ref="stageDbClient">
+	    <property name="retrieveCommand">
+			<bean class="net.jsa.crib.ds.impl.sql.SqlCommand">
+				<constructor-arg value=
+				   "select s.state_id as id, s.state_name as title from arealle_stage.state s"/>
+			</bean>
+		</property>	
+	</bean>
+	
+	<bean id="dsLandUseLookup" class="net.jsa.crib.ds.impl.sql.MySqlDataSet" init-method="initialize"
+		p:name="landUseLookup"
+		p:dbClient-ref="stageDbClient">
+	    <property name="retrieveCommand">
+			<bean class="net.jsa.crib.ds.impl.sql.SqlCommand">
+				<constructor-arg value=
+				   "select land_use_id, land_use_name 
+				   from arealle_stage.land_use u
+				   where u.state_id=:STATE_ID"/>
+			</bean>
+		</property>	
+	</bean>
+
+	<bean id="dsFeatureTypes" class="net.jsa.crib.ds.impl.sql.MySqlDataSet" init-method="initialize"
+		p:name="featureTypes"
+		p:table="feature_type"
+		p:keys="FEATURE_TYPE_ID"
+		p:dbClient-ref="stageDbClient"
+		p:keyGenerator-ref="guidKeyGenerator">
+	</bean>
+
+	<bean id="dsFeatures" class="net.jsa.crib.ds.impl.sql.MySqlDataSet" init-method="initialize"
+		p:name="features"
+		p:table="feature"
+		p:keys="FEATURE_ID"
+		p:dbClient-ref="stageDbClient"
+		p:keyGenerator-ref="guidKeyGenerator">
+	</bean>
+
+	<bean id="dsDomainFeatures" class="net.jsa.crib.ds.impl.sql.MySqlDataSet" init-method="initialize"
+		p:name="domainFeatures"
+		p:table="domain_feature"
+		p:keys="FEATURE_ID,DOMAIN_FEATURE_ID"
+		p:dbClient-ref="stageDbClient">
+	</bean>
+
+	<bean id="dsProperties" class="net.jsa.crib.ds.impl.sql.MySqlDataSet" init-method="initialize"
+		p:name="properties"
+		p:table="property"
+		p:keys="PROPERTY_ID"
+		p:dbClient-ref="stageDbClient">	
+	</bean>
+
+	<bean id="dsPropertyListings" class="net.jsa.crib.ds.impl.sql.MySqlDataSet" init-method="initialize"
+		p:name="propertyListings"
+		p:table="property_listing"
+		p:dbClient-ref="stageDbClient">	
+	</bean>
+	
+	<bean id="dsCacheableFeatures" class="net.jsa.crib.ds.impl.sql.MySqlDataSet" init-method="initialize"
+		p:name="cacheableFeatures"
+		p:dbClient-ref="stageDbClient">
+	    <property name="retrieveCommand">
+			<bean class="net.jsa.crib.ds.impl.sql.SqlCommand">
+				<constructor-arg value=
+				   "select 
+						f.feature_id, f.feature_name, f.feature_type_id, f.state_id, f.attrs, s.crs_id,
+						df.domain_feature_id, df.shapes
+					from arealle_stage.feature f
+					join arealle_stage.state s on f.state_id = s.state_id
+					join arealle_stage.domain_feature df on f.feature_id=df.feature_id
+					where f.state_id=:STATE_ID and f.feature_type_id=:FEATURE_TYPE_ID" />
+			</bean>
+		</property>			
+	</bean>
+
+	<bean id="dsLoadableFeatures" class="net.jsa.crib.ds.impl.sql.MySqlDataSet" init-method="initialize"
+		p:name="townFeatures"
+		p:dbClient-ref="stageDbClient">
+	    <property name="retrieveCommand">
+			<bean class="net.jsa.crib.ds.impl.sql.SqlCommand">
+				<constructor-arg value=
+				   "select 
+						f.feature_id, f.feature_name, f.feature_type_id, f.state_id, f.attrs, s.crs_id,
+						df.domain_feature_id, df.shapes
+					from arealle_stage.feature f
+					join arealle_stage.state s on f.state_id = s.state_id
+					join arealle_stage.domain_feature df on f.feature_id=df.feature_id
+					where df.domain_feature_id=:TOWN_ID" />
+			</bean>
+		</property>			
+	</bean>
+
+	<bean id="dsLoadableProperties" class="net.jsa.crib.ds.impl.sql.MySqlDataSet" init-method="initialize"
+		p:name="loadableProperties"
+		p:dbClient-ref="stageDbClient">
+	    <property name="retrieveCommand">
+			<bean class="net.jsa.crib.ds.impl.sql.SqlCommand">
+				<constructor-arg value=
+				   "select 
+					p.property_id, p.state_id, df.domain_feature_id as town_id,
+					p.parcel_feature_name, f.feature_id as parcel_id,
+					p.road_name, p.addr_num, p.addr_str, p.property_type_id, p.units
+					from arealle_stage.property p
+					join arealle_stage.feature f
+						on f.feature_type_id='PARCEL'
+						and p.parcel_feature_name=f.feature_name
+						and p.state_id=f.state_id
+					join arealle_stage.domain_feature df
+						on f.feature_id=df.feature_id
+					where df.domain_feature_id=:TOWN_ID" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="dsLoadablePropertyListings" class="net.jsa.crib.ds.impl.sql.MySqlDataSet" init-method="initialize"
+		p:name="loadableProperties"
+		p:dbClient-ref="stageDbClient">
+	    <property name="retrieveCommand">
+			<bean class="net.jsa.crib.ds.impl.sql.SqlCommand">
+				<constructor-arg value=
+				   "select 
+					l.property_listing_id, l.property_id, l.land_area_sqft, l.land_area_acres, 
+					l.price, l.unit, l.year_built, l.living_area, l.style, l.floors, l.rooms, 
+					l.bed_rooms, l.bath_rooms, l.garage_bays
+					from arealle_stage.property_listing l
+					where l.property_id=:PROPERTY_ID" />
+			</bean>
+		</property>
+	</bean>
+</beans>

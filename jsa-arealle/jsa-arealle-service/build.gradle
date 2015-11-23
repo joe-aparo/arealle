@@ -1,0 +1,5 @@
+dependencies {
+	compile "org.apache.solr:solr-solrj:4.5.0"
+	compile "org.mongodb:mongo-java-driver:2.12.1"
+	compile "org.springframework.data:spring-data-solr:1.3.0.RELEASE"
+}

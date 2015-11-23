@@ -1,0 +1,43 @@
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+
+	version = '1.0'
+	sourceCompatibility = 1.7
+
+	repositories {
+		maven {url "http://download.osgeo.org/webdav/geotools"}
+		mavenCentral()
+		ivy { url file(System.getProperty('user.home') + localIvyFolder) }
+		maven {url "http://repo.spring.io/libs-snapshot"}
+	}
+
+	allprojects {
+		group='net.jsa'
+	}
+
+	uploadArchives {
+		repositories {
+			ivy { url file(System.getProperty('user.home') + localIvyFolder) }
+		}
+	}
+
+	dependencies {
+		compile 'org.slf4j:slf4j-log4j12:1.7.+'
+		compile 'net.jsa:jsa-common:1.+'
+
+		testCompile 'junit:junit:4.+'
+	}
+}
+
+project(':jsa-arealle-service') {
+    dependencies {
+        compile project(':jsa-arealle-dto')
+    }
+}
+
+project(':jsa-arealle-task') {
+    dependencies {
+        compile project(':jsa-arealle-service')
+    }
+}

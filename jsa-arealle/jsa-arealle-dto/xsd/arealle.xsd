@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+	targetNamespace="http://arealle.com/service/arealle"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://arealle.com/service/arealle"
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns:annox="http://annox.dev.java.net" 
+    jaxb:extensionBindingPrefixes="annox">
+
+	<!-- *************************** -->
+	<!-- ******** Data Types ******* -->
+	<!-- *************************** -->
+
+	<xsd:complexType name="Property">
+        <xsd:annotation>
+            <xsd:appinfo>
+            	<annox:annotate>@org.springframework.data.mongodb.core.mapping.Document</annox:annotate>
+            </xsd:appinfo>
+        </xsd:annotation>			
+		<xsd:sequence>
+			<xsd:element name="propertyId" type="xsd:string">
+		        <xsd:annotation>
+		            <xsd:appinfo>
+		                <annox:annotate>@org.springframework.data.annotation.Id</annox:annotate>
+		             </xsd:appinfo>
+		        </xsd:annotation>
+		    </xsd:element>
+			<xsd:element name="stateId" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="townId" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="parcelFeatureName" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="parcelId" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="roadName" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="addrNum" type="xsd:int" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="addrStr" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="type" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="units" type="xsd:int" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="unitsx" type="xsd:int" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="listings" type="tns:PropertyListing" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>	
+
+	<xsd:complexType name="PropertyListing">
+		<xsd:sequence>
+			<xsd:element name="propertyListingId"  type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="propertyId"  type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="listingSourceId"  type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="sourcePropertyId"  type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="detailUrl"  type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="imgUrl"  type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="unit"  type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="price" type="xsd:int" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="landAreaSqFt"  type="xsd:int" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="landAreaAcres" type="xsd:double"  minOccurs="0" maxOccurs="1" />
+			<xsd:element name="yearBuilt" type="xsd:int" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="livingArea" type="xsd:int" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="style" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="floors" type="xsd:int" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="rooms" type="xsd:int" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="bedRooms" type="xsd:int" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="bathRooms" type="xsd:double" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="garageBays" type="xsd:int" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="broker" type="xsd:string" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>	
+
+	<xsd:complexType name="Feature">
+		<xsd:sequence>
+			<xsd:element name="_id" type="xsd:string" />
+			<xsd:element name="name" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="typeId" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="stateId" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="townId" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="attrs" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="geoWkt" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="gmapJson" type="xsd:string" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<!-- *************************** -->
+	<!-- ******** Interface ******** -->
+	<!-- *************************** -->
+	
+</xsd:schema>

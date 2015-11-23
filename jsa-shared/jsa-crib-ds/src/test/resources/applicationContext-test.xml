@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+    <!--
+        This will automatically locate any and all property files you have
+        within your classpath, provided they fall under the META-INF/spring
+        directory. The located property files are parsed and their values can
+        then be used within application context files in the form of
+        ${propertyKey}.
+    -->
+    <context:property-placeholder location="classpath*:META-INF/spring/*.properties"/>
+
+    <context:component-scan base-package="net.jsa..crib.ds.*" />
+
+	<bean id="typeRegistry" class="net.jsa.crib.ds.impl.LogicalTypeRegistry" init-method="initialize">
+	</bean>
+	
+	<bean id="guidKeyGenerator" class="net.jsa.crib.ds.impl.GuidKeyGenerator" />
+
+	<bean id="dataSet" class="net.jsa.crib.ds.impl.MemoryDataSet" init-method="initialize"
+		p:name="TestDataSet"
+		p:keys="ID"
+		p:keyGenerator-ref="guidKeyGenerator">
+		<constructor-arg name="attributes">
+			<list>
+				<bean class="net.jsa.crib.ds.impl.Property"
+					p:name="ID"
+					p:className="java.lang.String" 
+				/>
+				<bean class="net.jsa.crib.ds.impl.Property"
+					p:name="NAME_COL"
+					p:className="java.lang.String" 
+				/>
+				<bean class="net.jsa.crib.ds.impl.Property"
+					p:name="DATE_COL"
+					p:className="java.util.Date" 
+				/>
+				<bean class="net.jsa.crib.ds.impl.Property"
+					p:name="DOUBLE_COL"
+					p:className="java.lang.Double" 
+				/>
+				<bean class="net.jsa.crib.ds.impl.Property"
+					p:name="BOOLEAN_COL"
+					p:className="java.lang.Boolean"
+				/>
+			</list>
+		</constructor-arg>
+	</bean>
+</beans>

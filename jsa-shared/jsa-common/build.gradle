@@ -1,0 +1,1 @@
+task "jsa-common"(type: Jar)
