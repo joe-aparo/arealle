@@ -1,4 +1,4 @@
-package net.jsa.crib.ds.api;
+package ind.jsa.crib.ds.api;
 
 public interface ITypeNature {
 	public static final byte SCALAR = 0x01;

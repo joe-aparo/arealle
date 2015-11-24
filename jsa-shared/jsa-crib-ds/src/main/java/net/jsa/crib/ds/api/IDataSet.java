@@ -156,7 +156,6 @@ public interface IDataSet {
      */
     List<IDataSetItem> retrieve(DataSetQuery query);
     
-    
     /**
      * Retrieve items from the DataSet according to the specified query.
      * 

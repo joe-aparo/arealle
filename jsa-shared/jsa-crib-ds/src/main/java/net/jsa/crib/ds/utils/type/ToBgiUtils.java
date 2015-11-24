@@ -2,6 +2,9 @@ package net.jsa.crib.ds.utils.type;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 
 import net.jsa.common.logging.LogUtils;
 
@@ -56,5 +59,17 @@ public class ToBgiUtils {
 	
 	public static BigInteger bool2Bgi(Boolean val) {
 		return val != null ? BigInteger.valueOf(val ? 1 : 0) : null;
+	}
+	
+	public static BigInteger cal2Bgi(Calendar val) {
+		return val != null ? BigInteger.valueOf(val.getTimeInMillis()) : null;
+	}
+	
+	public static BigInteger dt2Bgi(Date val) {
+		return val != null ? BigInteger.valueOf(val.getTime()) : null;
+	}
+	
+	public static BigInteger ts2Bgi(Timestamp val) {
+		return val != null ? BigInteger.valueOf(val.getTime()) : null;
 	}
 }

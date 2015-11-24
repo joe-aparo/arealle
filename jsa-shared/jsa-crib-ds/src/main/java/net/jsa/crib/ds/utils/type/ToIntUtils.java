@@ -1,6 +1,7 @@
 package net.jsa.crib.ds.utils.type;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import net.jsa.common.logging.LogUtils;
 
@@ -40,6 +41,10 @@ public class ToIntUtils {
 	}
 
 	public static Integer dbl2Int(Double val) {
+		return val != null ? Integer.valueOf(val.intValue()) : null;
+	}
+
+	public static Integer bgi2Int(BigInteger val) {
 		return val != null ? Integer.valueOf(val.intValue()) : null;
 	}
 

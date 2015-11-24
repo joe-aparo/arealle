@@ -1,6 +1,7 @@
 package net.jsa.crib.ds.utils.type;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,6 +30,10 @@ public class ToTsUtils {
 	}
 
 	public static Timestamp lng2Ts(Long val) {
+		return val != null ? convertLngToTs(val.longValue()) : null;
+	}
+
+	public static Timestamp bgi2Ts(BigInteger val) {
 		return val != null ? convertLngToTs(val.longValue()) : null;
 	}
 

@@ -1,6 +1,7 @@
 package net.jsa.crib.ds.utils.type;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,6 +31,10 @@ public class ToCalUtils {
 	}
 	
 	public static Calendar lng2Cal(Long val) {
+		return val != null ? convertLngToCal(val.longValue()) : null;
+	}
+
+	public static Calendar bgi2Cal(BigInteger val) {
 		return val != null ? convertLngToCal(val.longValue()) : null;
 	}
 

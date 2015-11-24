@@ -36,7 +36,7 @@ public class ToByteUtils {
 		return (val != null) ? convertIntToByte(val.intValue()) : null;
 	}
 	
-	public static Byte bgdiByte(BigInteger val) {
+	public static Byte bgi2Byte(BigInteger val) {
 		return (val != null) ? convertIntToByte(val.intValue()) : null;
 	}
 	
