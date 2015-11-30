@@ -83,25 +83,16 @@ public class DataSetItem implements IDataSetItem {
 		}
 	}
 
-	/**
-	 * Get the value for a specified property name.
-	 * 
-	 * @param name
-	 *            The name of the property
-	 * @return The value, or null
+	/*
 	 * 
 	 */
 	public Object get(String name) {
 		return get(metaData.getPropertyIndex(name));
 	}
 
-	/**
-	 * Get the value for a specified property index.
-	 * 
-	 * @param idx
-	 *            The ordinal index of the property
-	 * @return The value, or null
-	 * 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#get(int)
 	 */
 	public Object get(int idx) {
 		return idx >= 0 && idx < values.length ? values[idx] : null;
@@ -119,15 +110,9 @@ public class DataSetItem implements IDataSetItem {
 		return this;
 	}
 
-	/**
-	 * Set the value for a specified property index.
-	 * 
-	 * @param idx
-	 *            The property index
-	 * @param val
-	 *            The value to set
-	 * 
-	 * @return Reference to this item
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#put(int, java.lang.Object)
 	 */
 	public Map<String, Object> put(int idx, Object val) {
 		if (idx >= 0 && idx < values.length) {
@@ -203,11 +188,9 @@ public class DataSetItem implements IDataSetItem {
 		return get(key.toString());
 	}
 
-	/**
-	 * Returns an indicator as to whether no values have been assigned to the
-	 * item.
-	 * 
-	 * @return True if no values assigned, False otherwise.
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Map#isEmpty()
 	 */
 	@Override
 	public boolean isEmpty() {
@@ -265,12 +248,9 @@ public class DataSetItem implements IDataSetItem {
 		return remove(key.toString());
 	}
 
-	/**
-	 * Remove an item from the set.
-	 * 
-	 * @param key
-	 *            The key of the item to remove
-	 * @return The removed object
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#remove(java.lang.String)
 	 */
 	@Override
 	public Object remove(String key) {
@@ -281,12 +261,9 @@ public class DataSetItem implements IDataSetItem {
 		return remove(metaData.getPropertyIndex(key));
 	}
 
-	/**
-	 * Remove an item from the set.
-	 * 
-	 * @param idx
-	 *            The ordinal index of the item to remove
-	 * @return The removed object
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#remove(int)
 	 */
 	@Override
 	public Object remove(int idx) {
@@ -316,7 +293,7 @@ public class DataSetItem implements IDataSetItem {
 		return vals;
 	}
 
-	/**
+	/*
 	 * @see net.jsa.crib.ds.api.IDataSetItem#getString(java.lang.String)
 	 */
 	@Override
@@ -324,147 +301,265 @@ public class DataSetItem implements IDataSetItem {
 		return getString(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getByte(java.lang.String)
+	 */
 	@Override
 	public Byte getByte(String name) {
 		return getByte(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getCharacter(java.lang.String)
+	 */
 	@Override
 	public Character getCharacter(String name) {
 		return getCharacter(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getShort(java.lang.String)
+	 */
 	@Override
 	public Short getShort(String name) {
 		return getShort(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getInteger(java.lang.String)
+	 */
 	@Override
 	public Integer getInteger(String name) {
 		return getInteger(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getLong(java.lang.String)
+	 */
 	@Override
 	public Long getLong(String name) {
 		return getLong(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getBigInteger(java.lang.String)
+	 */
 	@Override
 	public BigInteger getBigInteger(String name) {
 		return getBigInteger(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getFloat(java.lang.String)
+	 */
 	@Override
 	public Float getFloat(String name) {
 		return getFloat(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getDouble(java.lang.String)
+	 */
 	@Override
 	public Double getDouble(String name) {
 		return getDouble(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getBigDecimal(java.lang.String)
+	 */
 	@Override
 	public BigDecimal getBigDecimal(String name) {
 		return getBigDecimal(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getCalendar(java.lang.String)
+	 */
 	@Override
 	public Calendar getCalendar(String name) {
 		return getCalendar(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getDate(java.lang.String)
+	 */
 	@Override
 	public Date getDate(String name) {
 		return getDate(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getTimestamp(java.lang.String)
+	 */
 	@Override
 	public Timestamp getTimestamp(String name) {
 		return getTimestamp(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getBoolean(java.lang.String)
+	 */
 	@Override
 	public Boolean getBoolean(String name) {
 		return getBoolean(metaData.getPropertyIndex(name));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getString(int)
+	 */
 	@Override
 	public String getString(int idx) {
 		return (String) getValueAsType(idx, String.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getByte(int)
+	 */
 	@Override
 	public Byte getByte(int idx) {
 		return (Byte) getValueAsType(idx, Byte.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getCharacter(int)
+	 */
 	@Override
 	public Character getCharacter(int idx) {
 		return (Character) getValueAsType(idx, Character.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getShort(int)
+	 */
 	@Override
 	public Short getShort(int idx) {
 		return (Short) getValueAsType(idx, Short.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getInteger(int)
+	 */
 	@Override
 	public Integer getInteger(int idx) {
 		return (Integer) getValueAsType(idx, Integer.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getLong(int)
+	 */
 	@Override
 	public Long getLong(int idx) {
 		return (Long) getValueAsType(idx, Long.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getBigInteger(int)
+	 */
 	@Override
 	public BigInteger getBigInteger(int idx) {
 		return (BigInteger) getValueAsType(idx, BigInteger.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getFloat(int)
+	 */
 	@Override
 	public Float getFloat(int idx) {
 		return (Float) getValueAsType(idx, Float.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getDouble(int)
+	 */
 	@Override
 	public Double getDouble(int idx) {
 		return (Double) getValueAsType(idx, Double.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getBigDecimal(int)
+	 */
 	@Override
 	public BigDecimal getBigDecimal(int idx) {
 		return (BigDecimal) getValueAsType(idx, BigDecimal.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getDate(int)
+	 */
 	@Override
 	public Date getDate(int idx) {
 		return (Date) getValueAsType(idx, Date.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getCalendar(int)
+	 */
 	@Override
 	public Calendar getCalendar(int idx) {
 		return (Calendar) getValueAsType(idx, Calendar.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getTimestamp(int)
+	 */
 	@Override
 	public Timestamp getTimestamp(int idx) {
 		return (Timestamp) getValueAsType(idx, Timestamp.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getBoolean(int)
+	 */
 	@Override
 	public Boolean getBoolean(int idx) {
 		return (Boolean) getValueAsType(idx, Boolean.class);
 	}
 	
+	/*
+	 * Support method top coerce a value for a property to
+	 * a specified type
+	 * 
+	 * @param idx The index of the value to convert
+	 * @param type The type to convert the value to
+	 * 
+	 * @return A value of the requested type
+	 */
 	private Object getValueAsType(int idx, Class<?> type) {
 		IDataSetProperty p = metaData.getProperty(idx);
 		if (p == null) {
 			return p;
 		}
 		
+		// Use the type manager associated with the metadata object to do the work
 		return metaData.getTypeManager().convert(get(idx), null, p.getClass(), p.getVariant());
 	}
 }
