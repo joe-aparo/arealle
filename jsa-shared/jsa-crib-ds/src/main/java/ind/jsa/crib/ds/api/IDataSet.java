@@ -7,11 +7,18 @@ public interface IDataSet {
 	public static final String DEFAULT_ID_PROPERTY = "id";
 
 	/**
-	 * Get metadata associated with the dataset.
+	 * Get the name of the dataset.
 	 * 
-	 * @return A metadata object
+	 * @return A string
 	 */
-	IDataSetMetaData getMetaData();
+	String getName();
+	
+	/**
+	 * Get the key generator associated with data set.
+	 * 
+	 * @return A key generator
+	 */
+	IKeyGenerator getKeyGenerator();
 	
     /**
      * Retrieve specified items from the DataSet, returning results as a list
@@ -111,5 +118,53 @@ public interface IDataSet {
      * @return A count
      */
     int getItemCount();
-
+    
+    /**
+     * Get a list of all properties for the dataset, in proper order.
+     * 
+     * @return A list of dataset properties
+     */
+    List<IDataSetProperty> getProperties();
+    
+    /**
+     * Get a list of all readable properties for the dataset, in proper order.
+     * 
+     * @return A list of dataset properties
+     */
+    List<IDataSetProperty> getReadableProperties();
+    
+    /**
+     * Get a list of all writable properties for the dataset, in proper order.
+     * 
+     * @return A list of dataset properties
+     */
+    List<IDataSetProperty> getWritableProperties();
+    
+    /**
+     * Get a list of all filterable properties for the dataset, in proper order.
+     * 
+     * @return A list of dataset properties
+     */
+    List<IDataSetProperty> getFilterableProperties();
+    
+    /**
+     * Get a list of all identity properties for the dataset, in proper order.
+     * 
+     * @return A list of dataset properties
+     */
+    List<IDataSetProperty> getIdentityProperties();
+    
+    /**
+     * Get a collection of default parameter values for CRUD calls if not specified.
+     * 
+     * @return A map of values
+     */
+    Map<String, Object> getDefaultParameterValues();
+    
+    /**
+     * Determine whether case-insenitive searches are allowable for the database .
+     * 
+     * @return An indicator
+     */
+    boolean isCaseInsensitiveSearch();
 }
