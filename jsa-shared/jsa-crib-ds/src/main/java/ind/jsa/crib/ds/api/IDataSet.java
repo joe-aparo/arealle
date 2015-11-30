@@ -14,6 +14,13 @@ public interface IDataSet {
 	String getName();
 	
 	/**
+	 * Get basic metadata object associated with the dataset.
+	 * 
+	 * @return A meta data object
+	 */
+	DataSetMetaData getMetaData();
+	
+	/**
 	 * Get the key generator associated with data set.
 	 * 
 	 * @return A key generator
@@ -120,39 +127,46 @@ public interface IDataSet {
     int getItemCount();
     
     /**
-     * Get a list of all properties for the dataset, in proper order.
+     * Get a list of all property names for the dataset, in proper order.
      * 
-     * @return A list of dataset properties
+     * @return A list of data set properties
      */
-    List<IDataSetProperty> getProperties();
+    List<String> getOrderedPropertyNames();
     
     /**
-     * Get a list of all readable properties for the dataset, in proper order.
+     * Get a list of all readable property names for the dataset, in proper order.
      * 
-     * @return A list of dataset properties
+     * @return A list of data set properties
      */
-    List<IDataSetProperty> getReadableProperties();
+    List<String> getReadablePropertyNames();
     
     /**
-     * Get a list of all writable properties for the dataset, in proper order.
+     * Get a list of all writable property names for the dataset, in proper order.
      * 
-     * @return A list of dataset properties
+     * @return A list of data set properties
      */
-    List<IDataSetProperty> getWritableProperties();
+    List<String> getWritablePropertyNames();
     
     /**
-     * Get a list of all filterable properties for the dataset, in proper order.
+     * Get a list of all filterable property names for the dataset, in proper order.
      * 
-     * @return A list of dataset properties
+     * @return A list of data set properties
      */
-    List<IDataSetProperty> getFilterableProperties();
+    List<String> getFilterablePropertyNames();
     
     /**
-     * Get a list of all identity properties for the dataset, in proper order.
+     * Get a list of all identity property names for the dataset, in proper order.
      * 
-     * @return A list of dataset properties
+     * @return A list of data set properties
      */
-    List<IDataSetProperty> getIdentityProperties();
+    List<String> getIdentityPropertyNames();
+    
+    /**
+     * Get a list of all reference property names for the dataset, in proper order.
+     * 
+     * @return A list of data set propertyNames
+     */
+    List<String> getReferencePropertyNames();
     
     /**
      * Get a collection of default parameter values for CRUD calls if not specified.

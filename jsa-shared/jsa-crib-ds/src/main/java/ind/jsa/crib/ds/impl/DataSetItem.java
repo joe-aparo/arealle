@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ind.jsa.crib.ds.api.IDataSet;
+import ind.jsa.crib.ds.api.DataSetMetaData;
 import ind.jsa.crib.ds.api.IDataSetItem;
-import ind.jsa.crib.ds.api.IDataSetMetaData;
+
 import ind.jsa.crib.ds.api.IDataSetProperty;
 
 /**
@@ -25,7 +25,7 @@ import ind.jsa.crib.ds.api.IDataSetProperty;
  * the associated DataSet.
  */
 public class DataSetItem implements IDataSetItem {
-	private IDataSetMetaData dataSetMetaData;
+	private DataSetMetaData metaData;
 	private Object[] values;
 
 	/**
@@ -37,8 +37,8 @@ public class DataSetItem implements IDataSetItem {
 	 * @param dataSet
 	 *            The owning DataSet
 	 */
-	public DataSetItem(IDataSet dataSet) {
-		this(dataSet, null);
+	public DataSetItem(DataSetMetaData metaData) {
+		this(metaData, null);
 	}
 
 	/**
@@ -52,9 +52,9 @@ public class DataSetItem implements IDataSetItem {
 	 * @param vals
 	 *            A collection of initialization values
 	 */
-	public DataSetItem(IDataSet dataSet, Map<String, Object> vals) {
-		this.values = new Object[dataSet.getMetaData().getProperties().size()];
-		this.dataSetMetaData = dataSet.getMetaData();
+	public DataSetItem(DataSetMetaData metaData, Map<String, Object> vals) {
+		this.values = new Object[metaData.getProperties().size()];
+		this.metaData = metaData;
 
 		if (vals != null) {
 			putAll(vals);
@@ -67,8 +67,8 @@ public class DataSetItem implements IDataSetItem {
 	 * @see ind.jsa.crib.ds.api.IDataSetItem#getMetaData()
 	 */
 	@Override
-	public IDataSetMetaData getMetaData() {
-		return dataSetMetaData;
+	public DataSetMetaData getMetaData() {
+		return metaData;
 	}
 
 	/*
@@ -92,7 +92,7 @@ public class DataSetItem implements IDataSetItem {
 	 * 
 	 */
 	public Object get(String name) {
-		return get(dataSetMetaData.getPropertyIndex(name));
+		return get(metaData.getPropertyIndex(name));
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Map<String, Object> put(String name, Object val) {
-		put(dataSetMetaData.getPropertyIndex(name), val);
+		put(metaData.getPropertyIndex(name), val);
 
 		return this;
 	}
@@ -131,7 +131,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	public Map<String, Object> put(int idx, Object val) {
 		if (idx >= 0 && idx < values.length) {
-			IDataSetProperty p = dataSetMetaData.getProperty(idx);
+			IDataSetProperty p = metaData.getProperty(idx);
 			if (p != null) {
 				values[idx] = val;
 			}
@@ -157,7 +157,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public boolean containsKey(Object key) {
-		int idx = dataSetMetaData.getPropertyIndex(key.toString());
+		int idx = metaData.getPropertyIndex(key.toString());
 		return idx != -1 && values[idx] != null;
 	}
 
@@ -187,7 +187,7 @@ public class DataSetItem implements IDataSetItem {
 
 		for (int i = 0; i < values.length; i++) {
 			if (values[i] != null) {
-				map.put(dataSetMetaData.getPropertyName(i), values[i]);
+				map.put(metaData.getPropertyName(i), values[i]);
 			}
 		}
 
@@ -234,7 +234,7 @@ public class DataSetItem implements IDataSetItem {
 		Set<String> keys = new LinkedHashSet<String>();
 		for (int i = 0; i < values.length; i++) {
 			if (values[i] != null) {
-				keys.add(dataSetMetaData.getPropertyName(i));
+				keys.add(metaData.getPropertyName(i));
 			}
 		}
 
@@ -278,7 +278,7 @@ public class DataSetItem implements IDataSetItem {
 			return null;
 		}
 
-		return remove(dataSetMetaData.getPropertyIndex(key));
+		return remove(metaData.getPropertyIndex(key));
 	}
 
 	/**
@@ -321,72 +321,72 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public String getString(String name) {
-		return getString(dataSetMetaData.getPropertyIndex(name));
+		return getString(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public Byte getByte(String name) {
-		return getByte(dataSetMetaData.getPropertyIndex(name));
+		return getByte(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public Character getCharacter(String name) {
-		return getCharacter(dataSetMetaData.getPropertyIndex(name));
+		return getCharacter(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public Short getShort(String name) {
-		return getShort(dataSetMetaData.getPropertyIndex(name));
+		return getShort(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public Integer getInteger(String name) {
-		return getInteger(dataSetMetaData.getPropertyIndex(name));
+		return getInteger(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public Long getLong(String name) {
-		return getLong(dataSetMetaData.getPropertyIndex(name));
+		return getLong(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public BigInteger getBigInteger(String name) {
-		return getBigInteger(dataSetMetaData.getPropertyIndex(name));
+		return getBigInteger(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public Float getFloat(String name) {
-		return getFloat(dataSetMetaData.getPropertyIndex(name));
+		return getFloat(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public Double getDouble(String name) {
-		return getDouble(dataSetMetaData.getPropertyIndex(name));
+		return getDouble(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public BigDecimal getBigDecimal(String name) {
-		return getBigDecimal(dataSetMetaData.getPropertyIndex(name));
+		return getBigDecimal(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public Calendar getCalendar(String name) {
-		return getCalendar(dataSetMetaData.getPropertyIndex(name));
+		return getCalendar(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public Date getDate(String name) {
-		return getDate(dataSetMetaData.getPropertyIndex(name));
+		return getDate(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public Timestamp getTimestamp(String name) {
-		return getTimestamp(dataSetMetaData.getPropertyIndex(name));
+		return getTimestamp(metaData.getPropertyIndex(name));
 	}
 
 	@Override
 	public Boolean getBoolean(String name) {
-		return getBoolean(dataSetMetaData.getPropertyIndex(name));
+		return getBoolean(metaData.getPropertyIndex(name));
 	}
 
 	@Override
@@ -460,11 +460,11 @@ public class DataSetItem implements IDataSetItem {
 	}
 	
 	private Object getValueAsType(int idx, Class<?> type) {
-		IDataSetProperty p = dataSetMetaData.getProperty(idx);
+		IDataSetProperty p = metaData.getProperty(idx);
 		if (p == null) {
 			return p;
 		}
 		
-		return dataSetMetaData.getTypeManager().convert(get(idx), null, p.getClass(), p.getVariant());
+		return metaData.getTypeManager().convert(get(idx), null, p.getClass(), p.getVariant());
 	}
 }
