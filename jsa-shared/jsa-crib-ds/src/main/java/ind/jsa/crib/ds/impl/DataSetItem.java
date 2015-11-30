@@ -47,8 +47,8 @@ public class DataSetItem implements IDataSetItem {
 	 * 
 	 * This constructor initializes a new item with a give set of values.
 	 * 
-	 * @param dataSet
-	 *            The owning DataSet
+	 * @param metaData
+	 *            The metaData defining the item's physical properties
 	 * @param vals
 	 *            A collection of initialization values
 	 */
