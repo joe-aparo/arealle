@@ -16,7 +16,7 @@ public interface IDataSetResultHandler {
      * 
      * @param item The item retrieved
      */
-    void processRow(IDataSetItem item);
+    void processItem(IDataSetItem item);
 
     /**
      * Called after all items have been retrieved.

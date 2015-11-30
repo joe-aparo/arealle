@@ -39,6 +39,7 @@ public interface IDataSetMetaData {
      * @return A property collection
      */
     List<IDataSetProperty> getProperties();
+    
     /**
      * Get the complete collection of property names associated with the DataSet.
      * 

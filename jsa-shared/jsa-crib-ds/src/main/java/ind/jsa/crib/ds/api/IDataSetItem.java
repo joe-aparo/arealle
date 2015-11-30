@@ -16,6 +16,13 @@ import java.util.Map;
  */
 public interface IDataSetItem extends Map<String, Object> {
 
+	/**
+	 * Get metadata associated with the item.
+	 * 
+	 * @return Item metadata
+	 */
+	public IDataSetMetaData getMetaData();
+	
     /**
      * Get the value for a specified property index.
      * 
@@ -73,7 +80,7 @@ public interface IDataSetItem extends Map<String, Object> {
      * @param name Property name
 	 * @return A Character value, or null if unavailable
 	 */
-	Character getChar(String name);
+	Character getCharacter(String name);
 	
 	/**
      * Get the named property value as a Short.
@@ -180,6 +187,14 @@ public interface IDataSetItem extends Map<String, Object> {
 	Byte getByte(int idx);
 
 	/**
+     * Get the indexed property value as a Character.
+	 * 
+	 * @param idx Property index
+	 * @return A Byte value, or null if unavailable
+	 */
+	Character getCharacter(int idx);
+
+	/**
      * Get the indexed property value as a Short.
 	 * 
 	 * @param idx Property index
@@ -209,7 +224,7 @@ public interface IDataSetItem extends Map<String, Object> {
 	 * @param idx Property index
 	 * @return A BigInteger value, or null if unavailable
 	 */
-	Long getBigInteger(int idx);
+	BigInteger getBigInteger(int idx);
 
 	/**
      * Get the indexed property value as a Float.
