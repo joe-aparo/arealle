@@ -12,7 +12,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Manages a collection of properties that define elements of items in a data set.
+ * Manages a collection of properties that reflect the physical elements of items in a data set, and their natural order.
  * 
  * @author jsaparo
  *
