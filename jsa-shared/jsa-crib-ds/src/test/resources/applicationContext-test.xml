@@ -20,14 +20,11 @@
     -->
     <context:property-placeholder location="classpath*:META-INF/spring/*.properties"/>
 
-    <context:component-scan base-package="net.jsa..crib.ds.*" />
+    <context:component-scan base-package="ind.jsa.crib.ds.*" />
 
-	<bean id="typeRegistry" class="net.jsa.crib.ds.impl.LogicalTypeRegistry" init-method="initialize">
-	</bean>
-	
 	<bean id="guidKeyGenerator" class="net.jsa.crib.ds.impl.GuidKeyGenerator" />
 
-	<bean id="dataSet" class="net.jsa.crib.ds.impl.MemoryDataSet" init-method="initialize"
+	<bean id="dataSet" class="ind.jsa.crib.ds.impl.MemoryDataSet" init-method="initialize"
 		p:name="TestDataSet"
 		p:keys="ID"
 		p:keyGenerator-ref="guidKeyGenerator">

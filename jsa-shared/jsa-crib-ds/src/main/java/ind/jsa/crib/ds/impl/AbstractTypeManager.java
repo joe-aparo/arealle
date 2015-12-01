@@ -1,4 +1,4 @@
-package net.jsa.crib.ds.impl;
+package ind.jsa.crib.ds.impl;
 
 import ind.jsa.crib.ds.api.ITypeManager;
 
@@ -82,6 +82,11 @@ public abstract class AbstractTypeManager implements ITypeManager {
 		return converter != null ? converter.apply(val) : null;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.ITypeManager#convert(java.lang.Object, java.lang.Class)
+	 */
+	@Override
 	public Object convert(Object val, Class<?> toType) {
 		return convert(val, null, toType, null);
 	}

@@ -66,7 +66,7 @@ public abstract class AbstractDataSet implements IDataSet {
 	public DataSetMetaData getMetaData() {
 		return metaData;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see ind.jsa.crib.ds.api.IDataSet#getKeyGenerator()

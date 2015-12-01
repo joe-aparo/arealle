@@ -9,7 +9,6 @@ import java.util.GregorianCalendar;
 
 import org.springframework.stereotype.Component;
 
-import net.jsa.crib.ds.impl.AbstractTypeManager;
 import net.jsa.crib.ds.utils.type.ToBgdUtils;
 import net.jsa.crib.ds.utils.type.ToBgiUtils;
 import net.jsa.crib.ds.utils.type.ToBoolUtils;
@@ -76,6 +75,112 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerDefaultBooleanConversions();
  	}
 	
+	/**
+	 * Determine whether given nature is numeric.
+	 * 
+	 * @param nature Given type nature
+	 * @return An indicator
+	 */
+	public static boolean isNumericNature(long nature) {
+		return (nature & NUMERIC_NATURE) != 0;
+	}
+	
+	/**
+	 * Determine whether given nature is integral.
+	 * 
+	 * @param nature Given type nature
+	 * @return An indicator
+	 */
+	public static boolean isIntegerNature(long nature) {
+		return (nature & INTEGER_NATURE) != 0;
+	}
+	
+	/**
+	 * Determine whether given nature is decimal.
+	 * 
+	 * @param nature Given type nature
+	 * @return An indicator
+	 */
+	public static boolean isDecimalNature(long nature) {
+		return (nature & DECIMAL_NATURE) != 0;
+	}
+	
+	/**
+	 * Determine whether given nature is String.
+	 * 
+	 * @param nature Given type nature
+	 * @return An indicator
+	 */
+	public static boolean isStringNature(long nature) {
+		return (nature & STRING_NATURE) != 0;
+	}
+	
+	/**
+	 * Determine whether given nature is date/time.
+	 * 
+	 * @param nature Given type nature
+	 * @return An indicator
+	 */
+	public static boolean isDateTimeNature(long nature) {
+		return (nature & DATETIME_NATURE) != 0;
+	}
+	
+	/**
+	 * Determine whether given nature is boolean.
+	 * 
+	 * @param nature Given type nature
+	 * @return An indicator
+	 */
+	public static boolean isBooleanNature(long nature) {
+		return (nature & BOOLEAN_NATURE) != 0;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.ITypeManager#compareValues(java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	public int compareValues(Object val1, Object val2) {
+		return compareValues(val1, null, val2, null);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.ITypeManager#compareValues(java.lang.Object, java.lang.String, java.lang.Object, java.lang.String)
+	 */
+	@Override
+	public int compareValues(Object val1, String variant1, Object val2,	String variant2) {
+		
+		// Default to equality
+        int cmp = 0;
+
+        // If one of the values is null, perform simplified null comparison logic
+        if (val2 == null || val2 == null) {
+        	cmp = cmpNull(val1, val2); // punt
+        } else {
+        	long nature1 = getTypeNature(val1.getClass());
+        	long nature2 = getTypeNature(val2.getClass());
+        	
+        	// Attempt to treat as scalar comparison
+	        if (isNumericNature(nature1) && isNumericNature(nature2)) {
+	        	long sc1 = (Long) convert(val1, variant1, Long.class, null);
+	        	long sc2 = (Long) convert(val2, variant2, Long.class, null);
+	        	
+	        	return sc1 < sc2 ? -1 : (sc1 > sc2 ? 1 : 0);
+	        } else { // Treat as string comparison
+	        	String str1 = (String) convert(val1, variant1, String.class, null);
+	        	String str2 = (String) convert(val2, variant2, String.class, null);
+	        	
+	        	cmp = str1.compareTo(str2);
+	        }
+        }
+        
+        return cmp;
+	}
+	
+	/*
+	 * Register default types and natures.
+	 */
 	private void registerDefaultTypes() {
 		registerType(String.class, STRING_NATURE);
 		registerType(Character.class, STRING_NATURE);
@@ -93,6 +198,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerType(Boolean.class, BOOLEAN_NATURE);
 	}
 	
+	/*
+	 * Register conversions from String.
+	 */
 	private void registerDefaultStringConversions() {
 		registerConverter(String.class, Character.class, (Object val) -> ToChrUtils.str2Chr((String) val));
 		registerConverter(String.class, Byte.class, (Object val) -> ToByteUtils.str2Byte((String) val));
@@ -109,6 +217,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(String.class, Boolean.class, (Object val) -> ToBoolUtils.str2Bool((String) val));
 	}
 	
+	/*
+	 * Register conversions from Character.
+	 */
 	private void registerDefaultCharacterConversions() {
 		registerConverter(Character.class, String.class, (Object val) -> ToStrUtils.chr2Str((Character) val));
 		registerConverter(Character.class, Byte.class, (Object val) -> ToByteUtils.chr2Byte((Character) val));
@@ -122,6 +233,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(Character.class, Boolean.class, (Object val) -> ToBoolUtils.chr2Bool((Character) val));
 	}
 	
+	/*
+	 * Register conversions from Byte.
+	 */
 	private void registerDefaultByteConversions() {
 		registerConverter(Byte.class, String.class, (Object val) -> ToStrUtils.byte2Str((Byte) val));
 		registerConverter(Byte.class, Character.class, (Object val) -> ToChrUtils.byte2Chr((Byte) val));
@@ -135,6 +249,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(Byte.class, Boolean.class, (Object val) -> ToBoolUtils.byte2Bool((Byte) val));
 	}
 	
+	/*
+	 * Register conversions from Short.
+	 */
 	private void registerDefaultShortConversions() {
 		registerConverter(Short.class, String.class, (Object val) -> ToStrUtils.shrt2Str((Short) val));
 		registerConverter(Short.class, Byte.class, (Object val) -> ToByteUtils.shrt2Byte((Short) val));
@@ -148,6 +265,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(Short.class, Boolean.class, (Object val) -> ToBoolUtils.shrt2Bool((Short) val));
 	}
 	
+	/*
+	 * Register conversions from Integer.
+	 */
 	private void registerDefaultIntegerConversions() {
 		registerConverter(Integer.class, String.class, (Object val) -> ToStrUtils.int2Str((Integer) val));
 		registerConverter(Integer.class, Byte.class, (Object val) -> ToByteUtils.int2Byte((Integer) val));
@@ -161,6 +281,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(Integer.class, Boolean.class, (Object val) -> ToBoolUtils.int2Bool((Integer) val));
 	}
 	
+	/*
+	 * Register conversions from Long.
+	 */
 	private void registerDefaultLongConversions() {
 		registerConverter(Long.class, String.class, (Object val) -> ToStrUtils.lng2Str((Long) val));
 		registerConverter(Long.class, Character.class, (Object val) -> ToChrUtils.lng2Chr((Long) val));
@@ -177,6 +300,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(Long.class, Boolean.class, (Object val) -> ToBoolUtils.lng2Bool((Long) val));
 	}
 	
+	/*
+	 * Register conversions from Integer.
+	 */
 	private void registerDefaultBigIntegerConversions() {
 		registerConverter(BigInteger.class, String.class, (Object val) -> ToStrUtils.bgi2Str((BigInteger) val));
 		registerConverter(BigInteger.class, Character.class, (Object val) -> ToChrUtils.bgi2Chr((BigInteger) val));
@@ -193,6 +319,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(BigInteger.class, Boolean.class, (Object val) -> ToBoolUtils.bgi2Bool((BigInteger) val));
 	}
 	
+	/*
+	 * Register conversions from Float.
+	 */
 	private void registerDefaultFloatConversions() {
 		registerConverter(Float.class, String.class, (Object val) -> ToStrUtils.flt2Str((Float) val));
 		registerConverter(Float.class, Character.class, (Object val) -> ToChrUtils.flt2Chr((Float) val));
@@ -206,6 +335,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(Float.class, Boolean.class, (Object val) -> ToBoolUtils.flt2Bool((Float) val));
 	}
 	
+	/*
+	 * Register conversions from Double.
+	 */
 	private void registerDefaultDoubleConversions() {
 		registerConverter(Double.class, String.class, (Object val) -> ToStrUtils.dbl2Str((Double) val));
 		registerConverter(Double.class, Character.class, (Object val) -> ToChrUtils.dbl2Chr((Double) val));
@@ -219,6 +351,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(Double.class, Boolean.class, (Object val) -> ToBoolUtils.dbl2Bool((Double) val));
 	}
 	
+	/*
+	 * Register conversions from BigDecimal.
+	 */
 	private void registerDefaultBigDecimalConversions() {
 		registerConverter(BigDecimal.class, String.class, (Object val) -> ToStrUtils.bgd2Str((BigDecimal) val));
 		registerConverter(BigDecimal.class, Character.class, (Object val) -> ToChrUtils.bgd2Chr((BigDecimal) val));
@@ -232,6 +367,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(BigDecimal.class, Boolean.class, (Object val) -> ToBoolUtils.bgd2Bool((BigDecimal) val));
 	}
 	
+	/*
+	 * Register conversions from Calendar.
+	 */
 	private void registerDefaultCalendarConversions() {
 		registerConverter(Calendar.class, String.class, (Object val) -> ToStrUtils.cal2Str((Calendar) val));
 		registerConverter(Calendar.class, Long.class, (Object val) -> ToLngUtils.cal2Lng((Calendar) val));
@@ -241,6 +379,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(Calendar.class, Timestamp.class, (Object val) -> ToTsUtils.cal2Ts((Calendar) val));
 	}
 	
+	/*
+	 * Register conversions from Date.
+	 */
 	private void registerDefaultDateConversions() {
 		registerConverter(Date.class, String.class, (Object val) -> ToStrUtils.dt2Str((Date) val));
 		registerConverter(Date.class, Long.class, (Object val) -> ToLngUtils.dt2Lng((Date) val));
@@ -250,6 +391,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(Date.class, Timestamp.class, (Object val) -> ToTsUtils.dt2Ts((Date) val));
 	}
 	
+	/*
+	 * Register conversions from Timestamp.
+	 */
 	private void registerDefaultTimeStampConversions() {
 		registerConverter(Timestamp.class, String.class, (Object val) -> ToStrUtils.ts2Str((Timestamp) val));
 		registerConverter(Timestamp.class, Long.class, (Object val) -> ToLngUtils.ts2Lng((Timestamp) val));
@@ -259,6 +403,9 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(Timestamp.class, Date.class, (Object val) -> ToDtUtils.ts2Dt((Timestamp) val));
 	}
 
+	/*
+	 * Register conversions from Boolean.
+	 */
 	private void registerDefaultBooleanConversions() {
 		registerConverter(Boolean.class, String.class, (Object val) -> ToStrUtils.bool2Str((Boolean) val));
 		registerConverter(Boolean.class, Byte.class, (Object val) -> ToByteUtils.bool2Byte((Boolean) val));		
@@ -271,4 +418,25 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerConverter(Boolean.class, Double.class, (Object val) -> ToDblUtils.bool2Dbl((Boolean) val));
 		registerConverter(Boolean.class, BigDecimal.class, (Object val) -> ToBgdUtils.bool2Bgd((Boolean) val));
 	}
+	
+	/*
+	 * Support method fo comparing two arbitrarily null object values.
+	 *  
+	 * @param o1 First value
+	 * @param o2 Second value
+	 * @return Null comparison indicator
+	 */
+    private int cmpNull(Object o1, Object o2) {
+    	int cmp = 0;
+    	
+        if (o1 == null && o2 == null) {
+            cmp = 0;
+        } else if (o1 == null && o2 != null) {
+            cmp = -1;
+        } else if (o1 != null && o2 == null) {
+            cmp = 1;
+        }
+        
+        return cmp;
+    }
 }
