@@ -11,46 +11,14 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
-    <!--
-        This will automatically locate any and all property files you have
-        within your classpath, provided they fall under the META-INF/spring
-        directory. The located property files are parsed and their values can
-        then be used within application context files in the form of
-        ${propertyKey}.
-    -->
-    <context:property-placeholder location="classpath*:META-INF/spring/*.properties"/>
+
+    <context:property-placeholder location="classpath*:test.properties"/>
 
     <context:component-scan base-package="ind.jsa.crib.ds.*" />
 
-	<bean id="guidKeyGenerator" class="net.jsa.crib.ds.impl.GuidKeyGenerator" />
-
-	<bean id="dataSet" class="ind.jsa.crib.ds.impl.MemoryDataSet" init-method="initialize"
-		p:name="TestDataSet"
-		p:keys="ID"
-		p:keyGenerator-ref="guidKeyGenerator">
-		<constructor-arg name="attributes">
-			<list>
-				<bean class="net.jsa.crib.ds.impl.Property"
-					p:name="ID"
-					p:className="java.lang.String" 
-				/>
-				<bean class="net.jsa.crib.ds.impl.Property"
-					p:name="NAME_COL"
-					p:className="java.lang.String" 
-				/>
-				<bean class="net.jsa.crib.ds.impl.Property"
-					p:name="DATE_COL"
-					p:className="java.util.Date" 
-				/>
-				<bean class="net.jsa.crib.ds.impl.Property"
-					p:name="DOUBLE_COL"
-					p:className="java.lang.Double" 
-				/>
-				<bean class="net.jsa.crib.ds.impl.Property"
-					p:name="BOOLEAN_COL"
-					p:className="java.lang.Boolean"
-				/>
-			</list>
-		</constructor-arg>
+	<bean id="dataSet" class="ind.jsa.crib.ds.impl.MemoryDataSet">
+		<constructor-arg name="name" value="testDs" />
+		<constructor-arg name="metaData" ref="testMetaData" />
+		<constructor-arg name="optons" ref="testOptions" />
 	</bean>
 </beans>
