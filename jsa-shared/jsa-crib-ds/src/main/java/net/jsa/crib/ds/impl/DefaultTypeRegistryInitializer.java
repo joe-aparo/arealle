@@ -1,5 +1,20 @@
 package net.jsa.crib.ds.impl;
 
+import ind.jsa.crib.ds.internal.utils.type.ToBgdUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToBgiUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToBoolUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToByteUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToCalUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToChrUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToDblUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToDtUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToFltUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToIntUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToLngUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToShrtUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToStrUtils;
+import ind.jsa.crib.ds.internal.utils.type.ToTsUtils;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -11,20 +26,6 @@ import net.jsa.crib.ds.api.ILogicalTypeRegistry;
 import net.jsa.crib.ds.api.ILogicalTypeRegistryInitializer;
 import net.jsa.crib.ds.api.LogicalType;
 import net.jsa.crib.ds.impl.type.PassThru;
-import net.jsa.crib.ds.utils.type.ToBgdUtils;
-import net.jsa.crib.ds.utils.type.ToBgiUtils;
-import net.jsa.crib.ds.utils.type.ToBoolUtils;
-import net.jsa.crib.ds.utils.type.ToByteUtils;
-import net.jsa.crib.ds.utils.type.ToCalUtils;
-import net.jsa.crib.ds.utils.type.ToChrUtils;
-import net.jsa.crib.ds.utils.type.ToDblUtils;
-import net.jsa.crib.ds.utils.type.ToDtUtils;
-import net.jsa.crib.ds.utils.type.ToFltUtils;
-import net.jsa.crib.ds.utils.type.ToIntUtils;
-import net.jsa.crib.ds.utils.type.ToLngUtils;
-import net.jsa.crib.ds.utils.type.ToShrtUtils;
-import net.jsa.crib.ds.utils.type.ToStrUtils;
-import net.jsa.crib.ds.utils.type.ToTsUtils;
 
 
 /**

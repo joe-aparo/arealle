@@ -1,4 +1,4 @@
-package net.jsa.crib.ds.utils.type;
+package ind.jsa.crib.ds.internal.utils.type;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

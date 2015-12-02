@@ -1,5 +1,7 @@
 package net.jsa.crib.ds.impl;
 
+import ind.jsa.crib.ds.internal.utils.type.DateTimePattern;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
@@ -8,7 +10,6 @@ import java.util.Collection;
 
 import net.jsa.crib.ds.api.IDataSetItem;
 import net.jsa.crib.ds.api.IDataSetProperty;
-import net.jsa.crib.ds.utils.type.DateTimePattern;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;

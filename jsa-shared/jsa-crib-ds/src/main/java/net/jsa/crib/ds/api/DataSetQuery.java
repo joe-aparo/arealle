@@ -2,11 +2,11 @@ package net.jsa.crib.ds.api;
 
 import net.jsa.common.logging.LogUtils;
 import net.jsa.crib.ds.api.FilterExpression.FilterOperator;
-import net.jsa.crib.ds.utils.type.ToIntUtils;
-
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
+
+import ind.jsa.crib.ds.internal.utils.type.ToIntUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
