@@ -11,7 +11,7 @@ import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.IDataSet;
 import ind.jsa.crib.ds.api.IDataSetItem;
 import ind.jsa.crib.ds.api.IDataSetProperty;
-import ind.jsa.crib.ds.api.FilterExpression.FilterOperator;
+import ind.jsa.crib.ds.api.DataSetQuery.FilterOperator;
 import ind.jsa.crib.ds.impl.ListDataSetResultHandler;
 
 import org.junit.Assert;

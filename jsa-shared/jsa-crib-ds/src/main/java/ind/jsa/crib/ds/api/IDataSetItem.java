@@ -21,7 +21,7 @@ public interface IDataSetItem extends Map<String, Object> {
 	 * 
 	 * @return Item metadata
 	 */
-	DataSetMetaData getMetaData();
+	IDataSetMetaData getMetaData();
 	
     /**
      * Get the value for a specified property index.

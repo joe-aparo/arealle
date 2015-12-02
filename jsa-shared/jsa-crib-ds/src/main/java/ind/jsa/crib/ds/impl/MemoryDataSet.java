@@ -10,18 +10,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import ind.jsa.crib.ds.api.DataSetMetaData;
 import ind.jsa.crib.ds.api.DataSetOptions;
 import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.IDataSetItem;
+import ind.jsa.crib.ds.api.IDataSetMetaData;
 import ind.jsa.crib.ds.api.IDataSetProperty;
 import ind.jsa.crib.ds.api.IDataSetResultHandler;
 import ind.jsa.crib.ds.api.IKeyGenerator;
-import ind.jsa.crib.ds.impl.DataSetItem;
-import ind.jsa.crib.ds.utils.NameUtils;
-import ind.jsa.crib.ds.api.FilterExpression;
+import ind.jsa.crib.ds.api.DataSetQuery.FilterExpression;
 import ind.jsa.crib.ds.api.DataSetQuery.SortDirection;
-import ind.jsa.crib.ds.api.FilterExpression.FilterOperator;
+import ind.jsa.crib.ds.api.DataSetQuery.FilterOperator;
+import ind.jsa.crib.ds.utils.NameUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
@@ -41,14 +40,21 @@ public class MemoryDataSet extends AbstractDataSet {
     private List<DataSetItem> cachedItems = new ArrayList<DataSetItem>(DEFAULT_INIT_SIZE);
 
     /**
-     * Empty data set structure.
+     * Empty data set, without options.
+     */
+    public MemoryDataSet(String name, DataSetMetaData metaData) {
+    	this(name, metaData, null);
+    }
+
+    /**
+     * Empty data set, with options.
      */
     public MemoryDataSet(String name, DataSetMetaData metaData, DataSetOptions options) {
     	this(name, metaData, options, null);
     }
 
     /**
-     * Empty data set structure.
+     * Filled data set, with options.
      */
     public MemoryDataSet(String name, DataSetMetaData metaData, DataSetOptions options, List<Map<String, Object>> initialItems) {
     	super(name, metaData, options);
@@ -218,8 +224,17 @@ public class MemoryDataSet extends AbstractDataSet {
 	 */
 	@Override
 	public int getItemCount(DataSetQuery query) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		int count = 0;
+		
+        // Get all that match
+        for (DataSetItem item : cachedItems) {
+            if (itemMatchesQuery(item, query)) {
+                count++;
+            }
+        }
+
+		return count;
 	}
 
     /**
@@ -370,7 +385,8 @@ public class MemoryDataSet extends AbstractDataSet {
         		op = FilterOperator.LESS_OR_EQUAL;
         	} else if (filterVal != null && upperFilterVal == null) {
         		op = FilterOperator.GREATER_OR_EQUAL;
-        	} else if (DefaultTypeManager.isNumericNature(getMetaData().getTypeManager().getTypeNature(itemVal.getClass()))  && 
+        	} else if (
+        		DefaultTypeManager.isNumericNature(getMetaData().getTypeManager().getTypeNature(itemVal.getClass()))  && 
             	DefaultTypeManager.isNumericNature(getMetaData().getTypeManager().getTypeNature(filterVal.getClass()))) {
 	        	long itemScale = (Long) getMetaData().getTypeManager().convert(itemVal, prop.getVariant(), Long.class, prop.getVariant());
 	        	long lowerScale = (Long) getMetaData().getTypeManager().convert(filterVal, prop.getVariant(), Long.class, prop.getVariant());
@@ -385,7 +401,8 @@ public class MemoryDataSet extends AbstractDataSet {
         		op = FilterOperator.GREATER_OR_EQUAL;
         	} else if (filterVal != null && upperFilterVal == null) {
         		op = FilterOperator.LESS_OR_EQUAL;
-        	} else if (DefaultTypeManager.isNumericNature(getMetaData().getTypeManager().getTypeNature(itemVal.getClass()))  && 
+        	} else if (
+        		DefaultTypeManager.isNumericNature(getMetaData().getTypeManager().getTypeNature(itemVal.getClass()))  && 
             	DefaultTypeManager.isNumericNature(getMetaData().getTypeManager().getTypeNature(filterVal.getClass()))) {
 	        	long itemScale = (Long) getMetaData().getTypeManager().convert(itemVal, prop.getVariant(), Long.class, prop.getVariant());
 	        	long lowerScale = (Long) getMetaData().getTypeManager().convert(filterVal, prop.getVariant(), Long.class, prop.getVariant());
@@ -452,7 +469,7 @@ public class MemoryDataSet extends AbstractDataSet {
          * java.lang.String)
          */
         @Override
-        public Object generateKeyValue(DataSetMetaData metaData, String keyField) {
+        public Object generateKeyValue(IDataSetMetaData metaData, String keyField) {
             Integer val = Integer.valueOf(currentId++);
             IDataSetProperty prop = metaData.getProperty(keyField);
             if (prop != null) {

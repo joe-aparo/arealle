@@ -15,10 +15,54 @@
     <context:property-placeholder location="classpath*:test.properties"/>
 
     <context:component-scan base-package="ind.jsa.crib.ds.*" />
-
-	<bean id="dataSet" class="ind.jsa.crib.ds.impl.MemoryDataSet">
+    
+	<bean id="testDs" class="ind.jsa.crib.ds.impl.MemoryDataSet">
 		<constructor-arg name="name" value="testDs" />
-		<constructor-arg name="metaData" ref="testMetaData" />
-		<constructor-arg name="optons" ref="testOptions" />
-	</bean>
+		<constructor-arg name="metaData">
+			<bean class="ind.jsa.crib.ds.impl.DataSetMetaData">
+				<property name="properties">
+				    <list>
+				        <value>
+					        <bean class="int.jsa.crib.ds.impl.DataSetProperty">
+					            <constructor-arg name="name" value="id" />
+					            <constructor-arg name="className" value="java.lang.Integer" />
+					        </bean>
+				        </value>
+				        <value>
+					        <bean class="int.jsa.crib.ds.impl.DataSetProperty">
+					            <constructor-arg name="name" value="name_fld" />
+					            <constructor-arg name="className" value="java.lang.String" />
+					        </bean>
+					    </value>
+					    <value>
+					        <bean class="int.jsa.crib.ds.impl.DataSetProperty">
+					            <constructor-arg name="name" value="date_fld" />
+					            <constructor-arg name="className" value="java.util.Date" />
+					        </bean>
+					    </value>
+					    <value>
+					        <bean class="int.jsa.crib.ds.impl.DataSetProperty">
+					            <constructor-arg name="name" value="double_fld" />
+					            <constructor-arg name="className" value="java.lang.Double" />
+					        </bean>
+					    </value>
+					    <value>
+					        <bean class="int.jsa.crib.ds.impl.DataSetProperty">
+					            <constructor-arg name="name" value="boolean_fld" />
+					            <constructor-arg name="className" value="java.lang.Boolean" />
+					        </bean> 
+					    </value>
+					</list>
+				</property>
+			</bean>	    
+		</constructor-arg>
+		<constructor-arg name="options">
+			<bean class="ind.jsa.crib.ds.api.DataSetOptions">
+			    <property name="identityProperties">
+			        <list>
+			            <value>id</value>
+			        </list>
+			    </property>
+		    </bean>		    
+		</constructor-arg>
 </beans>

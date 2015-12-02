@@ -18,9 +18,29 @@ public class DataSetProperty implements IDataSetProperty
     private String variant;
 
 	private Map<String, Object> attrs = new HashMap<String, Object>();
+	
+    public DataSetProperty(String name, String className) {
+    	this (name, className, null);
+    }    
 
-    public DataSetProperty(String name) {
+    public DataSetProperty(String name, Class<?> type) {
+    	this (name, type, null);
+    }    
+
+    public DataSetProperty(String name, String className, String variant) {
+    	try {
+			this.type = Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
     	this.name = name;
+    	this.variant = variant;
+    }
+    
+    public DataSetProperty(String name, Class<?> type, String variant) {
+    	this.type = type;
+    	this.name = name;
+    	this.variant = variant;
     }
     
     /*
@@ -30,15 +50,6 @@ public class DataSetProperty implements IDataSetProperty
     @Override
     public String getName() {
         return name;
-    }
-
-    /**
-     * Set the property name.
-     * 
-     * @param name A name, assumed to be unique within a set
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
 	/**

@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
   * Simple subclass for applying memory context configuration.
   */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
+@ContextConfiguration(locations = { "classpath:memoryDataSetContext-test.xml" })
 public class MemoryDataSetTest extends AbstractDataSetTest {
 
 	@Test

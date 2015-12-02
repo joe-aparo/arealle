@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ind.jsa.crib.ds.api.DataSetMetaData;
 import ind.jsa.crib.ds.api.DataSetOptions;
 import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.IDataSet;

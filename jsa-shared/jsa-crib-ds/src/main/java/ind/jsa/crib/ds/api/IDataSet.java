@@ -18,7 +18,7 @@ public interface IDataSet {
 	 * 
 	 * @return A meta data object
 	 */
-	DataSetMetaData getMetaData();
+	IDataSetMetaData getMetaData();
 	
 	/**
 	 * Get the key generator associated with data set.

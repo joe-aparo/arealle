@@ -14,5 +14,5 @@ public interface IKeyGenerator {
      * 
      * @return An object representing the value
      */
-    Object generateKeyValue(DataSetMetaData metaData, String keyField);
+    Object generateKeyValue(IDataSetMetaData metaData, String keyField);
 }

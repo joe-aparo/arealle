@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import net.jsa.crib.ds.api.DataSetQuery;
 import net.jsa.crib.ds.api.IDataSet;
 import net.jsa.crib.ds.api.IDataSetItem;
@@ -15,8 +17,6 @@ import net.jsa.crib.ds.api.FilterExpression.FilterOperator;
 import net.jsa.crib.ds.impl.ListDataSetResultHandler;
 
 import org.junit.Assert;
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 /**
  * DataSet test.
@@ -39,7 +39,7 @@ public abstract class AbstractDataSetTest {
         TEST_CREATE_RECORD.put(TestConstants.BOOLEAN_COL, Boolean.FALSE);
     }
 
-    @Autowired
+    @Resource(name="testDs")
     private IDataSet dataSet;
 
     private List<IDataSetItem> addedItems = new ArrayList<IDataSetItem>();

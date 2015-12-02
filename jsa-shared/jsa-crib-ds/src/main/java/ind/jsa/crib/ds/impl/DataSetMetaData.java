@@ -1,5 +1,8 @@
-package ind.jsa.crib.ds.api;
+package ind.jsa.crib.ds.impl;
 
+import ind.jsa.crib.ds.api.IDataSetMetaData;
+import ind.jsa.crib.ds.api.IDataSetProperty;
+import ind.jsa.crib.ds.api.ITypeManager;
 import ind.jsa.crib.ds.utils.NameUtils;
 
 import java.util.ArrayList;
@@ -17,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author jsaparo
  *
  */
-public class DataSetMetaData {
+public class DataSetMetaData implements IDataSetMetaData {
 	private static final int INIT_PROPERTIES_SIZE = 20;
 	
 	private ITypeManager typeManager;
@@ -31,11 +34,11 @@ public class DataSetMetaData {
 		this.typeManager = typeManager;
 	}
 	
-	/**
-	 * Get the type registry associated with the data set.
-	 * 
-	 * @return A type registry instance
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getTypeManager()
 	 */
+	@Override
 	public ITypeManager getTypeManager() {
 		return typeManager;
 	}
@@ -57,7 +60,8 @@ public class DataSetMetaData {
 	 * 
 	 * @param properties The properties to add
 	 */
-	public void addProperties(Collection<IDataSetProperty> properties) {
+	public void setProperties(Collection<IDataSetProperty> properties) {
+		clearProperties();
 		for (IDataSetProperty prop : properties) {
 			addProperty(prop);
 		}
@@ -72,61 +76,57 @@ public class DataSetMetaData {
 		indexMap.clear();
 	}
 
-    /**
-     * Get a property associated with the DataSet by name.
-     *
-     * @param propName The name of the property to get
-     * @return A property or null if not available
-     */
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getProperty(java.lang.String)
+	 */
+	@Override
 	public IDataSetProperty getProperty(String propName) {
 		return propertyMap.get(NameUtils.normalizePropertyName(propName));
 	}
 
-    /**
-     * Get a property associated with the DataSet by ordinal index.
-     *
-     * @param idx The ordinal index of the property to get
-     * @return A property or null if not available
-     */
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getProperty(int)
+	 */
+	@Override
 	public IDataSetProperty getProperty(int idx) {
 		return idx >= 0 && idx < properties.size() ? properties.get(idx) : null;
 	}
 
-	/**
-	 * Get a list of all properties.
-	 * 
-	 * @return A list of properties
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getProperties()
 	 */
+	@Override
 	public List<IDataSetProperty> getProperties() {
 		return new ArrayList<IDataSetProperty>(properties);
 	}
 
-	/**
-	 * Get a map of all properties by name.
-	 * 
-	 * @return A collection of properties keyed by name
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getPropertyiesByName()
 	 */
+	@Override
 	public Map<String, IDataSetProperty> getPropertyiesByName() {
 		return new LinkedHashMap<String, IDataSetProperty>(propertyMap);
 	}
 
-    /**
-     * Get a property associated with the DataSet by ordinal index.
-     *
-     * @param idx The ordinal index of the property to get
-     * @return A property or null if not available
-     */
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getPropertyIndex(java.lang.String)
+	 */
+	@Override
 	public int getPropertyIndex(String propName) {
 		String name = NameUtils.normalizePropertyName(propName);
 		return indexMap.containsKey(name) ? indexMap.get(name) : -1;
 	}
 
-    /**
-     * Get the name of the property for a given ordinal index.
-     * 
-     * @param idx The ordinal index of the property
-     * @return A property name, or null if not available
-     */
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getPropertyName(int)
+	 */
+	@Override
 	public String getPropertyName(int idx) {
 		IDataSetProperty prop = getProperty(idx);
 		return prop != null ? NameUtils.normalizePropertyName(prop.getName()) : null;
