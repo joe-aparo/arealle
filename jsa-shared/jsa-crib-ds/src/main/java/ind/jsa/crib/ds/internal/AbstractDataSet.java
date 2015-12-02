@@ -1,4 +1,4 @@
-package ind.jsa.crib.ds.impl;
+package ind.jsa.crib.ds.internal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ind.jsa.crib.ds.api.DataSetOptions;
 import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.IDataSet;
 import ind.jsa.crib.ds.api.IDataSetItem;

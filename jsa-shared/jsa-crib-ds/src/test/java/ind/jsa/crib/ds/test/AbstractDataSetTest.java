@@ -12,7 +12,7 @@ import ind.jsa.crib.ds.api.IDataSet;
 import ind.jsa.crib.ds.api.IDataSetItem;
 import ind.jsa.crib.ds.api.IDataSetProperty;
 import ind.jsa.crib.ds.api.DataSetQuery.FilterOperator;
-import ind.jsa.crib.ds.impl.ListDataSetResultHandler;
+import ind.jsa.crib.ds.internal.ListDataSetResultHandler;
 
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;

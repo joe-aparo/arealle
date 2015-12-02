@@ -1,4 +1,4 @@
-package ind.jsa.crib.ds.impl;
+package ind.jsa.crib.ds.internal;
 
 import java.io.IOException;
 import java.io.OutputStream;

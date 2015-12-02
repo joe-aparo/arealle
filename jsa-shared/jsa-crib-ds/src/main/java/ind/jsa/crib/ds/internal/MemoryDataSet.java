@@ -1,4 +1,4 @@
-package ind.jsa.crib.ds.impl;
+package ind.jsa.crib.ds.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import ind.jsa.crib.ds.api.DataSetOptions;
 import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.IDataSetItem;
 import ind.jsa.crib.ds.api.IDataSetMetaData;
@@ -20,7 +19,7 @@ import ind.jsa.crib.ds.api.IKeyGenerator;
 import ind.jsa.crib.ds.api.DataSetQuery.FilterExpression;
 import ind.jsa.crib.ds.api.DataSetQuery.SortDirection;
 import ind.jsa.crib.ds.api.DataSetQuery.FilterOperator;
-import ind.jsa.crib.ds.utils.NameUtils;
+import ind.jsa.crib.ds.internal.utils.NameUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;

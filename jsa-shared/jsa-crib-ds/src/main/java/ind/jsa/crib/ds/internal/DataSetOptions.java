@@ -1,4 +1,4 @@
-package ind.jsa.crib.ds.api;
+package ind.jsa.crib.ds.internal;
 
 import java.util.LinkedHashMap;
 import java.util.List;

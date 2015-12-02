@@ -1,4 +1,4 @@
-package net.jsa.crib.ds.utils;
+package ind.jsa.crib.ds.internal.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
