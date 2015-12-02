@@ -26,9 +26,8 @@ import org.springframework.util.CollectionUtils;
 
 
 /**
- * This implementation manages a list of DataSetItems in memory. This type of data set must be initialized
- * with a given list of IAttribute objects. Records in memory will be managed according to the set of given
- * attributes.
+ * This DataSet implementation manages a items in memory according to the
+ * metadata and options specified in the constructor.
  * 
  */
 public class MemoryDataSet extends AbstractDataSet {

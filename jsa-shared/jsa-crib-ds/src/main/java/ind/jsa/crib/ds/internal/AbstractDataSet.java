@@ -12,7 +12,9 @@ import ind.jsa.crib.ds.api.IDataSetItem;
 import ind.jsa.crib.ds.api.IDataSetProperty;
 import ind.jsa.crib.ds.api.IDataSetResultHandler;
 import ind.jsa.crib.ds.api.IKeyGenerator;
+import net.jsa.common.logging.LogUtils;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
@@ -21,6 +23,8 @@ import org.springframework.util.CollectionUtils;
  */
 public abstract class AbstractDataSet implements IDataSet {
 
+	Logger logger = LogUtils.getLogger();
+	
 	private static final int DFT_PROPERTY_LIST_SIZE = 50;
 	
 	private IKeyGenerator keyGenerator;
@@ -219,6 +223,15 @@ public abstract class AbstractDataSet implements IDataSet {
 
 		return handler.getItems().size() > 0 ? handler.getItems().get(0) : null;
 	}
+    
+    /**
+     * Get the logger for the dataset.
+     * 
+     * @return A logger
+     */
+    protected Logger getLogger() {
+    	return logger;
+    }
 
 	/*
 	 * Utility call for initializing dataset. Invoked from constructor.

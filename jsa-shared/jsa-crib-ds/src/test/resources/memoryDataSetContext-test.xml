@@ -14,50 +14,44 @@
 
     <context:property-placeholder location="classpath*:test.properties"/>
 
-    <context:component-scan base-package="ind.jsa.crib.ds.*" />
+    <context:component-scan base-package="ind.jsa.crib.ds.internal.*" />
     
-	<bean id="testDs" class="ind.jsa.crib.ds.impl.MemoryDataSet">
+    <bean id="typeManager" class="ind.jsa.crib.ds.internal.DefaultTypeManager" />
+    
+    <bean id="keyGenerator" class="ind.jsa.crib.ds.internal.GuidKeyGenerator" />
+    
+	<bean id="testDs" class="ind.jsa.crib.ds.internal.MemoryDataSet">
 		<constructor-arg name="name" value="testDs" />
 		<constructor-arg name="metaData">
-			<bean class="ind.jsa.crib.ds.impl.DataSetMetaData">
+			<bean class="ind.jsa.crib.ds.internal.DataSetMetaData">
 				<property name="properties">
 				    <list>
-				        <value>
-					        <bean class="int.jsa.crib.ds.impl.DataSetProperty">
-					            <constructor-arg name="name" value="id" />
-					            <constructor-arg name="className" value="java.lang.Integer" />
-					        </bean>
-				        </value>
-				        <value>
-					        <bean class="int.jsa.crib.ds.impl.DataSetProperty">
-					            <constructor-arg name="name" value="name_fld" />
-					            <constructor-arg name="className" value="java.lang.String" />
-					        </bean>
-					    </value>
-					    <value>
-					        <bean class="int.jsa.crib.ds.impl.DataSetProperty">
-					            <constructor-arg name="name" value="date_fld" />
-					            <constructor-arg name="className" value="java.util.Date" />
-					        </bean>
-					    </value>
-					    <value>
-					        <bean class="int.jsa.crib.ds.impl.DataSetProperty">
-					            <constructor-arg name="name" value="double_fld" />
-					            <constructor-arg name="className" value="java.lang.Double" />
-					        </bean>
-					    </value>
-					    <value>
-					        <bean class="int.jsa.crib.ds.impl.DataSetProperty">
-					            <constructor-arg name="name" value="boolean_fld" />
-					            <constructor-arg name="className" value="java.lang.Boolean" />
-					        </bean> 
-					    </value>
+				        <bean class="ind.jsa.crib.ds.internal.DataSetProperty">
+				            <constructor-arg name="name" value="id" />
+				            <constructor-arg name="className" value="java.lang.Integer" />
+				        </bean>
+				        <bean class="ind.jsa.crib.ds.internal.DataSetProperty">
+				            <constructor-arg name="name" value="name_fld" />
+				            <constructor-arg name="className" value="java.lang.String" />
+				        </bean>
+				        <bean class="ind.jsa.crib.ds.internal.DataSetProperty">
+				            <constructor-arg name="name" value="date_fld" />
+				            <constructor-arg name="className" value="java.util.Date" />
+				        </bean>
+				        <bean class="ind.jsa.crib.ds.internal.DataSetProperty">
+				            <constructor-arg name="name" value="double_fld" />
+				            <constructor-arg name="className" value="java.lang.Double" />
+				        </bean>
+				        <bean class="ind.jsa.crib.ds.internal.DataSetProperty">
+				            <constructor-arg name="name" value="boolean_fld" />
+				            <constructor-arg name="className" value="java.lang.Boolean" />
+				        </bean> 
 					</list>
 				</property>
 			</bean>	    
 		</constructor-arg>
 		<constructor-arg name="options">
-			<bean class="ind.jsa.crib.ds.impl.DataSetOptions">
+			<bean class="ind.jsa.crib.ds.internal.DataSetOptions">
 			    <property name="identityProperties">
 			        <list>
 			            <value>id</value>
@@ -65,4 +59,5 @@
 			    </property>
 		    </bean>		    
 		</constructor-arg>
+	</bean>
 </beans>
