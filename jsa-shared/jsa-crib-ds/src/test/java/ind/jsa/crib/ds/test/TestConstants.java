@@ -12,17 +12,17 @@ public abstract class TestConstants {
     /**
      * foo.
      */
-    public static final String NAME_COL = "NAME_COL";
+    public static final String NAME_COL = "name_fld";
     /**
      * foo.
      */
-    public static final String DATE_COL = "DATE_COL";
+    public static final String DATE_COL = "date_fld";
     /**
      * foo.
      */
-    public static final String DOUBLE_COL = "DOUBLE_COL";
+    public static final String DOUBLE_COL = "double_fld";
     /**
      * foo.
      */
-    public static final String BOOLEAN_COL = "BOOLEAN_COL";
+    public static final String BOOLEAN_COL = "boolean_fld";
 }

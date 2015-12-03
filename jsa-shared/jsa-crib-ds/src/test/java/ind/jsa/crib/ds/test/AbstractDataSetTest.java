@@ -112,7 +112,7 @@ public abstract class AbstractDataSetTest {
      */
     private void idRetrieveTest() {
         Map<String, Object> key = new HashMap<String, Object>();
-        key.put(TestConstants.ID_COL, addedItems.get(0).getString(TestConstants.ID_COL));
+        key.put(TestConstants.ID_COL, addedItems.get(0).getInteger(TestConstants.ID_COL));
 
         IDataSetItem item = dataSet.retrieve(key);
 
@@ -134,7 +134,7 @@ public abstract class AbstractDataSetTest {
     private void idUpdateTest() {
         Map<String, Object> vals = new HashMap<String, Object>(TEST_UPDATE_RECORD);
 
-        vals.put(TestConstants.ID_COL, addedItems.get(0).getString(TestConstants.ID_COL));
+        vals.put(TestConstants.ID_COL, addedItems.get(0).getInteger(TestConstants.ID_COL));
 
         IDataSetItem item = dataSet.update(vals);
 
@@ -160,7 +160,7 @@ public abstract class AbstractDataSetTest {
 
         // update the first item based on a query
         DataSetQuery query = new DataSetQuery();
-        String idVal = addedItems.get(0).getString(TestConstants.ID_COL);
+        Integer idVal = addedItems.get(0).getInteger(TestConstants.ID_COL);
         query.putFilter(TestConstants.ID_COL, FilterOperator.EQUAL, idVal);
 
         dataSet.update(query, values);
@@ -181,7 +181,7 @@ public abstract class AbstractDataSetTest {
     public void deleteTest() {
         Map<String, Object> keys = new HashMap<String, Object>();
         for (IDataSetItem item : addedItems) {
-            keys.put(TestConstants.ID_COL, item.getString(TestConstants.ID_COL));
+            keys.put(TestConstants.ID_COL, item.getInteger(TestConstants.ID_COL));
             dataSet.delete(keys);
         }
 

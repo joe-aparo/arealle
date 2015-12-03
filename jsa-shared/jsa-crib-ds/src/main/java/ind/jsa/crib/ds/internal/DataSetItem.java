@@ -558,6 +558,6 @@ public class DataSetItem implements IDataSetItem {
 		}
 		
 		// Use the type manager associated with the metadata object to do the work
-		return metaData.getTypeManager().convert(get(idx), null, p.getClass(), p.getVariant());
+		return metaData.getTypeManager().convert(get(idx), null, type, p.getVariant());
 	}
 }

@@ -18,7 +18,7 @@
     
     <bean id="typeManager" class="ind.jsa.crib.ds.internal.DefaultTypeManager" />
     
-    <bean id="keyGenerator" class="ind.jsa.crib.ds.internal.GuidKeyGenerator" />
+    <bean id="keyGenerator" class="ind.jsa.crib.ds.internal.MemoryDataSet.MemoryKeyGenerator" />
     
 	<bean id="testDs" class="ind.jsa.crib.ds.internal.MemoryDataSet">
 		<constructor-arg name="name" value="testDs" />

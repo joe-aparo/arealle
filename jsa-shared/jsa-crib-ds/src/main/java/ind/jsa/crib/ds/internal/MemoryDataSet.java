@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
 import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.IDataSetItem;
 import ind.jsa.crib.ds.api.IDataSetMetaData;
@@ -56,8 +58,7 @@ public class MemoryDataSet extends AbstractDataSet {
      */
     public MemoryDataSet(String name, DataSetMetaData metaData, DataSetOptions options, List<Map<String, Object>> initialItems) {
     	super(name, metaData, options);
-        setKeyGenerator(new MemoryKeyGenerator());
-        
+         
         if (!CollectionUtils.isEmpty(initialItems)) {
 	        for (Map<String, Object> values : initialItems) {
 	            create(values);
@@ -91,7 +92,8 @@ public class MemoryDataSet extends AbstractDataSet {
         if (!CollectionUtils.isEmpty(keyNames)) {
         	for (String keyName : keyNames) {
         		if (values.get(keyName) == null) {
-        			values.put(keyName, getKeyGenerator().generateKeyValue(getMetaData(), keyName));
+        			Object keyValue = getKeyGenerator().generateKeyValue(getMetaData(), keyName);
+        			item.put(keyName, keyValue);
         		}
         	}
         }
