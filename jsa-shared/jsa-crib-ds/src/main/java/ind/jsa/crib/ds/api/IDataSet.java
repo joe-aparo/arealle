@@ -7,12 +7,26 @@ public interface IDataSet {
 	public static final String DEFAULT_ID_PROPERTY = "id";
 
 	/**
-	 * Get the name of the dataset.
+	 * Get the name of the entity that dataset represents.
 	 * 
 	 * @return A string
 	 */
-	String getName();
+	String getEntity();
 	
+	/**
+	 * Get the name of the domain to which the entity pertains.
+	 * 
+	 * @return A string
+	 */
+	String getDomain();
+	
+	/**
+	 * Get the type registry associated with the data set.
+	 * 
+	 * @return A type registry instance
+	 */
+	ITypeManager getTypeManager() ;
+
 	/**
 	 * Get basic metadata object associated with the dataset.
 	 * 
@@ -80,17 +94,34 @@ public interface IDataSet {
      * values for the newly created item.
      * 
      * @param values The values used used to create a new item
-     * @return A single object representing the newly created item.
+     * @return A map of values representing the newly created item.
      */
     IDataSetItem create(Map<String, Object> values);
+
+    /**
+     * Create a single item in the DataSet. The given values are presumed to represent the intended set of
+     * values for the newly created item.
+     * 
+     * @param item An item representing the set of values to use for the newly created item.
+     * @return The item to create
+     */
+    IDataSetItem create(IDataSetItem item);
 
     /**
      * Update items in the DataSet that match a given query.
      * 
      * @param query Query used to select the records to update
-     * @param values The values to set for the selected records
+     * @param values A map of values to set for the selected records
      */
     void update(DataSetQuery query, Map<String, Object> values);
+
+    /**
+     * Update items in the DataSet that match a given query.
+     * 
+     * @param query Query used to select the records to update
+     * @param item An item representing values to set for the selected records
+     */
+    void update(DataSetQuery query, IDataSetItem item);
 
     /**
      * Update a single item in the DataSet. The given values are presumed to contain a key value as well as
@@ -101,6 +132,16 @@ public interface IDataSet {
      * @return A single object representing the updated item.
      */
     IDataSetItem update(Map<String, Object> values);
+
+    /**
+     * Update a single item in the DataSet. The given values are presumed to contain a key value as well as
+     * the properties to be updated.
+     * 
+     * @param item An item representing values to update in the dataset.
+     * 
+     * @return A single object representing the updated item.
+     */
+    IDataSetItem update(IDataSetItem item);
 
     /**
      * Delete a single item from the DataSet. The given values are presumed to contain enough information to

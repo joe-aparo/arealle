@@ -2,16 +2,21 @@ package ind.jsa.crib.ds.internal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
 import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.IDataSet;
 import ind.jsa.crib.ds.api.IDataSetItem;
+import ind.jsa.crib.ds.api.IDataSetMetaData;
 import ind.jsa.crib.ds.api.IDataSetProperty;
 import ind.jsa.crib.ds.api.IDataSetResultHandler;
 import ind.jsa.crib.ds.api.IKeyGenerator;
+import ind.jsa.crib.ds.api.ITypeManager;
 import net.jsa.common.logging.LogUtils;
 
 import org.slf4j.Logger;
@@ -28,13 +33,15 @@ public abstract class AbstractDataSet implements IDataSet {
 	private static final int DFT_PROPERTY_LIST_SIZE = 50;
 	
 	private IKeyGenerator keyGenerator;
-	private DataSetMetaData metaData;
-	private String name = null;
-	private DataSetOptions options;
-	
-	// The following support variables are derived by combining the metadata and options specified in the
-	// constructor. Initializing these variables in construction simplifies related logic and is more efficient
-	// than repeatedly executing the initializing logic to get the same info.
+	private IDataSetMetaData metaData;
+	private String entity = null;
+	private String domain = null;
+	private ITypeManager typeManager;
+	private Map<String, Object> defaultParamValues = new LinkedHashMap<String, Object>();
+	private boolean caseInsensitiveSearch = false;
+	private List<String> propertyOrder;
+		
+	// The following fields are derived on initialization.
 	private List<String> orderedPropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
 	private List<String> identityPropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
 	private List<String> referencePropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
@@ -43,14 +50,70 @@ public abstract class AbstractDataSet implements IDataSet {
 	private List<String> filterablePropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
 	private Map<String, Integer> propertyIndicesByName = new HashMap<String, Integer>();
 
-	public AbstractDataSet(String name, DataSetMetaData metaData, DataSetOptions options) {
-		this.name = name;
-		this.metaData = metaData;
-		this.options = options;
-		
-		initDataSet();
+	public AbstractDataSet(String entity, String domain) {
+		this.entity = entity;
+		this.domain = domain;
 	}
 	
+	@Autowired
+	public void setTypeManager(ITypeManager typeManager) {
+		this.typeManager = typeManager;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSet#getTypeManager()
+	 */
+	@Override
+	public ITypeManager getTypeManager() {
+		return typeManager;
+	}
+	
+	/*
+	 * Utility call for initializing dataset. Invoked from constructor.
+	 * Separated for read-ability.
+	 */
+    @PostConstruct
+	public void initialize() {
+    	metaData = initMetaData();
+    	
+		// First establish overall property ordering
+		establishPropertyOrdering();
+		
+		// Now set other collections based on established ordered properties
+		
+		if (!CollectionUtils.isEmpty(metaData.getIdentityPropertyNames())) {
+			identityPropertyNames.addAll(orderPropertyNames(metaData.getIdentityPropertyNames()));
+		}
+		
+		if (options != null && !CollectionUtils.isEmpty(options.getReferenceProperties())) {
+			referencePropertyNames.addAll(orderPropertyNames(options.getReferenceProperties()));
+		}
+		
+		if (options != null && !CollectionUtils.isEmpty(options.getReadableProperties())) {
+			readablePropertyNames.addAll(orderPropertyNames(options.getReadableProperties()));			
+		} else {
+			// Assume all properties are readable
+			readablePropertyNames.addAll(orderedPropertyNames);
+		}
+
+		if (options != null && !CollectionUtils.isEmpty(options.getWritableProperties())) {
+			writablePropertyNames.addAll(orderPropertyNames(options.getWritableProperties()));						
+		} else {
+			// Assume all properties are writable
+			writablePropertyNames.addAll(orderedPropertyNames);
+		}
+
+		if (options != null && !CollectionUtils.isEmpty(options.getFilterableProperties())) {
+			filterablePropertyNames.addAll(orderPropertyNames(options.getFilterableProperties()));			
+		} else {
+			// Assume all properties are filterable
+			filterablePropertyNames.addAll(orderedPropertyNames);
+		}
+	}
+
+    protected abstract IDataSetMetaData initMetaData();
+    
 	/**
 	 * Set the key generator associated with data set.
 	 * 
@@ -65,7 +128,7 @@ public abstract class AbstractDataSet implements IDataSet {
 	 * (non-Javadoc)
 	 * @see ind.jsa.crib.ds.api.IDataSet#getMetaData()
 	 */
-	public DataSetMetaData getMetaData() {
+	public IDataSetMetaData getMetaData() {
 		return metaData;
 	}
 
@@ -84,8 +147,30 @@ public abstract class AbstractDataSet implements IDataSet {
 	 * @see com.copyright.ds.DataSet#getName()
 	 */
 	@Override
-	public String getName() {
-		return name;
+	public String getEntity() {
+		return entity;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSet#getDomain()
+	 */
+	@Override
+	public String getDomain() {
+		return domain;
+	}
+
+	/**
+	 * Specify the desired ordering of properties associated
+	 * with the dataset. Given names should correspond to
+	 * properties in the metadata. Those that don't will be
+	 * ignored.
+	 * 
+	 * @param propertyOrder A list of property names, in the
+	 * desired order.
+	 */
+	public void setPropertyOrder(List<String> propertyOrder) {
+		this.propertyOrder = propertyOrder;
 	}
 
 	/*
@@ -151,6 +236,16 @@ public abstract class AbstractDataSet implements IDataSet {
 		return options != null ? options.getDefaultParamValues() : null;
 	}
 
+	/**
+	 * Indicate whether search logic should be case insensitive w/respect
+	 * to string values. By default, searches are case-sensitive.
+	 * 
+	 * @param caseInsensitiveSearch An indicator
+	 */
+	public void setCaseInsensitiveSearch(boolean caseInsensitiveSearch) {
+		this.caseInsensitiveSearch = caseInsensitiveSearch;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see ind.jsa.crib.ds.api.IDataSet#isCaseInsensitiveSearch()
@@ -170,6 +265,33 @@ public abstract class AbstractDataSet implements IDataSet {
 	}
 
 	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSet#create(java.util.Map)
+	 */
+	@Override
+    public IDataSetItem create(Map<String, Object> values) {
+    	return create(new DataSetItem(metaData, values));
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#update(ind.jsa.crib.ds.api.DataSetQuery, java.util.Map)
+     */
+    @Override
+    public void update(DataSetQuery query, Map<String, Object> values) {
+    	update(new DataSetItem(metaData, values));
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#update(java.util.Map)
+     */
+    @Override
+    public IDataSetItem update(Map<String, Object> values) {
+    	return update(new DataSetItem(metaData, values));
+    }
+
+    /*
 	 * (non-Javadoc)
 	 * @see ind.jsa.crib.ds.api.IDataSet#retrieve()
 	 */
@@ -223,7 +345,15 @@ public abstract class AbstractDataSet implements IDataSet {
 
 		return handler.getItems().size() > 0 ? handler.getItems().get(0) : null;
 	}
-    
+
+	public Map<String, Object> getDefaultParamValues() {
+		return defaultParamValues;
+	}
+
+	public void setDefaultParamValues(Map<String, Object> defaultParamValues) {
+		this.defaultParamValues = defaultParamValues;
+	}
+
     /**
      * Get the logger for the dataset.
      * 
@@ -233,46 +363,6 @@ public abstract class AbstractDataSet implements IDataSet {
     	return logger;
     }
 
-	/*
-	 * Utility call for initializing dataset. Invoked from constructor.
-	 * Separated for read-ability.
-	 */
-	private void initDataSet() {
-		// First establish overall property ordering
-		establishPropertyOrdering();
-		
-		// Now set other collections based on established ordered properties
-		
-		if (options != null && !CollectionUtils.isEmpty(options.getIdentityProperties())) {
-			identityPropertyNames.addAll(orderPropertyNames(options.getIdentityProperties()));
-		}
-		
-		if (options != null && !CollectionUtils.isEmpty(options.getReferenceProperties())) {
-			referencePropertyNames.addAll(orderPropertyNames(options.getReferenceProperties()));
-		}
-		
-		if (options != null && !CollectionUtils.isEmpty(options.getReadableProperties())) {
-			readablePropertyNames.addAll(orderPropertyNames(options.getReadableProperties()));			
-		} else {
-			// Assume all properties are readable
-			readablePropertyNames.addAll(orderedPropertyNames);
-		}
-
-		if (options != null && !CollectionUtils.isEmpty(options.getWritableProperties())) {
-			writablePropertyNames.addAll(orderPropertyNames(options.getWritableProperties()));						
-		} else {
-			// Assume all properties are writable
-			writablePropertyNames.addAll(orderedPropertyNames);
-		}
-
-		if (options != null && !CollectionUtils.isEmpty(options.getFilterableProperties())) {
-			filterablePropertyNames.addAll(orderPropertyNames(options.getFilterableProperties()));			
-		} else {
-			// Assume all properties are filterable
-			filterablePropertyNames.addAll(orderedPropertyNames);
-		}
-	}
-	
 	/*
 	 * Initialize property ordering for the dataset given the current state
 	 * of the propertyOrdering field. All returned property names are ordered
@@ -327,14 +417,14 @@ public abstract class AbstractDataSet implements IDataSet {
 	 * For a given collection of property names, return a list of those
 	 * names ordered in the currently established order for the dataset.
 	 */
-	private List<String> orderPropertyNames(Set<String> nameSet) {
-		int sz = !CollectionUtils.isEmpty(nameSet) ? nameSet.size() : 0;
+	private List<String> orderPropertyNames(List<String> names) {
+		int sz = !CollectionUtils.isEmpty(names) ? names.size() : 0;
 		
 		List<String> orderedNames = new ArrayList<String>(sz);
 		
 		if (sz != 0) {
 			for (String propName : orderedPropertyNames) {
-				if (nameSet.contains(propName)) {
+				if (names.contains(propName)) {
 					orderedNames.add(propName);
 				}
 			}

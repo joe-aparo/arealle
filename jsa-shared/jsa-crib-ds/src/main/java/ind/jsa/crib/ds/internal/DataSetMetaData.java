@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,6 +29,11 @@ public class DataSetMetaData implements IDataSetMetaData {
 	List<IDataSetProperty> properties = new ArrayList<IDataSetProperty>(INIT_PROPERTIES_SIZE);
 	private Map<String, IDataSetProperty> propertyMap = new LinkedHashMap<String, IDataSetProperty>(INIT_PROPERTIES_SIZE);
 	private Map<String, Integer> indexMap = new HashMap<String, Integer>(INIT_PROPERTIES_SIZE);
+	private List<String> identityPropertyNames;
+	private List<String> referencePropertyNames;
+	private List<String> readablePropertyNames;
+	private List<String> writablePropertyNames;
+	private List<String> filterablePropertyNames;
 
 	@Autowired
 	public void setTypeManager(ITypeManager typeManager) {
@@ -48,7 +54,7 @@ public class DataSetMetaData implements IDataSetMetaData {
 	 * 
 	 * @param prop A property
 	 */
-	protected void addProperty(IDataSetProperty prop) {
+	public void addProperty(IDataSetProperty prop) {
 		properties.add(prop);
 		String name = NameUtils.normalizePropertyName(prop.getName());
 		propertyMap.put(name, prop);
@@ -130,5 +136,65 @@ public class DataSetMetaData implements IDataSetMetaData {
 	public String getPropertyName(int idx) {
 		IDataSetProperty prop = getProperty(idx);
 		return prop != null ? NameUtils.normalizePropertyName(prop.getName()) : null;
+	}
+
+	public void setProperties(List<IDataSetProperty> properties) {
+		this.properties = properties;
+	}
+
+	public Map<String, IDataSetProperty> getPropertyMap() {
+		return propertyMap;
+	}
+
+	public void setPropertyMap(Map<String, IDataSetProperty> propertyMap) {
+		this.propertyMap = propertyMap;
+	}
+
+	public Map<String, Integer> getIndexMap() {
+		return indexMap;
+	}
+
+	public void setIndexMap(Map<String, Integer> indexMap) {
+		this.indexMap = indexMap;
+	}
+
+	public List<String> getIdentityPropertyNames() {
+		return identityPropertyNames;
+	}
+
+	public void setIdentityPropertyNames(List<String> identityPropertyNames) {
+		this.identityPropertyNames = identityPropertyNames;
+	}
+
+	public List<String> getReferencePropertyNames() {
+		return referencePropertyNames;
+	}
+
+	public void setReferencePropertyNames(List<String> referencePropertyNames) {
+		this.referencePropertyNames = referencePropertyNames;
+	}
+
+	public List<String> getReadablePropertyNames() {
+		return readablePropertyNames;
+	}
+
+	public void setReadablePropertyNames(List<String> readablePropertyNames) {
+		this.readablePropertyNames = readablePropertyNames;
+	}
+
+	public List<String> getWritablePropertyNames() {
+		return writablePropertyNames;
+	}
+
+	public void setWritablePropertyNames(List<String> writablePropertyNames) {
+		this.writablePropertyNames = writablePropertyNames;
+	}
+
+	public List<String> getFilterablePropertyNames() {
+		return filterablePropertyNames;
+	}
+
+	public void setFilterablePropertyNames(List<String> filterablePropertyNames) {
+		this.filterablePropertyNames = filterablePropertyNames;
 	}
 }

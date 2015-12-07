@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-
 import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.IDataSetItem;
 import ind.jsa.crib.ds.api.IDataSetMetaData;
@@ -36,6 +34,7 @@ public class MemoryDataSet extends AbstractDataSet {
 
     private static final int DEFAULT_INIT_SIZE = 100;
     private static final int STARTING_ID = 100;
+    private static final String MEMORY_DOMAIN = "memory";
 
     private List<DataSetItem> cachedItems = new ArrayList<DataSetItem>(DEFAULT_INIT_SIZE);
 
@@ -56,8 +55,10 @@ public class MemoryDataSet extends AbstractDataSet {
     /**
      * Filled data set, with options.
      */
-    public MemoryDataSet(String name, DataSetMetaData metaData, DataSetOptions options, List<Map<String, Object>> initialItems) {
-    	super(name, metaData, options);
+    public MemoryDataSet(
+    	String entity, DataSetMetaData metaData, DataSetOptions options, List<Map<String, Object>> initialItems) {
+    	
+    	super(entity, MEMORY_DOMAIN, metaData, options);
          
         if (!CollectionUtils.isEmpty(initialItems)) {
 	        for (Map<String, Object> values : initialItems) {
@@ -66,6 +67,12 @@ public class MemoryDataSet extends AbstractDataSet {
         }
     }
 
+    protected IDataSetMetaData initMetaData() {
+    	DataSetMetaData metaData = new DataSetMetaData();
+    	
+    	return metaData;
+    }
+    
     /**
      * Set the items in the data set.
      * 
@@ -83,7 +90,7 @@ public class MemoryDataSet extends AbstractDataSet {
 	 * @see ind.jsa.crib.ds.api.IDataSet#create(java.util.Map)
 	 */
 	@Override
-	public IDataSetItem create(Map<String, Object> values) {
+	public IDataSetItem create(IDataSetItem values) {
         // Create a new item
         DataSetItem item = new DataSetItem(getMetaData(), values);
 
@@ -170,7 +177,7 @@ public class MemoryDataSet extends AbstractDataSet {
 	 * @see ind.jsa.crib.ds.api.IDataSet#update(ind.jsa.crib.ds.api.DataSetQuery, java.util.Map)
 	 */
 	@Override
-	public void update(DataSetQuery query, Map<String, Object> values) {
+	public void update(DataSetQuery query, IDataSetItem values) {
         // Fetch the list of items to update
         List<DataSetItem> itemsToUpdate = filterItems(query);
 
@@ -189,18 +196,18 @@ public class MemoryDataSet extends AbstractDataSet {
 	 * @see ind.jsa.crib.ds.api.IDataSet#update(java.util.Map)
 	 */
 	@Override
-	public IDataSetItem update(Map<String, Object> values) {
+	public IDataSetItem update(IDataSetItem item) {
         // Fetch the matching item
-        IDataSetItem item = retrieve(values);
+        IDataSetItem updateItem = retrieve(item);
 
         // Update the item if found
-        if (item != null) {
-            for (Entry<String, Object> e : values.entrySet()) {
-                item.put(e.getKey(), e.getValue());
+        if (updateItem != null) {
+            for (Entry<String, Object> e : item.entrySet()) {
+            	updateItem.put(e.getKey(), e.getValue());
             }
         }
 
-        return item;
+        return updateItem;
 	}
 
 	/*

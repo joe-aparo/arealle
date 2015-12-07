@@ -21,7 +21,7 @@
     <bean id="keyGenerator" class="ind.jsa.crib.ds.internal.MemoryDataSet.MemoryKeyGenerator" />
     
 	<bean id="testDs" class="ind.jsa.crib.ds.internal.MemoryDataSet">
-		<constructor-arg name="name" value="testDs" />
+		<constructor-arg name="entity" value="testDs" />
 		<constructor-arg name="metaData">
 			<bean class="ind.jsa.crib.ds.internal.DataSetMetaData">
 				<property name="properties">
