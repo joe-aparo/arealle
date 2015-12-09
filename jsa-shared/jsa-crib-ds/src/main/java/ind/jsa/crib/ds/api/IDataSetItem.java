@@ -17,11 +17,11 @@ import java.util.Map;
 public interface IDataSetItem extends Map<String, Object> {
 
 	/**
-	 * Get metadata associated with the item.
+	 * Get the DataSet associated with the item.
 	 * 
 	 * @return Item metadata
 	 */
-	IDataSetMetaData getMetaData();
+	IDataSet getDataSet();
 	
     /**
      * Get the value for a specified property index.

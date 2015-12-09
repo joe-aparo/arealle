@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import ind.jsa.crib.ds.api.DataSetQuery;
+import ind.jsa.crib.ds.api.IDataSet;
 import ind.jsa.crib.ds.api.IDataSetItem;
 import ind.jsa.crib.ds.api.IDataSetMetaData;
 import ind.jsa.crib.ds.api.IDataSetProperty;
@@ -35,8 +36,10 @@ public class MemoryDataSet extends AbstractDataSet {
     private static final int DEFAULT_INIT_SIZE = 100;
     private static final int STARTING_ID = 100;
     private static final String MEMORY_DOMAIN = "memory";
-
+    
+    private IDataSetMetaData metaData;
     private List<DataSetItem> cachedItems = new ArrayList<DataSetItem>(DEFAULT_INIT_SIZE);
+    private List<Map<String, Object>> initialItems = null;
 
     /**
      * Empty data set, without options.
@@ -57,19 +60,33 @@ public class MemoryDataSet extends AbstractDataSet {
      */
     public MemoryDataSet(
     	String entity, DataSetMetaData metaData, DataSetOptions options, List<Map<String, Object>> initialItems) {
+    	super(entity, MEMORY_DOMAIN);
     	
-    	super(entity, MEMORY_DOMAIN, metaData, options);
-         
+    	this.metaData = metaData;
+    	this.initialItems = initialItems;
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.internal.AbstractDataSet#initialize()
+     */
+    @Override
+    public void initialize() {
+    	super.initialize();
+
         if (!CollectionUtils.isEmpty(initialItems)) {
 	        for (Map<String, Object> values : initialItems) {
 	            create(values);
 	        }
-        }
+        }   	
     }
 
+    /*
+     * ](non-Javadoc)
+     * @see ind.jsa.crib.ds.internal.AbstractDataSet#initMetaData()
+     */
+    @Override
     protected IDataSetMetaData initMetaData() {
-    	DataSetMetaData metaData = new DataSetMetaData();
-    	
     	return metaData;
     }
     
@@ -92,14 +109,14 @@ public class MemoryDataSet extends AbstractDataSet {
 	@Override
 	public IDataSetItem create(IDataSetItem values) {
         // Create a new item
-        DataSetItem item = new DataSetItem(getMetaData(), values);
+        DataSetItem item = new DataSetItem(this, values);
 
         // If the dataset specifies a key, but no key value has been provided, generate one
         List<String> keyNames = getIdentityPropertyNames();
         if (!CollectionUtils.isEmpty(keyNames)) {
         	for (String keyName : keyNames) {
         		if (values.get(keyName) == null) {
-        			Object keyValue = getKeyGenerator().generateKeyValue(getMetaData(), keyName);
+        			Object keyValue = getKeyGenerator().generateKeyValue(this, keyName);
         			item.put(keyName, keyValue);
         		}
         	}
@@ -393,11 +410,11 @@ public class MemoryDataSet extends AbstractDataSet {
         	} else if (filterVal != null && upperFilterVal == null) {
         		op = FilterOperator.GREATER_OR_EQUAL;
         	} else if (
-        		DefaultTypeManager.isNumericNature(getMetaData().getTypeManager().getTypeNature(itemVal.getClass()))  && 
-            	DefaultTypeManager.isNumericNature(getMetaData().getTypeManager().getTypeNature(filterVal.getClass()))) {
-	        	long itemScale = (Long) getMetaData().getTypeManager().convert(itemVal, prop.getVariant(), Long.class, prop.getVariant());
-	        	long lowerScale = (Long) getMetaData().getTypeManager().convert(filterVal, prop.getVariant(), Long.class, prop.getVariant());
-	        	long upperScale = (Long) getMetaData().getTypeManager().convert(upperFilterVal, prop.getVariant(), Long.class, prop.getVariant());
+        		DefaultTypeManager.isNumericNature(getTypeManager().getTypeNature(itemVal.getClass()))  && 
+            	DefaultTypeManager.isNumericNature(getTypeManager().getTypeNature(filterVal.getClass()))) {
+	        	long itemScale = (Long) getTypeManager().convert(itemVal, prop.getVariant(), Long.class, prop.getVariant());
+	        	long lowerScale = (Long) getTypeManager().convert(filterVal, prop.getVariant(), Long.class, prop.getVariant());
+	        	long upperScale = (Long) getTypeManager().convert(upperFilterVal, prop.getVariant(), Long.class, prop.getVariant());
 
                 match = itemScale >= lowerScale && itemScale <= upperScale;
             }
@@ -409,11 +426,11 @@ public class MemoryDataSet extends AbstractDataSet {
         	} else if (filterVal != null && upperFilterVal == null) {
         		op = FilterOperator.LESS_OR_EQUAL;
         	} else if (
-        		DefaultTypeManager.isNumericNature(getMetaData().getTypeManager().getTypeNature(itemVal.getClass()))  && 
-            	DefaultTypeManager.isNumericNature(getMetaData().getTypeManager().getTypeNature(filterVal.getClass()))) {
-	        	long itemScale = (Long) getMetaData().getTypeManager().convert(itemVal, prop.getVariant(), Long.class, prop.getVariant());
-	        	long lowerScale = (Long) getMetaData().getTypeManager().convert(filterVal, prop.getVariant(), Long.class, prop.getVariant());
-	        	long upperScale = (Long) getMetaData().getTypeManager().convert(upperFilterVal, prop.getVariant(), Long.class, prop.getVariant());
+        		DefaultTypeManager.isNumericNature(getTypeManager().getTypeNature(itemVal.getClass()))  && 
+            	DefaultTypeManager.isNumericNature(getTypeManager().getTypeNature(filterVal.getClass()))) {
+	        	long itemScale = (Long) getTypeManager().convert(itemVal, prop.getVariant(), Long.class, prop.getVariant());
+	        	long lowerScale = (Long) getTypeManager().convert(filterVal, prop.getVariant(), Long.class, prop.getVariant());
+	        	long upperScale = (Long) getTypeManager().convert(upperFilterVal, prop.getVariant(), Long.class, prop.getVariant());
 
                 match = itemScale <= lowerScale || itemScale >= upperScale;
             }
@@ -428,7 +445,7 @@ public class MemoryDataSet extends AbstractDataSet {
         }
         
         if (!match) {
-            int cmp = getMetaData().getTypeManager().compareValues(itemVal, prop.getVariant(), filterVal, prop.getVariant());
+            int cmp = getTypeManager().compareValues(itemVal, prop.getVariant(), filterVal, prop.getVariant());
 
             if (op == FilterOperator.EQUAL) {
                 match = (cmp == 0);
@@ -454,7 +471,7 @@ public class MemoryDataSet extends AbstractDataSet {
     	}
     	
         for (Object o : col) {
-        	if (getMetaData().getTypeManager().compareValues(val, null, o, null) == 0) {
+        	if (getTypeManager().compareValues(val, null, o, null) == 0) {
                 return true;
             }
         }
@@ -476,11 +493,11 @@ public class MemoryDataSet extends AbstractDataSet {
          * java.lang.String)
          */
         @Override
-        public Object generateKeyValue(IDataSetMetaData metaData, String keyField) {
+        public Object generateKeyValue(IDataSet dataSet, String keyField) {
             Integer val = Integer.valueOf(currentId++);
-            IDataSetProperty prop = metaData.getProperty(keyField);
+            IDataSetProperty prop = dataSet.getMetaData().getProperty(keyField);
             if (prop != null) {
-            	return metaData.getTypeManager().convert(val, null, prop.getType(), prop.getVariant());
+            	return dataSet.getTypeManager().convert(val, null, prop.getType(), prop.getVariant());
             }
             
             return null;
@@ -523,8 +540,8 @@ public class MemoryDataSet extends AbstractDataSet {
             int cmp = 0;
 
             for (Entry<String, SortDirection> e : sorts.entrySet()) {
-            	IDataSetProperty prop = item1.getMetaData().getProperty(e.getKey());
-                cmp = getMetaData().getTypeManager().compareValues(
+            	IDataSetProperty prop = getMetaData().getProperty(e.getKey());
+                cmp = getTypeManager().compareValues(
                 	item1.get(e.getKey()), prop.getVariant(), item2.get(e.getKey()), prop.getVariant());
 
                 if (e.getValue() == SortDirection.DESC) {

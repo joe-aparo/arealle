@@ -175,11 +175,11 @@ public interface IDataSet {
     List<String> getOrderedPropertyNames();
     
     /**
-     * Get a list of all readable property names for the dataset, in proper order.
+     * Get a list of all sortable property names for the dataset, in proper order.
      * 
      * @return A list of data set properties
      */
-    List<String> getReadablePropertyNames();
+    List<String> getSortablePropertyNames();
     
     /**
      * Get a list of all writable property names for the dataset, in proper order.

@@ -76,8 +76,8 @@ public class DataSetItemXlsWriter extends AbstractDataSetItemWriter {
 		// Create a new data row
 		Row row = sheet.createRow(curRow++); // 0-based row index
 		
-		IDataSetMetaData metaData = item.getMetaData();
-		ITypeManager typeManager = metaData.getTypeManager();
+		IDataSetMetaData metaData = item.getDataSet().getMetaData();
+		ITypeManager typeManager = item.getDataSet().getTypeManager();
 		
 		// Fill the row object with data. Only basic primitive types are supported here.
 		int col = 0;

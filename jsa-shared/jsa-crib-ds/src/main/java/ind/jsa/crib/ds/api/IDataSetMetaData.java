@@ -13,13 +13,6 @@ import java.util.Map;
  */
 public interface IDataSetMetaData {
 	
-	/**
-	 * Get the type manager associated with the metadata.
-	 * 
-	 * @return A type manager
-	 */
-	ITypeManager getTypeManager();
-	
     /**
      * Get a property associated with the DataSet by name.
      *

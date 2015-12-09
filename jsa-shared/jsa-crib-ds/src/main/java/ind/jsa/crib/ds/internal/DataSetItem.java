@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ind.jsa.crib.ds.api.IDataSet;
 import ind.jsa.crib.ds.api.IDataSetItem;
-import ind.jsa.crib.ds.api.IDataSetMetaData;
 import ind.jsa.crib.ds.api.IDataSetProperty;
 
 /**
@@ -24,7 +24,7 @@ import ind.jsa.crib.ds.api.IDataSetProperty;
  * the associated DataSet.
  */
 public class DataSetItem implements IDataSetItem {
-	private IDataSetMetaData metaData;
+	private IDataSet dataSet;
 	private Object[] values;
 
 	/**
@@ -36,8 +36,8 @@ public class DataSetItem implements IDataSetItem {
 	 * @param dataSet
 	 *            The owning DataSet
 	 */
-	public DataSetItem(DataSetMetaData metaData) {
-		this(metaData, null);
+	public DataSetItem(IDataSet dataSet) {
+		this(dataSet, null);
 	}
 
 	/**
@@ -46,14 +46,14 @@ public class DataSetItem implements IDataSetItem {
 	 * 
 	 * This constructor initializes a new item with a give set of values.
 	 * 
-	 * @param metaData
-	 *            The metaData defining the item's physical properties
+	 * @param dataSet
+	 *            The dataSet defining the item's physical properties
 	 * @param vals
 	 *            A collection of initialization values
 	 */
-	public DataSetItem(DataSetMetaData metaData, Map<String, Object> vals) {
-		this.values = new Object[metaData.getProperties().size()];
-		this.metaData = metaData;
+	public DataSetItem(IDataSet dataSet, Map<String, Object> vals) {
+		this.values = new Object[dataSet.getMetaData().getProperties().size()];
+		this.dataSet = dataSet;
 
 		if (vals != null) {
 			putAll(vals);
@@ -62,12 +62,11 @@ public class DataSetItem implements IDataSetItem {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see ind.jsa.crib.ds.api.IDataSetItem#getMetaData()
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getDataSet()
 	 */
 	@Override
-	public IDataSetMetaData getMetaData() {
-		return metaData;
+	public IDataSet getDataSet() {
+		return dataSet;
 	}
 
 	/*
@@ -86,7 +85,7 @@ public class DataSetItem implements IDataSetItem {
 	 * 
 	 */
 	public Object get(String name) {
-		return get(metaData.getPropertyIndex(name));
+		return get(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -104,7 +103,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Map<String, Object> put(String name, Object val) {
-		put(metaData.getPropertyIndex(name), val);
+		put(dataSet.getMetaData().getPropertyIndex(name), val);
 
 		return this;
 	}
@@ -115,7 +114,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	public Map<String, Object> put(int idx, Object val) {
 		if (idx >= 0 && idx < values.length) {
-			IDataSetProperty p = metaData.getProperty(idx);
+			IDataSetProperty p = dataSet.getMetaData().getProperty(idx);
 			if (p != null) {
 				values[idx] = val;
 			}
@@ -141,7 +140,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public boolean containsKey(Object key) {
-		int idx = metaData.getPropertyIndex(key.toString());
+		int idx = dataSet.getMetaData().getPropertyIndex(key.toString());
 		return idx != -1 && values[idx] != null;
 	}
 
@@ -171,7 +170,7 @@ public class DataSetItem implements IDataSetItem {
 
 		for (int i = 0; i < values.length; i++) {
 			if (values[i] != null) {
-				map.put(metaData.getPropertyName(i), values[i]);
+				map.put(dataSet.getMetaData().getPropertyName(i), values[i]);
 			}
 		}
 
@@ -216,7 +215,7 @@ public class DataSetItem implements IDataSetItem {
 		Set<String> keys = new LinkedHashSet<String>();
 		for (int i = 0; i < values.length; i++) {
 			if (values[i] != null) {
-				keys.add(metaData.getPropertyName(i));
+				keys.add(dataSet.getMetaData().getPropertyName(i));
 			}
 		}
 
@@ -257,7 +256,7 @@ public class DataSetItem implements IDataSetItem {
 			return null;
 		}
 
-		return remove(metaData.getPropertyIndex(key));
+		return remove(dataSet.getMetaData().getPropertyIndex(key));
 	}
 
 	/*
@@ -297,7 +296,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public String getString(String name) {
-		return getString(metaData.getPropertyIndex(name));
+		return getString(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -306,7 +305,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Byte getByte(String name) {
-		return getByte(metaData.getPropertyIndex(name));
+		return getByte(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -315,7 +314,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Character getCharacter(String name) {
-		return getCharacter(metaData.getPropertyIndex(name));
+		return getCharacter(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -324,7 +323,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Short getShort(String name) {
-		return getShort(metaData.getPropertyIndex(name));
+		return getShort(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -333,7 +332,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Integer getInteger(String name) {
-		return getInteger(metaData.getPropertyIndex(name));
+		return getInteger(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -342,7 +341,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Long getLong(String name) {
-		return getLong(metaData.getPropertyIndex(name));
+		return getLong(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -351,7 +350,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public BigInteger getBigInteger(String name) {
-		return getBigInteger(metaData.getPropertyIndex(name));
+		return getBigInteger(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -360,7 +359,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Float getFloat(String name) {
-		return getFloat(metaData.getPropertyIndex(name));
+		return getFloat(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -369,7 +368,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Double getDouble(String name) {
-		return getDouble(metaData.getPropertyIndex(name));
+		return getDouble(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -378,7 +377,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public BigDecimal getBigDecimal(String name) {
-		return getBigDecimal(metaData.getPropertyIndex(name));
+		return getBigDecimal(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -387,7 +386,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Calendar getCalendar(String name) {
-		return getCalendar(metaData.getPropertyIndex(name));
+		return getCalendar(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -396,7 +395,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Date getDate(String name) {
-		return getDate(metaData.getPropertyIndex(name));
+		return getDate(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -405,7 +404,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Timestamp getTimestamp(String name) {
-		return getTimestamp(metaData.getPropertyIndex(name));
+		return getTimestamp(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -414,7 +413,7 @@ public class DataSetItem implements IDataSetItem {
 	 */
 	@Override
 	public Boolean getBoolean(String name) {
-		return getBoolean(metaData.getPropertyIndex(name));
+		return getBoolean(dataSet.getMetaData().getPropertyIndex(name));
 	}
 
 	/*
@@ -553,12 +552,12 @@ public class DataSetItem implements IDataSetItem {
 	 * @return A value of the requested type
 	 */
 	private Object getValueAsType(int idx, Class<?> type) {
-		IDataSetProperty p = metaData.getProperty(idx);
+		IDataSetProperty p = dataSet.getMetaData().getProperty(idx);
 		if (p == null) {
 			return p;
 		}
 		
 		// Use the type manager associated with the metadata object to do the work
-		return metaData.getTypeManager().convert(get(idx), null, type, p.getVariant());
+		return dataSet.getTypeManager().convert(get(idx), null, type, p.getVariant());
 	}
 }

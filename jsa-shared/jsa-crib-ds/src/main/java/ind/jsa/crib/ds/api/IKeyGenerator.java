@@ -9,10 +9,10 @@ public interface IKeyGenerator {
     /**
      * Generate a key value.
      * 
-     * @param metaData A metadata object to support generation of the key value
+     * @param dataSet A dataSet object to support generation of the key value
      * @param keyField The name of the key field for which the value should be generated
      * 
      * @return An object representing the value
      */
-    Object generateKeyValue(IDataSetMetaData metaData, String keyField);
+    Object generateKeyValue(IDataSet dataSet, String keyField);
 }

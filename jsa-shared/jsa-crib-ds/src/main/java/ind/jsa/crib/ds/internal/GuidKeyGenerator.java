@@ -3,7 +3,7 @@ package ind.jsa.crib.ds.internal;
 
 import java.util.UUID;
 
-import ind.jsa.crib.ds.api.IDataSetMetaData;
+import ind.jsa.crib.ds.api.IDataSet;
 import ind.jsa.crib.ds.api.IKeyGenerator;
 
 /**
@@ -16,7 +16,7 @@ public class GuidKeyGenerator implements IKeyGenerator {
      * @see com.jsa.crib.ds.api.IKeyGenerator#generateKeyValue(java.lang.String, java.lang.String)
      */
     @Override
-    public Object generateKeyValue(IDataSetMetaData metaData, String keyField) {
+    public Object generateKeyValue(IDataSet dataSet, String keyField) {
         String guid = UUID.randomUUID().toString();
 
         return guid;
