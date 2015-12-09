@@ -28,5 +28,40 @@ public interface IDataSetProperty {
      * @param attrName The name of the attribute
      * @return An object, or null if not found
      */
-    Object getAttr(String attrName);    
+    Object getAttr(String attrName);
+    
+    /**
+     * Indicates whether the property represents an identity value.
+     * 
+     * @return An indicator (false by default).
+     */
+    boolean isIdentity();
+    
+    /**
+     * Indicates whether the property is writable.
+     * 
+     * @return An indicator (true by default).
+     */
+    boolean isWritable();
+    
+    /**
+     * Indicates whether the property is filterable.
+     * 
+     * @return An indicator (true by default).
+     */
+    boolean isFilterable();
+    
+    /**
+     * Indicates whether the property represents a reference id value.
+     * 
+     * @return An indicator (false by default).
+     */
+    boolean isReference();
+    
+    /**
+     * Indicates whether the property may be sorted on.
+     * 
+     * @return An indicator (true by default).
+     */
+    boolean isSortable();
 }

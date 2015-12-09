@@ -1,5 +1,6 @@
 package ind.jsa.crib.ds.api;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,14 @@ import java.util.Map;
  *
  */
 public interface IDataSetMetaData {
+	
+	/**
+	 * Get the type manager associated with the metadata.
+	 * 
+	 * @return A type manager
+	 */
+	ITypeManager getTypeManager();
+	
     /**
      * Get a property associated with the DataSet by name.
      *
@@ -58,32 +67,46 @@ public interface IDataSetMetaData {
 	String getPropertyName(int idx);
 	
 	/**
+	 * Get the names of properties representing the
+	 * item identifier (typically only one).
 	 * 
-	 * @return
+	 * @return A collection of property names, or null if not specified.
 	 */
-	List<String> getIdentityPropertyNames();
+	Collection<String> getIdentityPropertyNames();
 	
 	/**
+	 * Get the names of properties that represent
+	 * identifiers to other entities.
 	 * 
-	 * @return
+	 * @return A list of property names, or null if not specified.
 	 */
-	List<String> getReferencePropertyNames();
+	Collection<String> getReferencePropertyNames();
 	
 	/**
+	 * Get the names of properties that may be written back
+	 * to the source if modified. If not specified, all
+	 * properties should be assumed to be able to be updated.
 	 * 
-	 * @return
+	 * @return A list of property names, or null if not specified.
 	 */
-	List<String> getReadablePropertyNames();
+	Collection<String> getWritablePropertyNames();
 	
 	/**
+	 * Get the names of properties that may be used to
+	 * filter items. If not specified, all properties 
+	 * should be assumed to be able to be used to filter items.
 	 * 
-	 * @return
+	 * @return A list of property names, or null if not specified.
+
 	 */
-	List<String> getWritablePropertyNames();
+	Collection<String> getFilterablePropertyNames();
 	
 	/**
+	 * Get the names of properties that may be used to
+	 * sort items. If not specified, all properties 
+	 * should be assumed to be able to be used to sort items.
 	 * 
-	 * @return
+	 * @return A list of property names, or null if not specified.
 	 */
-	List<String> getFilterablePropertyNames();
+	Collection<String> getSortablePropertyNames();
 }

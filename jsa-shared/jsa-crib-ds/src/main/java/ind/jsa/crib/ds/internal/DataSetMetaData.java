@@ -2,21 +2,21 @@ package ind.jsa.crib.ds.internal;
 
 import ind.jsa.crib.ds.api.IDataSetMetaData;
 import ind.jsa.crib.ds.api.IDataSetProperty;
-import ind.jsa.crib.ds.api.ITypeManager;
 import ind.jsa.crib.ds.internal.utils.NameUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.function.Function;
 
 /**
- * Manages a collection of properties that reflect the physical elements of items in a data set, and their natural order.
+ * Manages a collection of properties that reflect the physical elements of items
+ * in a data set, and their natural order.
  * 
  * @author jsaparo
  *
@@ -24,30 +24,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DataSetMetaData implements IDataSetMetaData {
 	private static final int INIT_PROPERTIES_SIZE = 20;
 	
-	private ITypeManager typeManager;
-	
-	List<IDataSetProperty> properties = new ArrayList<IDataSetProperty>(INIT_PROPERTIES_SIZE);
-	private Map<String, IDataSetProperty> propertyMap = new LinkedHashMap<String, IDataSetProperty>(INIT_PROPERTIES_SIZE);
-	private Map<String, Integer> indexMap = new HashMap<String, Integer>(INIT_PROPERTIES_SIZE);
-	private List<String> identityPropertyNames;
-	private List<String> referencePropertyNames;
-	private List<String> readablePropertyNames;
-	private List<String> writablePropertyNames;
-	private List<String> filterablePropertyNames;
-
-	@Autowired
-	public void setTypeManager(ITypeManager typeManager) {
-		this.typeManager = typeManager;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getTypeManager()
-	 */
-	@Override
-	public ITypeManager getTypeManager() {
-		return typeManager;
-	}
+	List<IDataSetProperty> properties = 
+		new ArrayList<IDataSetProperty>(INIT_PROPERTIES_SIZE);
+	private Map<String, IDataSetProperty> propertyMap = 
+		new LinkedHashMap<String, IDataSetProperty>(INIT_PROPERTIES_SIZE);
+	private Map<String, Integer> indexMap = 
+		new HashMap<String, Integer>(INIT_PROPERTIES_SIZE);
 
 	/**
 	 * Add a property to the data set.
@@ -138,63 +120,62 @@ public class DataSetMetaData implements IDataSetMetaData {
 		return prop != null ? NameUtils.normalizePropertyName(prop.getName()) : null;
 	}
 
-	public void setProperties(List<IDataSetProperty> properties) {
-		this.properties = properties;
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getIdentityPropertyNames()
+	 */
+	@Override
+	public Collection<String> getIdentityPropertyNames() {
+		return filterProperties((IDataSetProperty p) -> p.isIdentity());
 	}
 
-	public Map<String, IDataSetProperty> getPropertyMap() {
-		return propertyMap;
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getReferencePropertyNames()
+	 */
+	@Override
+	public Collection<String> getReferencePropertyNames() {
+		return filterProperties((IDataSetProperty p) -> p.isReference());
 	}
 
-	public void setPropertyMap(Map<String, IDataSetProperty> propertyMap) {
-		this.propertyMap = propertyMap;
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getWritablePropertyNames()
+	 */
+	@Override
+	public Collection<String> getWritablePropertyNames() {
+		return filterProperties((IDataSetProperty p) -> p.isWritable());
 	}
 
-	public Map<String, Integer> getIndexMap() {
-		return indexMap;
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getFilterablePropertyNames()
+	 */
+	@Override
+	public Collection<String> getFilterablePropertyNames() {
+		return filterProperties((IDataSetProperty p) -> p.isFilterable());
 	}
-
-	public void setIndexMap(Map<String, Integer> indexMap) {
-		this.indexMap = indexMap;
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getSortablePropertyNames()
+	 */
+	@Override
+	public Collection<String> getSortablePropertyNames() {
+		return filterProperties((IDataSetProperty p) -> p.isSortable());
 	}
-
-	public List<String> getIdentityPropertyNames() {
-		return identityPropertyNames;
-	}
-
-	public void setIdentityPropertyNames(List<String> identityPropertyNames) {
-		this.identityPropertyNames = identityPropertyNames;
-	}
-
-	public List<String> getReferencePropertyNames() {
-		return referencePropertyNames;
-	}
-
-	public void setReferencePropertyNames(List<String> referencePropertyNames) {
-		this.referencePropertyNames = referencePropertyNames;
-	}
-
-	public List<String> getReadablePropertyNames() {
-		return readablePropertyNames;
-	}
-
-	public void setReadablePropertyNames(List<String> readablePropertyNames) {
-		this.readablePropertyNames = readablePropertyNames;
-	}
-
-	public List<String> getWritablePropertyNames() {
-		return writablePropertyNames;
-	}
-
-	public void setWritablePropertyNames(List<String> writablePropertyNames) {
-		this.writablePropertyNames = writablePropertyNames;
-	}
-
-	public List<String> getFilterablePropertyNames() {
-		return filterablePropertyNames;
-	}
-
-	public void setFilterablePropertyNames(List<String> filterablePropertyNames) {
-		this.filterablePropertyNames = filterablePropertyNames;
+	
+	/*
+	 * Filter properties into a set of property names.
+	 */
+	public Collection<String> filterProperties(Function<IDataSetProperty, Boolean> test) {
+		Set<String> result = new HashSet<String>(INIT_PROPERTIES_SIZE);
+		
+		for(IDataSetProperty p : properties) {
+			if (test.apply(p)) {
+				result.add(p.getName());
+			}
+		}
+		return result;
 	}
 }

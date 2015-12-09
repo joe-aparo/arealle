@@ -1,6 +1,7 @@
 package ind.jsa.crib.ds.internal;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,6 +47,7 @@ public abstract class AbstractDataSet implements IDataSet {
 	private List<String> identityPropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
 	private List<String> referencePropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
 	private List<String> readablePropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
+	private List<String> sortablePropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
 	private List<String> writablePropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
 	private List<String> filterablePropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
 	private Map<String, Integer> propertyIndicesByName = new HashMap<String, Integer>();
@@ -81,35 +83,11 @@ public abstract class AbstractDataSet implements IDataSet {
 		establishPropertyOrdering();
 		
 		// Now set other collections based on established ordered properties
-		
-		if (!CollectionUtils.isEmpty(metaData.getIdentityPropertyNames())) {
-			identityPropertyNames.addAll(orderPropertyNames(metaData.getIdentityPropertyNames()));
-		}
-		
-		if (options != null && !CollectionUtils.isEmpty(options.getReferenceProperties())) {
-			referencePropertyNames.addAll(orderPropertyNames(options.getReferenceProperties()));
-		}
-		
-		if (options != null && !CollectionUtils.isEmpty(options.getReadableProperties())) {
-			readablePropertyNames.addAll(orderPropertyNames(options.getReadableProperties()));			
-		} else {
-			// Assume all properties are readable
-			readablePropertyNames.addAll(orderedPropertyNames);
-		}
-
-		if (options != null && !CollectionUtils.isEmpty(options.getWritableProperties())) {
-			writablePropertyNames.addAll(orderPropertyNames(options.getWritableProperties()));						
-		} else {
-			// Assume all properties are writable
-			writablePropertyNames.addAll(orderedPropertyNames);
-		}
-
-		if (options != null && !CollectionUtils.isEmpty(options.getFilterableProperties())) {
-			filterablePropertyNames.addAll(orderPropertyNames(options.getFilterableProperties()));			
-		} else {
-			// Assume all properties are filterable
-			filterablePropertyNames.addAll(orderedPropertyNames);
-		}
+		identityPropertyNames.addAll(orderPropertyNames(metaData.getIdentityPropertyNames(), false));
+		referencePropertyNames.addAll(orderPropertyNames(metaData.getReferencePropertyNames(), false));
+		writablePropertyNames.addAll(orderPropertyNames(metaData.getWritablePropertyNames(), true));						
+		filterablePropertyNames.addAll(orderPropertyNames(metaData.getFilterablePropertyNames(), true));			
+		sortablePropertyNames.addAll(orderPropertyNames(metaData.getSortablePropertyNames(), true));			
 	}
 
     protected abstract IDataSetMetaData initMetaData();
@@ -252,7 +230,7 @@ public abstract class AbstractDataSet implements IDataSet {
 	 */
 	@Override
 	public boolean isCaseInsensitiveSearch() {
-		return options != null ? options.isCaseInsensitiveSearch() : false;
+		return caseInsensitiveSearch;
 	}
 
 	/*
@@ -376,8 +354,8 @@ public abstract class AbstractDataSet implements IDataSet {
 		IDataSetProperty prop;
 		
 		// use specified order to the extent possible
-		if (options != null && !CollectionUtils.isEmpty(options.getPropertyOrdering())) {
-			for (String propName : options.getPropertyOrdering()) {
+		if (!CollectionUtils.isEmpty(propertyOrder)) {
+			for (String propName : propertyOrder) {
 				prop = metaData.getProperty(propName);
 				if (prop != null) {
 					orderedPropertyNames.add(prop.getName());
@@ -417,7 +395,7 @@ public abstract class AbstractDataSet implements IDataSet {
 	 * For a given collection of property names, return a list of those
 	 * names ordered in the currently established order for the dataset.
 	 */
-	private List<String> orderPropertyNames(List<String> names) {
+	private List<String> orderPropertyNames(Collection<String> names, boolean defaultAll) {
 		int sz = !CollectionUtils.isEmpty(names) ? names.size() : 0;
 		
 		List<String> orderedNames = new ArrayList<String>(sz);
@@ -428,6 +406,8 @@ public abstract class AbstractDataSet implements IDataSet {
 					orderedNames.add(propName);
 				}
 			}
+		} else if (defaultAll) {
+			orderedNames = orderedPropertyNames;
 		}
 		
 		return orderedNames;

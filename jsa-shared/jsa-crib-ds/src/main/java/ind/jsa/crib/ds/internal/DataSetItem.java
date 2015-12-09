@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ind.jsa.crib.ds.api.IDataSetItem;
+import ind.jsa.crib.ds.api.IDataSetMetaData;
 import ind.jsa.crib.ds.api.IDataSetProperty;
 
 /**
@@ -23,7 +24,7 @@ import ind.jsa.crib.ds.api.IDataSetProperty;
  * the associated DataSet.
  */
 public class DataSetItem implements IDataSetItem {
-	private DataSetMetaData metaData;
+	private IDataSetMetaData metaData;
 	private Object[] values;
 
 	/**
@@ -65,7 +66,7 @@ public class DataSetItem implements IDataSetItem {
 	 * @see ind.jsa.crib.ds.api.IDataSetItem#getMetaData()
 	 */
 	@Override
-	public DataSetMetaData getMetaData() {
+	public IDataSetMetaData getMetaData() {
 		return metaData;
 	}
 
