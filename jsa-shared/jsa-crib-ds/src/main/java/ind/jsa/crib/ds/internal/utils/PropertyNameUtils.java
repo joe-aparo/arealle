@@ -2,6 +2,12 @@ package ind.jsa.crib.ds.internal.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Miscellaneous property name related utility methods.
+ * 
+ * @author jo26419
+ *
+ */
 public class PropertyNameUtils {
 
 	/**
