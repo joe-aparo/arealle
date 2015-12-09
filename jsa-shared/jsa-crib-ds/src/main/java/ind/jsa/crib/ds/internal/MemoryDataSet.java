@@ -20,7 +20,7 @@ import ind.jsa.crib.ds.api.IKeyGenerator;
 import ind.jsa.crib.ds.api.DataSetQuery.FilterExpression;
 import ind.jsa.crib.ds.api.DataSetQuery.SortDirection;
 import ind.jsa.crib.ds.api.DataSetQuery.FilterOperator;
-import ind.jsa.crib.ds.internal.utils.NameUtils;
+import ind.jsa.crib.ds.internal.utils.PropertyNameUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
@@ -161,7 +161,7 @@ public class MemoryDataSet extends AbstractDataSet {
 
         // only use configured keys
         for (Entry<String, Object> e : keys.entrySet()) {
-        	String propName = NameUtils.normalizePropertyName(e.getKey());
+        	String propName = PropertyNameUtils.normalizeName(e.getKey());
             if (keyNames.contains(propName)) {
                 query.putParam(propName, e.getValue());
             }

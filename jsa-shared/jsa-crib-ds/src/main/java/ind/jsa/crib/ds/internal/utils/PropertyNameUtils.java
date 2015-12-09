@@ -3,7 +3,22 @@ package ind.jsa.crib.ds.internal.utils;
 import org.apache.commons.lang3.StringUtils;
 
 public class PropertyNameUtils {
-    /**
+
+	/**
+	 * Apply standardization to property names.
+	 * 
+	 * @param name Name to standardize
+	 * @return A standardized name string
+	 */
+	public static String normalizeName(String name) {
+		if (StringUtils.isEmpty(name)) {
+			return null;
+		}
+		
+		return name.toLowerCase().trim();
+	}
+	
+	/**
      * Convert a string of the form "UNDER_SCORE_NAME" to "underScoreName".
      * 
      * @param underScoreName The name to convert

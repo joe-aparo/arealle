@@ -2,7 +2,7 @@ package ind.jsa.crib.ds.internal;
 
 import ind.jsa.crib.ds.api.IDataSetMetaData;
 import ind.jsa.crib.ds.api.IDataSetProperty;
-import ind.jsa.crib.ds.internal.utils.NameUtils;
+import ind.jsa.crib.ds.internal.utils.PropertyNameUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +38,7 @@ public class DataSetMetaData implements IDataSetMetaData {
 	 */
 	public void addProperty(IDataSetProperty prop) {
 		properties.add(prop);
-		String name = NameUtils.normalizePropertyName(prop.getName());
+		String name = PropertyNameUtils.normalizeName(prop.getName());
 		propertyMap.put(name, prop);
 		indexMap.put(name, indexMap.size());
 	}
@@ -70,7 +70,7 @@ public class DataSetMetaData implements IDataSetMetaData {
 	 */
 	@Override
 	public IDataSetProperty getProperty(String propName) {
-		return propertyMap.get(NameUtils.normalizePropertyName(propName));
+		return propertyMap.get(PropertyNameUtils.normalizeName(propName));
 	}
 
 	/*
@@ -106,7 +106,7 @@ public class DataSetMetaData implements IDataSetMetaData {
 	 */
 	@Override
 	public int getPropertyIndex(String propName) {
-		String name = NameUtils.normalizePropertyName(propName);
+		String name = PropertyNameUtils.normalizeName(propName);
 		return indexMap.containsKey(name) ? indexMap.get(name) : -1;
 	}
 
@@ -117,7 +117,7 @@ public class DataSetMetaData implements IDataSetMetaData {
 	@Override
 	public String getPropertyName(int idx) {
 		IDataSetProperty prop = getProperty(idx);
-		return prop != null ? NameUtils.normalizePropertyName(prop.getName()) : null;
+		return prop != null ? PropertyNameUtils.normalizeName(prop.getName()) : null;
 	}
 
 	/*
