@@ -313,7 +313,7 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
      * @see com.copyright.ds.DataSet#update(java.util.Map)
      */
     @Override
-    public void update(DataSetQuery query, Map<String, Object> values) {
+    public void update(DataSetQuery query, IDataSetItem item) {
         List<String> keyIds = getIdPropertyNames();
 
         // this call works for single id datasets only
@@ -321,8 +321,6 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
             return;
         }
         
-        DataSetItem item = new DataSetItem(this, values);
-
         // Get the id property name
         String idProp = keyIds.iterator().next();
 
