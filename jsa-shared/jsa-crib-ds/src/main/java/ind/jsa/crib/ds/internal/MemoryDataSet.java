@@ -49,18 +49,11 @@ public class MemoryDataSet extends AbstractDataSet {
     }
 
     /**
-     * Empty data set, with options.
-     */
-    public MemoryDataSet(String name, DataSetMetaData metaData, DataSetOptions options) {
-    	this(name, metaData, options, null);
-    }
-
-    /**
      * Filled data set, with options.
      */
     public MemoryDataSet(
-    	String entity, DataSetMetaData metaData, DataSetOptions options, List<Map<String, Object>> initialItems) {
-    	super(entity, MEMORY_DOMAIN);
+    	String entity, DataSetMetaData metaData, List<Map<String, Object>> initialItems) {
+    	super(MEMORY_DOMAIN, entity);
     	
     	this.metaData = metaData;
     	this.initialItems = initialItems;
