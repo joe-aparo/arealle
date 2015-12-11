@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -42,12 +44,12 @@ public abstract class AbstractDataSet implements IDataSet {
 	private List<String> propertyOrder;
 		
 	// The following fields are derived on initialization.
-	private List<String> orderedPropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
-	private List<String> identityPropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
-	private List<String> referencePropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
-	private List<String> sortablePropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
-	private List<String> writablePropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
-	private List<String> filterablePropertyNames = new ArrayList<String>(DFT_PROPERTY_LIST_SIZE);
+	private Set<String> orderedPropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
+	private Set<String> identityPropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
+	private Set<String> referencePropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
+	private Set<String> sortablePropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
+	private Set<String> writablePropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
+	private Set<String> filterablePropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
 	private Map<String, Integer> propertyIndicesByName = new HashMap<String, Integer>();
 
 	public AbstractDataSet(String entity, String domain) {
@@ -202,6 +204,51 @@ public abstract class AbstractDataSet implements IDataSet {
 	public List<String> getReferencePropertyNames() {
 		return new ArrayList<String>(referencePropertyNames);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSet#isIdentityProperty(java.lang.String)
+	 */
+	@Override
+    public boolean isIdentityProperty(String name) {
+    	return identityPropertyNames.contains(name);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#isReferenceProperty(java.lang.String)
+     */
+	@Override
+    public boolean isReferenceProperty(String name) {
+    	return identityPropertyNames.contains(name);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#isWritableProperty(java.lang.String)
+     */
+	@Override
+    public boolean isWritableProperty(String name) {
+    	return identityPropertyNames.contains(name);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#isFilterableProperty(java.lang.String)
+     */
+	@Override
+    public boolean isFilterableProperty(String name) {
+    	return identityPropertyNames.contains(name);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#isSortableProperty(java.lang.String)
+     */
+	@Override
+    public boolean isSortableProperty(String name) {
+    	return identityPropertyNames.contains(name);
+    }
 
 	/*
 	 * (non-Javadoc)
@@ -373,7 +420,7 @@ public abstract class AbstractDataSet implements IDataSet {
 	 * For a given collection of property names, return a list of those
 	 * names ordered in the currently established order for the dataset.
 	 */
-	private List<String> orderPropertyNames(Collection<String> names, boolean defaultAll) {
+	private Collection<String> orderPropertyNames(Collection<String> names, boolean defaultAll) {
 		int sz = !CollectionUtils.isEmpty(names) ? names.size() : 0;
 		
 		List<String> orderedNames = new ArrayList<String>(sz);
@@ -385,7 +432,7 @@ public abstract class AbstractDataSet implements IDataSet {
 				}
 			}
 		} else if (defaultAll) {
-			orderedNames = orderedPropertyNames;
+			orderedNames = getOrderedPropertyNames();
 		}
 		
 		return orderedNames;

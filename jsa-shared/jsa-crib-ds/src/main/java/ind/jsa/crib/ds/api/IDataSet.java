@@ -210,6 +210,46 @@ public interface IDataSet {
     List<String> getReferencePropertyNames();
     
     /**
+     * Determine whether the specified property is a key value.
+     * 
+     * @param name A property name
+     * @return An indicator
+     */
+    boolean isIdentityProperty(String name);
+    
+    /**
+     * Determine whether the specified property is a reference value.
+     * 
+     * @param name A property name
+     * @return An indicator
+     */
+    boolean isReferenceProperty(String name);
+    
+    /**
+     * Determine whether the specified property is writable.
+     * 
+     * @param name A property name
+     * @return An indicator
+     */
+    boolean isWritableProperty(String name);
+    
+    /**
+     * Determine whether the specified property is a filterable.
+     * 
+     * @param name A property name
+     * @return An indicator
+     */
+    boolean isFilterableProperty(String name);
+    
+    /**
+     * Determine whether the specified property is sortable.
+     * 
+     * @param name A property name
+     * @return An indicator
+     */
+    boolean isSortableProperty(String name);
+    
+    /**
      * Get a collection of default parameter values for CRUD calls if not specified.
      * 
      * @return A map of values
