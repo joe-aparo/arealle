@@ -112,7 +112,7 @@ public class MemoryDataSet extends AbstractDataSet {
         DataSetItem item = new DataSetItem(this, values);
 
         // If the dataset specifies a key, but no key value has been provided, generate one
-        List<String> keyNames = getIdentityPropertyNames();
+        List<String> keyNames = getIdPropertyNames();
         if (!CollectionUtils.isEmpty(keyNames)) {
         	for (String keyName : keyNames) {
         		if (values.get(keyName) == null) {
@@ -147,7 +147,7 @@ public class MemoryDataSet extends AbstractDataSet {
 	public IDataSetItem retrieve(Map<String, Object> keys) {
 		
 		// Only works for datasets having a defined key
-		if (CollectionUtils.isEmpty(getIdentityPropertyNames())) {
+		if (CollectionUtils.isEmpty(getIdPropertyNames())) {
 			return null;
 		}
 		
@@ -157,7 +157,7 @@ public class MemoryDataSet extends AbstractDataSet {
         // the item to return
         DataSetItem item = null;
 
-        Set<String> keyNames = new LinkedHashSet<String>(getIdentityPropertyNames());
+        Set<String> keyNames = new LinkedHashSet<String>(getIdPropertyNames());
 
         // only use configured keys
         for (Entry<String, Object> e : keys.entrySet()) {
@@ -409,9 +409,7 @@ public class MemoryDataSet extends AbstractDataSet {
         		op = FilterOperator.LESS_OR_EQUAL;
         	} else if (filterVal != null && upperFilterVal == null) {
         		op = FilterOperator.GREATER_OR_EQUAL;
-        	} else if (
-        		DefaultTypeManager.isNumericNature(getTypeManager().getTypeNature(itemVal.getClass()))  && 
-            	DefaultTypeManager.isNumericNature(getTypeManager().getTypeNature(filterVal.getClass()))) {
+        	} else if (isNumericProperty(prop.getName())) {
 	        	long itemScale = (Long) getTypeManager().convert(itemVal, prop.getVariant(), Long.class, prop.getVariant());
 	        	long lowerScale = (Long) getTypeManager().convert(filterVal, prop.getVariant(), Long.class, prop.getVariant());
 	        	long upperScale = (Long) getTypeManager().convert(upperFilterVal, prop.getVariant(), Long.class, prop.getVariant());
@@ -425,9 +423,7 @@ public class MemoryDataSet extends AbstractDataSet {
         		op = FilterOperator.GREATER_OR_EQUAL;
         	} else if (filterVal != null && upperFilterVal == null) {
         		op = FilterOperator.LESS_OR_EQUAL;
-        	} else if (
-        		DefaultTypeManager.isNumericNature(getTypeManager().getTypeNature(itemVal.getClass()))  && 
-            	DefaultTypeManager.isNumericNature(getTypeManager().getTypeNature(filterVal.getClass()))) {
+        	} else if (isNumericProperty(prop.getName())) {
 	        	long itemScale = (Long) getTypeManager().convert(itemVal, prop.getVariant(), Long.class, prop.getVariant());
 	        	long lowerScale = (Long) getTypeManager().convert(filterVal, prop.getVariant(), Long.class, prop.getVariant());
 	        	long upperScale = (Long) getTypeManager().convert(upperFilterVal, prop.getVariant(), Long.class, prop.getVariant());

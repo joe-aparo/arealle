@@ -74,7 +74,18 @@ public class DefaultTypeManager extends AbstractTypeManager {
 		registerDefaultTimeStampConversions();
 		registerDefaultBooleanConversions();
  	}
+
+	/**
+	 * Determine whether given nature is atomic.
+	 * 
+	 * @param nature Given type nature
+	 * @return An indicator
+	 */
+	public static boolean isAtomicNature(long nature) {
+		return (nature & ATOMIC_NATURE) != 0;
+	}
 	
+
 	/**
 	 * Determine whether given nature is numeric.
 	 * 

@@ -125,7 +125,7 @@ public class DataSetProperty implements IDataSetProperty
 	 * @see ind.jsa.crib.ds.api.IDataSetProperty#isIdentity()
 	 */
 	@Override
-	public boolean isIdentity() {
+	public boolean isId() {
 		return identity;
 	}
 
@@ -134,7 +134,7 @@ public class DataSetProperty implements IDataSetProperty
 	 * 
 	 * @param identity An indicator
 	 */
-	public void setIdentity(boolean identity) {
+	public void setId(boolean identity) {
 		this.identity = identity;
 	}
 
@@ -143,7 +143,7 @@ public class DataSetProperty implements IDataSetProperty
 	 * @see ind.jsa.crib.ds.api.IDataSetProperty#isReference()
 	 */
 	@Override
-	public boolean isReference() {
+	public boolean isIdRef() {
 		return reference;
 	}
 
@@ -152,7 +152,7 @@ public class DataSetProperty implements IDataSetProperty
 	 * 
 	 * @param reference An indicator
 	 */
-	public void setReference(boolean reference) {
+	public void setIdRef(boolean reference) {
 		this.reference = reference;
 	}
 

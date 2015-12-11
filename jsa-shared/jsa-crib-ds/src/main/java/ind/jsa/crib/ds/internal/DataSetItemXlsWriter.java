@@ -76,33 +76,28 @@ public class DataSetItemXlsWriter extends AbstractDataSetItemWriter {
 		// Create a new data row
 		Row row = sheet.createRow(curRow++); // 0-based row index
 		
-		IDataSetMetaData metaData = item.getDataSet().getMetaData();
-		ITypeManager typeManager = item.getDataSet().getTypeManager();
-		
 		// Fill the row object with data. Only basic primitive types are supported here.
 		int col = 0;
 		for (String propName : getOutputProperties()) {
 			Cell cell = row.createCell(col++);
 			
-			IDataSetProperty prop = metaData.getProperty(propName);
-			
-			if (DefaultTypeManager.isBooleanNature(typeManager.getTypeNature(prop.getType()))) {
+			if (item.getDataSet().isBooleanProperty(propName)) {
 				Boolean bool = item.getBoolean(propName);
 				if (bool != null) {
 					cell.setCellValue(bool);
 				}
-			} else if (DefaultTypeManager.isDateTimeNature(typeManager.getTypeNature(prop.getType()))) {
+			} else if (item.getDataSet().isDateTimeProperty(propName)) {
 				Date dt = item.getDate(propName);
 				if (dt != null) {
 					cell.setCellValue(dt);
 					cell.setCellStyle(dateStyle);
 				}
-			} else if (DefaultTypeManager.isDecimalNature(typeManager.getTypeNature(prop.getType()))) {
+			} else if (item.getDataSet().isDecimalProperty(propName)) {
 				Double dbl = item.getDouble(propName);
 				if (dbl != null) {
 					cell.setCellValue(dbl);
 				}
-			} else if (DefaultTypeManager.isIntegerNature(typeManager.getTypeNature(prop.getType()))) {
+			} else if (item.getDataSet().isIntegerProperty(propName)) {
 				Integer i = item.getInteger(propName);
 				if (i != null) {
 					cell.setCellValue(i);

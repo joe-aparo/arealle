@@ -200,14 +200,14 @@ public interface IDataSet {
      * 
      * @return A list of data set properties
      */
-    List<String> getIdentityPropertyNames();
+    List<String> getIdPropertyNames();
     
     /**
      * Get a list of all reference property names for the dataset, in proper order.
      * 
      * @return A list of data set propertyNames
      */
-    List<String> getReferencePropertyNames();
+    List<String> getRefIdPropertyNames();
     
     /**
      * Determine whether the specified property is a key value.
@@ -215,7 +215,7 @@ public interface IDataSet {
      * @param name A property name
      * @return An indicator
      */
-    boolean isIdentityProperty(String name);
+    boolean isIdProperty(String name);
     
     /**
      * Determine whether the specified property is a reference value.
@@ -223,7 +223,7 @@ public interface IDataSet {
      * @param name A property name
      * @return An indicator
      */
-    boolean isReferenceProperty(String name);
+    boolean isIdRefProperty(String name);
     
     /**
      * Determine whether the specified property is writable.
@@ -262,4 +262,64 @@ public interface IDataSet {
      * @return An indicator
      */
     boolean isCaseInsensitiveSearch();
+    
+    /**
+     * Determine whether the given property is atomic in nature.
+     * 
+     * @param name A property name
+     * @return An indicator
+     */
+    boolean isAtomicProperty(String name);
+  
+
+    /**
+     * Determine whether the given property is a String type.
+     * 
+     * @param name A property name
+     * @return An indicator
+     */
+    boolean isStringProperty(String name);
+  
+    /**
+     * Determine whether the given property represents an numeric value.
+     * 
+     * @param name A property name
+     * @return An indicator
+     */
+    boolean isNumericProperty(String name);
+    
+    
+    /**
+     * Determine whether the given property represents an numeric,
+     * non-fractional value.
+     * 
+     * @param name A property name
+     * @return An indicator
+     */
+    boolean isIntegerProperty(String name);
+    
+    /**
+     * Determine whether the given property is a numeric,
+     * fractional value.
+     * 
+     * @param name A property name
+     * @return An indicator
+     */
+    boolean isDecimalProperty(String name);   
+    
+    /**
+     * Determine whether the given property is a data/time type.
+     * 
+     * @param name A property name
+     * @return An indicator
+     */
+    boolean isDateTimeProperty(String name);  
+    
+    /**
+     * Determine whether the given property is a boolean type.
+     * 
+     * @param name A property name
+     * @return An indicator
+     */
+    boolean isBooleanProperty(String name);
 }

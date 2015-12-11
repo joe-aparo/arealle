@@ -65,7 +65,7 @@ public interface IDataSetMetaData {
 	 * 
 	 * @return A collection of property names, or null if not specified.
 	 */
-	Collection<String> getIdentityPropertyNames();
+	Collection<String> getIdPropertyNames();
 	
 	/**
 	 * Get the names of properties that represent
@@ -73,7 +73,7 @@ public interface IDataSetMetaData {
 	 * 
 	 * @return A list of property names, or null if not specified.
 	 */
-	Collection<String> getReferencePropertyNames();
+	Collection<String> getIdRefPropertyNames();
 	
 	/**
 	 * Get the names of properties that may be written back

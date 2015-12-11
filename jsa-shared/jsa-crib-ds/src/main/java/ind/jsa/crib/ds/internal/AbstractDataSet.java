@@ -45,8 +45,8 @@ public abstract class AbstractDataSet implements IDataSet {
 		
 	// The following fields are derived on initialization.
 	private Set<String> orderedPropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
-	private Set<String> identityPropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
-	private Set<String> referencePropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
+	private Set<String> idPropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
+	private Set<String> refIdPropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
 	private Set<String> sortablePropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
 	private Set<String> writablePropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
 	private Set<String> filterablePropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
@@ -83,8 +83,8 @@ public abstract class AbstractDataSet implements IDataSet {
 		establishPropertyOrdering();
 		
 		// Now set other collections based on established ordered properties
-		identityPropertyNames.addAll(orderPropertyNames(metaData.getIdentityPropertyNames(), false));
-		referencePropertyNames.addAll(orderPropertyNames(metaData.getReferencePropertyNames(), false));
+		idPropertyNames.addAll(orderPropertyNames(metaData.getIdPropertyNames(), false));
+		refIdPropertyNames.addAll(orderPropertyNames(metaData.getIdRefPropertyNames(), false));
 		writablePropertyNames.addAll(orderPropertyNames(metaData.getWritablePropertyNames(), true));						
 		filterablePropertyNames.addAll(orderPropertyNames(metaData.getFilterablePropertyNames(), true));			
 		sortablePropertyNames.addAll(orderPropertyNames(metaData.getSortablePropertyNames(), true));			
@@ -192,8 +192,8 @@ public abstract class AbstractDataSet implements IDataSet {
 	 * @see ind.jsa.crib.ds.api.IDataSet#getIdentityProperties()
 	 */
 	@Override
-	public List<String> getIdentityPropertyNames() {
-		return new ArrayList<String>(identityPropertyNames);
+	public List<String> getIdPropertyNames() {
+		return new ArrayList<String>(idPropertyNames);
 	}
 
 	/*
@@ -201,8 +201,8 @@ public abstract class AbstractDataSet implements IDataSet {
 	 * @see ind.jsa.crib.ds.api.IDataSet#getIdentityProperties()
 	 */
 	@Override
-	public List<String> getReferencePropertyNames() {
-		return new ArrayList<String>(referencePropertyNames);
+	public List<String> getRefIdPropertyNames() {
+		return new ArrayList<String>(refIdPropertyNames);
 	}
 
 	/*
@@ -210,8 +210,8 @@ public abstract class AbstractDataSet implements IDataSet {
 	 * @see ind.jsa.crib.ds.api.IDataSet#isIdentityProperty(java.lang.String)
 	 */
 	@Override
-    public boolean isIdentityProperty(String name) {
-    	return identityPropertyNames.contains(name);
+    public boolean isIdProperty(String name) {
+    	return idPropertyNames.contains(name);
     }
 
     /*
@@ -219,8 +219,8 @@ public abstract class AbstractDataSet implements IDataSet {
      * @see ind.jsa.crib.ds.api.IDataSet#isReferenceProperty(java.lang.String)
      */
 	@Override
-    public boolean isReferenceProperty(String name) {
-    	return identityPropertyNames.contains(name);
+    public boolean isIdRefProperty(String name) {
+    	return idPropertyNames.contains(name);
     }
     
     /*
@@ -229,7 +229,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
 	@Override
     public boolean isWritableProperty(String name) {
-    	return identityPropertyNames.contains(name);
+    	return idPropertyNames.contains(name);
     }
     
     /*
@@ -238,7 +238,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
 	@Override
     public boolean isFilterableProperty(String name) {
-    	return identityPropertyNames.contains(name);
+    	return idPropertyNames.contains(name);
     }
     
     /*
@@ -247,7 +247,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
 	@Override
     public boolean isSortableProperty(String name) {
-    	return identityPropertyNames.contains(name);
+    	return idPropertyNames.contains(name);
     }
 
 	/*
@@ -369,12 +369,85 @@ public abstract class AbstractDataSet implements IDataSet {
 		return handler.getItems().size() > 0 ? handler.getItems().get(0) : null;
 	}
 
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#isAtomicProperty(java.lang.String)
+     */
+    public boolean isAtomicProperty(String name) {
+    	return propertyIsOfNature(name, DefaultTypeManager.ATOMIC_NATURE);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#isStringProperty(java.lang.String)
+     */
+    @Override
+    public boolean isStringProperty(String name) {
+    	return propertyIsOfNature(name, DefaultTypeManager.STRING_NATURE);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#isNumericProperty(java.lang.String)
+     */
+    @Override
+    public boolean isNumericProperty(String name) {
+       	return propertyIsOfNature(name, DefaultTypeManager.NUMERIC_NATURE);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#isIntegerProperty(java.lang.String)
+     */
+    @Override
+    public boolean isIntegerProperty(String name) {
+       	return propertyIsOfNature(name, DefaultTypeManager.INTEGER_NATURE);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#isDecimalProperty(java.lang.String)
+     */
+    @Override
+    public boolean isDecimalProperty(String name) {
+       	return propertyIsOfNature(name, DefaultTypeManager.DECIMAL_NATURE);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#isDateTimeProperty(java.lang.String)
+     */
+    @Override
+    public boolean isDateTimeProperty(String name) {
+       	return propertyIsOfNature(name, DefaultTypeManager.DATETIME_NATURE);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#isBooleanProperty(java.lang.String)
+     */
+    @Override
+    public boolean isBooleanProperty(String name) {
+       	return propertyIsOfNature(name, DefaultTypeManager.BOOLEAN_NATURE);
+    }
+
+    /**
+     * Get the currently set default parameter values.
+     * 
+     * @return A map of values
+     */
 	public Map<String, Object> getDefaultParamValues() {
-		return defaultParamValues;
+		return new HashMap<String, Object>(defaultParamValues);
 	}
 
+    /**
+     * Set the currently set default parameter values.
+     * 
+     * @param defaultParamValues A map of values
+     */	
 	public void setDefaultParamValues(Map<String, Object> defaultParamValues) {
-		this.defaultParamValues = defaultParamValues;
+		defaultParamValues.clear();
+		defaultParamValues.putAll(defaultParamValues);
 	}
 
     /**
@@ -437,4 +510,19 @@ public abstract class AbstractDataSet implements IDataSet {
 		
 		return orderedNames;
 	}
+	
+	/*
+	 * Determine whether the given property is of the given nature.
+	 *  
+	 * @param name The name of the property to check
+	 * @param nature The nature to check
+	 * 
+	 * @return An indicator
+	 */
+	private boolean propertyIsOfNature(String name, long nature) {
+        IDataSetProperty prop = getMetaData().getProperty(name);
+        long propNature = getTypeManager().getTypeNature(prop.getType());
+        
+        return (propNature & nature) != 0;
+ 	}
 }

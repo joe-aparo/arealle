@@ -35,7 +35,7 @@ public interface IDataSetProperty {
      * 
      * @return An indicator (false by default).
      */
-    boolean isIdentity();
+    boolean isId();
     
     /**
      * Indicates whether the property is writable.
@@ -56,7 +56,7 @@ public interface IDataSetProperty {
      * 
      * @return An indicator (false by default).
      */
-    boolean isReference();
+    boolean isIdRef();
     
     /**
      * Indicates whether the property may be sorted on.

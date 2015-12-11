@@ -1,20 +1,21 @@
 package ind.jsa.crib.ds.internal.sql;
 
-
 import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.DataSetQuery.FilterExpression;
 import ind.jsa.crib.ds.api.DataSetQuery.FilterOperator;
 import ind.jsa.crib.ds.api.DataSetQuery.SortDirection;
 import ind.jsa.crib.ds.api.IDataSet;
 import ind.jsa.crib.ds.api.IDataSetItem;
+import ind.jsa.crib.ds.api.IDataSetMetaData;
 import ind.jsa.crib.ds.api.IDataSetProperty;
 import ind.jsa.crib.ds.api.IDataSetResultHandler;
 import ind.jsa.crib.ds.internal.AbstractDataSet;
 import ind.jsa.crib.ds.internal.DataSetItem;
+import ind.jsa.crib.ds.internal.DataSetMetaData;
 import ind.jsa.crib.ds.internal.DataSetProperty;
-import ind.jsa.crib.ds.internal.DefaultTypeManager;
 import ind.jsa.crib.ds.internal.IdListDataSetResultHandler;
 import ind.jsa.crib.ds.internal.ListDataSetResultHandler;
+import ind.jsa.crib.ds.internal.utils.PropertyNameUtils;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -23,11 +24,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Pattern;
+
+import ind.jsa.crib.ds.internal.sql.SqlCommand;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
@@ -40,8 +45,11 @@ import org.springframework.util.CollectionUtils;
  * Base SQL implementation of the DataSet interface.
  * 
  */
-public abstract class SqlDataSet extends AbstractDataSet {
+public abstract class AbstractSqlDataSet extends AbstractDataSet {
 
+	private static final String DEFAULT_ID_REGEX = "[iI][dD]";
+	private static final String DEFAULT_IDREF_REGEX = "_[iI][dD]";
+	
     /**
      * Alias of wrapped inner query.
      */
@@ -67,8 +75,6 @@ public abstract class SqlDataSet extends AbstractDataSet {
      */
     protected static final int INIT_FLD_COUNT = 50;
 
-    private String qualifier;
-    private String table;
     private String sequence;
     private NamedParameterJdbcTemplate dbclient;
     private SqlCommand retrieveCmd;
@@ -76,6 +82,17 @@ public abstract class SqlDataSet extends AbstractDataSet {
     private SqlCommand updateCmd;
     private SqlCommand deleteCmd;
     private SqlCommand newKeyCmd;
+    private String idNameRegex = DEFAULT_ID_REGEX;
+    private String idRefNameRegex = DEFAULT_IDREF_REGEX;
+    private Pattern idNamePattern;
+    private Pattern idRefNamePattern;
+    
+	public AbstractSqlDataSet(String entity, String domain) {
+		super(entity, domain);
+		
+		idNamePattern = Pattern.compile(idNameRegex);
+		idRefNamePattern = Pattern.compile(idRefNameRegex);
+	}
 
     /**
      * If specified, a sequence is used to identify an Oracle sequence which will be used to generate a new id
@@ -151,11 +168,25 @@ public abstract class SqlDataSet extends AbstractDataSet {
         this.newKeyCmd = cmd;
     }
 
-    /*
-     * Public DataSet interface methods follow
+    /**
+     * Set the regular expression for identifying id property names.
+     * 
+     * @param idNameRegex A regular expression
      */
+    public void setIdNameRegex(String idNameRegex) {
+		this.idNameRegex = idNameRegex;
+	}
 
-    /*
+    /**
+     * Set the regular expression for identifying id reference property names.
+     * 
+     * @param idNameRegex A regular expression
+     */
+	public void setIdRefNameRegex(String idRefNameRegex) {
+		this.idRefNameRegex = idRefNameRegex;
+	}
+
+	/*
      * (non-Javadoc)
      * 
      * @see com.copyright.ds.DataSet#retrieve(com.copyright.ds.DataSetQuery,
@@ -241,7 +272,7 @@ public abstract class SqlDataSet extends AbstractDataSet {
 
         // attempt to seed the values with a set of newly
         // generated keys
-        List<String> keyIds = getIdentityPropertyNames();
+        List<String> keyIds = getIdPropertyNames();
         if (!CollectionUtils.isEmpty(keyIds)) {
             Map<String, Object> newKeys = getNewKeyValues(item);
             if (newKeys != null) {
@@ -283,7 +314,7 @@ public abstract class SqlDataSet extends AbstractDataSet {
      */
     @Override
     public void update(DataSetQuery query, Map<String, Object> values) {
-        List<String> keyIds = getIdentityPropertyNames();
+        List<String> keyIds = getIdPropertyNames();
 
         // this call works for single id datasets only
         if (keyIds.size() != 1) {
@@ -386,14 +417,14 @@ public abstract class SqlDataSet extends AbstractDataSet {
     protected SqlCommand getDefaultRetrieveCommand() {
         SqlCommand cmd = null;
 
-        if (table != null) {
+        if (getEntity() != null) {
             StringBuilder sql = new StringBuilder(INIT_SQL_SIZE);
 
             sql.append("select * from ");
-            if (qualifier != null) {
-                sql.append(qualifier).append('.');
+            if (getDomain() != null) {
+                sql.append(getDomain()).append('.');
             }
-            sql.append(table);
+            sql.append(getEntity());
 
             cmd = new SqlCommand(sql.toString());
         }
@@ -420,13 +451,13 @@ public abstract class SqlDataSet extends AbstractDataSet {
             }
         }
 
-        if (table != null && fields.size() > 0) {
+        if (getEntity() != null && fields.size() > 0) {
             // statement preamble
             sql.append("insert into ");
-            if (qualifier != null) {
-                sql.append(qualifier).append('.');
+            if (getDomain() != null) {
+                sql.append(getDomain()).append('.');
             }
-            sql.append(table).append('(');
+            sql.append(getEntity()).append('(');
 
             // Construct the fields portion of the insert statement
             int ct = 0;
@@ -439,7 +470,7 @@ public abstract class SqlDataSet extends AbstractDataSet {
 
             // Ensure to include keys in the statement if specified for the
             // dataset if not passed in as part of the given fields
-            List<String> keyIds = getIdentityPropertyNames();
+            List<String> keyIds = getIdPropertyNames();
             if (keyIds != null && keyIds.size() > 0) {
                 for (String k : keyIds) {
                     if (!fields.contains(k)) {
@@ -497,23 +528,23 @@ public abstract class SqlDataSet extends AbstractDataSet {
      */
     protected SqlCommand getDefaultUpdateCommand(Map<String, Object> values,
             Map<String, FilterExpression> filters) {
-        if (table == null) {
+        if (getEntity() == null) {
             return null;
         }
 
         SqlCommand cmd = null;
         Set<String> fields = values.keySet();
-        List<String> keyIds = getIdentityPropertyNames();
+        List<String> keyIds = getIdPropertyNames();
 
         if (fields.size() > 0 && keyIds.size() > 0) {
             StringBuilder sql = new StringBuilder(INIT_SQL_SIZE);
 
             // preamble
             sql.append("update ");
-            if (qualifier != null) {
-                sql.append(qualifier).append('.');
+            if (getDomain() != null) {
+                sql.append(getDomain()).append('.');
             }
-            sql.append(table).append(" set ");
+            sql.append(getEntity()).append(" set ");
 
             // set up the column=:value portion of the statement
             int ct = 0;
@@ -561,17 +592,17 @@ public abstract class SqlDataSet extends AbstractDataSet {
     protected SqlCommand getDefaultDeleteCommand() {
         SqlCommand cmd = null;
 
-        List<String> keyIds = getIdentityPropertyNames();
-        if (table != null && keyIds != null) {
+        List<String> keyIds = getIdPropertyNames();
+        if (getEntity() != null && keyIds != null) {
             // preamble
             StringBuilder sql = new StringBuilder(INIT_SQL_SIZE);
             sql.append("delete from ");
-            if (qualifier != null) {
-                sql.append(qualifier).append('.');
+            if (getDomain() != null) {
+                sql.append(getDomain()).append('.');
             }
 
             // where clause
-            sql.append(table).append(" where ");
+            sql.append(getEntity()).append(" where ");
             int count = 0;
             for (String k : keyIds) { // account for multiple keys
                 if (count++ > 0) {
@@ -766,15 +797,11 @@ public abstract class SqlDataSet extends AbstractDataSet {
                 }
 
                 // determine if it's a string field
-                boolean stringField = false;
-                IDataSetProperty prop = getMetaData().getProperty(filter.getOperand());
-                if (DefaultTypeManager.isStringNature(getTypeManager().getTypeNature(prop.getType()))) {
-                    stringField = true;
-                }
+                boolean stringField =  isStringProperty(filter.getOperand());
 
                 // determine if upper case treatment should be ued
                 boolean useCaseInsensitiveSearch = isCaseInsensitiveSearch()
-                        && isIdentityProperty(filter.getOperand());
+                        && isIdProperty(filter.getOperand());
 
                 // Wrap string operand with case-insensitive uppercase treatment
                 sql.append(stringField && useCaseInsensitiveSearch ? "UPPER(" : "");
@@ -841,14 +868,11 @@ public abstract class SqlDataSet extends AbstractDataSet {
 
                 // Determine if it's a String property
                 IDataSetProperty prop = getMetaData().getProperty(sort.getKey());
-                boolean stringField = false;
-                if (prop != null && "java.lang.String".equals(prop.getClassName())) {
-                    stringField = true;
-                }
+                boolean stringField = isStringProperty(prop.getName());
 
                 // determine if upper case treament should be ued
-                boolean useCaseInsensitiveSearch = !getCaseSensitiveSearch()
-                        && !getKeys().contains(sort.getKey());
+                boolean useCaseInsensitiveSearch = isCaseInsensitiveSearch()
+                        && !isIdProperty(sort.getKey());
 
                 // Wrap string operand with case-insensitive uppercase treatment
                 sql.append(stringField && useCaseInsensitiveSearch ? "UPPER(" : "");
@@ -952,7 +976,7 @@ public abstract class SqlDataSet extends AbstractDataSet {
     protected Map<String, Object> getNewKeyValues(Map<String, Object> params) {
         Map<String, Object> keyValues = new HashMap<String, Object>();
 
-        Set<String> keyIds = getKeys();
+        List<String> keyIds = getIdPropertyNames();
         if (keyIds != null && keyIds.size() > 0) {
             SqlCommand keyCmd = newKeyCmd != null ? newKeyCmd : getDefaultNewKeyCommand();
             if (keyCmd != null) {
@@ -967,7 +991,7 @@ public abstract class SqlDataSet extends AbstractDataSet {
                 }
             } else if (getKeyGenerator() != null) {
                 for (String k : keyIds) {
-                    keyValues.put(k, getKeyGenerator().generateKeyValue(getName(), k));
+                    keyValues.put(k, getKeyGenerator().generateKeyValue(this, k));
                 }
             }
         }
@@ -1016,13 +1040,12 @@ public abstract class SqlDataSet extends AbstractDataSet {
 
         List<String> containsOperands = getOperandsWithContainsOperator(query);
 
-        // Fetch query parameters as native values
-        Map<String, Object> qparams = convertToNativeValues(query.getParameters());
-
+        IDataSetItem item = new DataSetItem(this, query.getParameters());
+        
         char wc = getWildCardCharacter();
 
         // Place query parameters into output collection
-        for (Map.Entry<String, Object> qparam : qparams.entrySet()) {
+        for (Map.Entry<String, Object> qparam : item.entrySet()) {
             String key = qparam.getKey();
             Object value = qparam.getValue();
 
@@ -1036,7 +1059,7 @@ public abstract class SqlDataSet extends AbstractDataSet {
             if (value instanceof String) {
                 String str = ((String) value).trim();
                 
-                if (!getCaseSensitiveSearch()) {
+                if (isCaseInsensitiveSearch()) {
                 	value = str.toUpperCase();
                 }
 
@@ -1106,79 +1129,6 @@ public abstract class SqlDataSet extends AbstractDataSet {
     }
 
     /**
-     * Load the writable properties based on the table currently associated with the dataset.
-     */
-    @Override
-    protected void establishWritableProperties() {
-        // Writable properties are all those in the table, if specified
-        if (table != null) {
-            SqlCommand cmd = getDefaultRetrieveCommand();
-            String sql = cmd.getSql() + " where 1<>1"; // special case - not interested in data
-            List<DataSetProperty> props = new ArrayList<DataSetProperty>();
-            MetaDataPropertyLoader loader = new MetaDataPropertyLoader(this, props);
-            dbclient.query(sql, getDefaultCommandParameters(cmd), loader);
-            for (DataSetProperty p : props) {
-                addProperty(p);
-                addWritableProperty(p.getName());
-            }
-        }
-    }
-
-    /**
-     * Initialize the readable properties for the DataSet. Readable properties are those corresponding to the
-     * retrieve command if specified. Otherwise they are considered to be the same as the currently set
-     * writable properties.
-     */
-    @Override
-    protected void establishReadableProperties() {
-        if (retrieveCmd != null) {
-            // set up metadata row handler
-            List<DataSetProperty> props = new ArrayList<DataSetProperty>();
-            MetaDataPropertyLoader loader = new MetaDataPropertyLoader(this, props);
-
-            // fetch metadata for command
-            dbclient.query(retrieveCmd.getSql(), getDefaultCommandParameters(retrieveCmd), loader);
-
-            // record properties
-            for (DataSetProperty p : props) {
-                if (!getPropertiesByName().containsKey(p.getName())) {
-                    addProperty(p);
-                }
-
-                addReadableProperty(p.getName());
-            }
-        } else {
-            // Assume same as writable properties and that the call
-            // to establishWritableProperties preceded this call.
-            for (String propName : getPropertiesByName().keySet()) {
-                addReadableProperty(propName);
-            }
-        }
-    }
-
-    /**
-     * Initialize the filterable properties for the DataSet. Unless specifically configured, filterable
-     * properties are assumed to be the same as the currently set readable properties.
-     */
-    @Override
-    protected void establishFilterableProperties() {
-        if (getFilterProperties() != null) { // configured
-            String[] names = getFilterProperties().split(",");
-            for (String propname : names) {
-                addFilterableProperty(propname.trim());
-            }
-        } else {
-            // Assume same as writable properties and that the call
-            // to establishWritableProperties preceded this call.
-            for (String propName : getPropertiesByName().keySet()) {
-                if (isReadableProperty(propName)) {
-                    addFilterableProperty(propName);
-                }
-            }
-        }
-    }
-
-    /**
      * Utility method for determing whether an object is either null, or is a zero-length string value.
      * 
      * @param obj The object to check
@@ -1245,7 +1195,7 @@ public abstract class SqlDataSet extends AbstractDataSet {
                 }
             } else {
                 // all fields for the dataset
-                for (String name : this.dataSet.getReadablePropertyNames()) {
+                for (String name : dataSet.getOrderedPropertyNames()) {
                     this.fields.add(name);
                 }
             }
@@ -1259,7 +1209,7 @@ public abstract class SqlDataSet extends AbstractDataSet {
                 item.put(f, rs.getObject(f));
             }
 
-            handler.processRow(item);
+            handler.processItem(item);
         }
     }
 
@@ -1272,7 +1222,7 @@ public abstract class SqlDataSet extends AbstractDataSet {
         private IDataSet dataSet;
         private DataSetItem item;
         private boolean gotFirstRow = false;
-        private Set<String> fields;
+        private List<String> fields;
 
         /**
          * Handler constructor.
@@ -1280,7 +1230,7 @@ public abstract class SqlDataSet extends AbstractDataSet {
          * @param dataSet The dataset to process
          * @param fields The fields to process
          */
-        public SingleRowHandler(IDataSet dataSet, Set<String> fields) {
+        public SingleRowHandler(IDataSet dataSet, List<String> fields) {
             this.dataSet = dataSet;
             this.item = new DataSetItem(this.dataSet);
             this.fields = fields;
@@ -1308,13 +1258,101 @@ public abstract class SqlDataSet extends AbstractDataSet {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.internal.AbstractDataSet#initMetaData()
+     */
+    @Override
+    public IDataSetMetaData initMetaData() {
+    	List<DataSetProperty> readableProperties = new ArrayList<DataSetProperty>(INIT_FLD_COUNT);
+    	List<DataSetProperty> writableProperties = new ArrayList<DataSetProperty>(INIT_FLD_COUNT);
+    	Map<String, DataSetProperty> propertySet = new LinkedHashMap<String, DataSetProperty>(INIT_FLD_COUNT);
+    	
+    	// If the caller has provided an explicit retrieval command, then use this command
+    	// to represent the entire set of readable properties.
+    	if (retrieveCmd != null) { 
+    		// Caller has explicitly set a retrieval command, with replaceable parameters
+    		// So use it to get a list of all those properties and consider these properties
+    		// to be readonly.
+     		dbclient.query(retrieveCmd.getSql(), 
+     			getDefaultCommandParameters(retrieveCmd), 
+     				new MetaDataPropertyLoader(readableProperties));
+     		
+     		for (DataSetProperty prop : readableProperties) {
+     			// By default, properties are writable, sortable, and filterable. But
+     			// for SQL datasets, assume these values are false unless overridden further below
+     			prop.setWritable(false);
+     			prop.setFilterable(false);
+     			prop.setSortable(false);
+     			propertySet.put(prop.getName(), prop);    			
+     		}
+    	}
+    	
+    	// Record whether or not we obtained any readable properties
+    	boolean haveReadableSet = readableProperties.size() > 0;
+
+    	// Factor in write-ability of properties. All fields in the root table (entity) are
+    	// considered writable. Properties not in the root table, i.e. from joined tables,
+    	// are not considered writable.
+    	if (!StringUtils.isEmpty(getEntity())) {
+    		// We'll use the default retrieval command, which 
+    		// is simply a "select * from table" command. We'll
+    		// tack on criteria that will guarantee no hits because
+    		// we're only interested in metadata.
+			dbclient.query(getDefaultRetrieveCommand().getSql() + " where 1<>1", 
+				new MetaDataPropertyLoader(writableProperties));
+			
+			// For all writable properties...
+			for (DataSetProperty prop : writableProperties) {
+				// If the caller has explicitly limited the set of available properties
+				// with an explicit retrieve command...
+				if (haveReadableSet) {
+					DataSetProperty readableProp = propertySet.get(prop.getName());
+					// If the property exists, this property should be considered writable
+					if (readableProp != null) {
+						prop = readableProp;
+					} // otherwise, the caller has explicitly ecluded this property
+				} else { // Writable and readable properties are the same
+					propertySet.put(prop.getName(), prop);
+				}
+				
+				// Record the fact that the property is writable
+				prop.setWritable(true);
+			}
+    	}
+    	
+    	// Set other flags based on certain conventions and rules, and add all
+    	// properties to the metadat object
+    	DataSetMetaData metaData = new DataSetMetaData();   	
+    	for (DataSetProperty prop : propertySet.values()) {
+    		
+    		// ID/ID Ref flags
+    		if (idNamePattern.matcher(prop.getName()).matches()) {
+    			prop.setId(true);
+    		} else if (idRefNamePattern.matcher(prop.getName()).matches()) {
+    			prop.setIdRef(true);    			
+    		}
+    		
+    		// A property will be considered sortable and filterable if it
+    		// is a simple, atomic type
+    		if (isAtomicProperty(prop.getName())) {
+    			prop.setFilterable(true);
+    			prop.setSortable(true);
+    		}
+    		
+    		// Add the property to the metadata object
+    		metaData.addProperty(prop);
+    	}
+    	        
+    	return metaData;
+    }
+    
     /**
      * Class for loading a result set's metadata into a DataSetProperty collection.
      * 
      */
     public static class MetaDataPropertyLoader implements ResultSetExtractor<Object> {
 
-        private IDataSet dataSet;
         private List<DataSetProperty> properties;
 
         /**
@@ -1323,9 +1361,8 @@ public abstract class SqlDataSet extends AbstractDataSet {
          * @param dataSet The dataset to use
          * @param props The property collection to load into
          */
-        public MetaDataPropertyLoader(IDataSet dataSet, List<DataSetProperty> props) {
-            this.dataSet = dataSet;
-            this.properties = props;
+        public MetaDataPropertyLoader(List<DataSetProperty> props) {
+             this.properties = props;
         }
 
         @Override
@@ -1336,12 +1373,12 @@ public abstract class SqlDataSet extends AbstractDataSet {
                 int ct = metaData.getColumnCount();
 
                 for (int i = 1; i <= ct; i++) {
-                    DataSetProperty prop = new DataSetProperty(dataSet);
-                    prop.setName(metaData.getColumnLabel(i).toUpperCase()); // upper consistency
-                    prop.setSize(metaData.getColumnDisplaySize(i));
-                    prop.setScale(metaData.getPrecision(i));
-                    prop.setClassName(metaData.getColumnClassName(i));
+                	String propName = PropertyNameUtils.normalizeName(metaData.getColumnLabel(i));
+                	
+                    DataSetProperty prop = new DataSetProperty(propName, metaData.getColumnClassName(i));
+                    
                     prop.setVariant(metaData.getColumnTypeName(i));
+                    prop.setSize(metaData.getColumnDisplaySize(i));
 
                     properties.add(prop);
                 }
