@@ -1,6 +1,6 @@
 package net.jsa.crib.ds.impl;
 
-import ind.jsa.crib.ds.internal.type.utils.DateTimePattern;
+import ind.jsa.crib.ds.internal.type.convert.std.DateTimePattern;
 
 import java.io.IOException;
 import java.io.OutputStream;
