@@ -6,7 +6,7 @@ import net.jsa.crib.ds.api.FilterExpression.FilterOperator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
-import ind.jsa.crib.ds.internal.utils.type.ToIntUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToIntUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,19 +1,19 @@
-package ind.jsa.crib.ds.internal;
+package ind.jsa.crib.ds.internal.type;
 
-import ind.jsa.crib.ds.internal.utils.type.ToBgdUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToBgiUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToBoolUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToByteUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToCalUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToChrUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToDblUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToDtUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToFltUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToIntUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToLngUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToShrtUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToStrUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToTsUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToBgdUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToBgiUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToBoolUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToByteUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToCalUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToChrUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToDblUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToDtUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToFltUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToIntUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToLngUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToShrtUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToStrUtils;
+import ind.jsa.crib.ds.internal.type.utils.std.ToTsUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

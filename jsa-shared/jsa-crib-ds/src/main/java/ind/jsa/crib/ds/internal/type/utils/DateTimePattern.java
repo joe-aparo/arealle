@@ -1,4 +1,4 @@
-package ind.jsa.crib.ds.internal.utils.type;
+package ind.jsa.crib.ds.internal.type.utils;
 
 import java.util.HashMap;
 import java.util.Map;

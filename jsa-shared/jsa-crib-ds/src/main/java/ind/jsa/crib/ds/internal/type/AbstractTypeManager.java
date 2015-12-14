@@ -1,4 +1,4 @@
-package ind.jsa.crib.ds.internal;
+package ind.jsa.crib.ds.internal.type;
 
 import ind.jsa.crib.ds.api.ITypeManager;
 

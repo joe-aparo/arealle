@@ -19,6 +19,7 @@ import ind.jsa.crib.ds.api.IDataSetProperty;
 import ind.jsa.crib.ds.api.IDataSetResultHandler;
 import ind.jsa.crib.ds.api.IKeyGenerator;
 import ind.jsa.crib.ds.api.ITypeManager;
+import ind.jsa.crib.ds.internal.type.DefaultTypeManager;
 import net.jsa.common.logging.LogUtils;
 
 import org.slf4j.Logger;
