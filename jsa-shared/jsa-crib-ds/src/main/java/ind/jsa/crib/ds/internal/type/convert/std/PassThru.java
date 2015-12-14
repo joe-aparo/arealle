@@ -1,4 +1,4 @@
-package net.jsa.crib.ds.impl.type;
+package ind.jsa.crib.ds.internal.type.convert.std;
 
 import net.jsa.crib.ds.api.ILogicalTypeConverter;
 

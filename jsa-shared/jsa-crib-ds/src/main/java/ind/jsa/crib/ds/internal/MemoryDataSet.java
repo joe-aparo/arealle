@@ -20,7 +20,6 @@ import ind.jsa.crib.ds.api.IKeyGenerator;
 import ind.jsa.crib.ds.api.DataSetQuery.FilterExpression;
 import ind.jsa.crib.ds.api.DataSetQuery.SortDirection;
 import ind.jsa.crib.ds.api.DataSetQuery.FilterOperator;
-import ind.jsa.crib.ds.internal.utils.PropertyNameUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;

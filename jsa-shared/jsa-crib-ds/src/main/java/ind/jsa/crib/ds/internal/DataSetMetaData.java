@@ -2,7 +2,6 @@ package ind.jsa.crib.ds.internal;
 
 import ind.jsa.crib.ds.api.IDataSetMetaData;
 import ind.jsa.crib.ds.api.IDataSetProperty;
-import ind.jsa.crib.ds.internal.utils.PropertyNameUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;

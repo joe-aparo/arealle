@@ -1,19 +1,20 @@
 package net.jsa.crib.ds.impl;
 
-import ind.jsa.crib.ds.internal.utils.type.ToBgdUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToBgiUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToBoolUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToByteUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToCalUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToChrUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToDblUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToDtUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToFltUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToIntUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToLngUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToShrtUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToStrUtils;
-import ind.jsa.crib.ds.internal.utils.type.ToTsUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.PassThru;
+import ind.jsa.crib.ds.internal.type.convert.std.ToBgdUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToBgiUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToBoolUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToByteUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToCalUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToChrUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToDblUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToDtUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToFltUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToIntUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToLngUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToShrtUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToStrUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToTsUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -25,7 +26,6 @@ import net.jsa.crib.ds.api.ILogicalTypeConverter;
 import net.jsa.crib.ds.api.ILogicalTypeRegistry;
 import net.jsa.crib.ds.api.ILogicalTypeRegistryInitializer;
 import net.jsa.crib.ds.api.LogicalType;
-import net.jsa.crib.ds.impl.type.PassThru;
 
 
 /**
