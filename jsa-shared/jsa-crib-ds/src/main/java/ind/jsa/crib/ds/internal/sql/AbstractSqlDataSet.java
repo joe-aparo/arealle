@@ -15,7 +15,7 @@ import ind.jsa.crib.ds.internal.DataSetMetaData;
 import ind.jsa.crib.ds.internal.DataSetProperty;
 import ind.jsa.crib.ds.internal.IdListDataSetResultHandler;
 import ind.jsa.crib.ds.internal.ListDataSetResultHandler;
-import ind.jsa.crib.ds.internal.utils.PropertyNameUtils;
+import ind.jsa.crib.ds.internal.PropertyNameUtils;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
