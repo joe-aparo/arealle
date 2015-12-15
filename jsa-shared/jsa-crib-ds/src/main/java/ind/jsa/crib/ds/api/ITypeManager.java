@@ -24,4 +24,12 @@ public interface ITypeManager {
 	int compareValues(Object val1, Object val2);
 	
 	int compareValues(Object val1, String variant1, Object val2, String variant2);
+	
+	public interface ITypeManagerPlugin {
+		/**
+		 * Register the plugin with the type manager.
+		 * @param typeManager The type manager to register with
+		 */
+		void register (ITypeManager typeManager);
+	}
 }
