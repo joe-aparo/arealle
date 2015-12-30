@@ -45,8 +45,8 @@ public abstract class AbstractDataSet implements IDataSet {
 	private List<String> propertyOrder;
 		
 	// The following fields are derived on initialization.
+	private String idPropertyName = null;
 	private Set<String> orderedPropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
-	private Set<String> idPropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
 	private Set<String> refIdPropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
 	private Set<String> sortablePropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
 	private Set<String> writablePropertyNames = new LinkedHashSet<String>(DFT_PROPERTY_LIST_SIZE);
@@ -84,7 +84,7 @@ public abstract class AbstractDataSet implements IDataSet {
 		establishPropertyOrdering();
 		
 		// Now set other collections based on established ordered properties
-		idPropertyNames.addAll(orderPropertyNames(metaData.getIdPropertyNames(), false));
+		idPropertyName = metaData.getIdPropertyName();
 		refIdPropertyNames.addAll(orderPropertyNames(metaData.getIdRefPropertyNames(), false));
 		writablePropertyNames.addAll(orderPropertyNames(metaData.getWritablePropertyNames(), true));						
 		filterablePropertyNames.addAll(orderPropertyNames(metaData.getFilterablePropertyNames(), true));			
@@ -190,11 +190,11 @@ public abstract class AbstractDataSet implements IDataSet {
 
 	/*
 	 * (non-Javadoc)
-	 * @see ind.jsa.crib.ds.api.IDataSet#getIdentityProperties()
+	 * @see ind.jsa.crib.ds.api.IDataSet#getIdPropertyName()
 	 */
 	@Override
-	public List<String> getIdPropertyNames() {
-		return new ArrayList<String>(idPropertyNames);
+	public String getIdPropertyName() {
+		return idPropertyName;
 	}
 
 	/*
@@ -212,7 +212,7 @@ public abstract class AbstractDataSet implements IDataSet {
 	 */
 	@Override
     public boolean isIdProperty(String name) {
-    	return idPropertyNames.contains(name);
+    	return idPropertyName != null && idPropertyName.equals(name);
     }
 
     /*
@@ -221,7 +221,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
 	@Override
     public boolean isIdRefProperty(String name) {
-    	return idPropertyNames.contains(name);
+    	return refIdPropertyNames.contains(name);
     }
     
     /*
@@ -230,7 +230,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
 	@Override
     public boolean isWritableProperty(String name) {
-    	return idPropertyNames.contains(name);
+    	return writablePropertyNames.contains(name);
     }
     
     /*
@@ -239,7 +239,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
 	@Override
     public boolean isFilterableProperty(String name) {
-    	return idPropertyNames.contains(name);
+    	return filterablePropertyNames.contains(name);
     }
     
     /*
@@ -248,7 +248,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
 	@Override
     public boolean isSortableProperty(String name) {
-    	return idPropertyNames.contains(name);
+    	return sortablePropertyNames.contains(name);
     }
 
 	/*
@@ -288,6 +288,15 @@ public abstract class AbstractDataSet implements IDataSet {
 		return getItemCount(new DataSetQuery());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSet#blankItem()
+	 */
+	@Override
+	public IDataSetItem blankItem() {
+		return new DataSetItem(this);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see ind.jsa.crib.ds.api.IDataSet#create(java.util.Map)

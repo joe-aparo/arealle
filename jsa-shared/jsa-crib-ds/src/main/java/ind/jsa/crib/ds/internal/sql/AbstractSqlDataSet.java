@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -47,8 +48,8 @@ import org.springframework.util.CollectionUtils;
  */
 public abstract class AbstractSqlDataSet extends AbstractDataSet {
 
-	private static final String DEFAULT_ID_REGEX = "[iI][dD]";
-	private static final String DEFAULT_IDREF_REGEX = "_[iI][dD]";
+	private static final String DEFAULT_ID_REGEX = "^(_?[iI][dD])$";
+	private static final String DEFAULT_IDREF_REGEX = "^\\w(_[iI][dD])$";
 	
     /**
      * Alias of wrapped inner query.
@@ -272,16 +273,9 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
 
         // attempt to seed the values with a set of newly
         // generated keys
-        List<String> keyIds = getIdPropertyNames();
-        if (!CollectionUtils.isEmpty(keyIds)) {
-            Map<String, Object> newKeys = getNewKeyValues(item);
-            if (newKeys != null) {
-                for (Entry<String, Object> e : newKeys.entrySet()) {
-                    if (item.get(e.getKey()) == null) {
-                        item.put(e.getKey(), e.getValue());
-                    }
-                }
-            }
+        String idPropName = getIdPropertyName();
+        if (!StringUtils.isEmpty(idPropName)) {
+        	item.put(idPropName, getNewKeyValue(item));
         }
 
         // invoke the insert
@@ -314,16 +308,13 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
      */
     @Override
     public void update(DataSetQuery query, IDataSetItem item) {
-        List<String> keyIds = getIdPropertyNames();
+        String idPropName = getIdPropertyName();
 
         // this call works for single id datasets only
-        if (keyIds.size() != 1) {
+        if (StringUtils.isEmpty(idPropName)) {
             return;
         }
         
-        // Get the id property name
-        String idProp = keyIds.iterator().next();
-
         // Retrieve the list of ids impacted by the update
         DataSetQuery idQuery = new DataSetQuery();
 
@@ -338,11 +329,13 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
                     expr.getUpperBoundValue());
         }
 
+        Set<String> fields = new HashSet<String>(1);
+        fields.add(idPropName);
         // we're only interested in the key field
-        idQuery.setFields(keyIds);
+        idQuery.setFields(fields);
 
         // fetch the id list
-        IdListDataSetResultHandler handler = new IdListDataSetResultHandler(this, query, idProp);
+        IdListDataSetResultHandler handler = new IdListDataSetResultHandler(this, query, idPropName);
         retrieve(idQuery, handler);
 
         List<Object> idList = handler.getIds();
@@ -360,11 +353,11 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
         	
 	        // set up an update command based on a single filter for ids
 	        idQuery.clearFilters();
-	        idQuery.putFilter(idProp, FilterOperator.ONE_OF, updateIds);
+	        idQuery.putFilter(idPropName, FilterOperator.ONE_OF, updateIds);
 	        SqlCommand cmd = updateCmd != null ? updateCmd : 
 	        	getDefaultUpdateCommand(item, idQuery.getFilters());
 	
-	        item.put(idProp, updateIds);
+	        item.put(idPropName, updateIds);
 	        dbclient.update(cmd.getSql(), item);
         }
     }
@@ -468,16 +461,14 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
 
             // Ensure to include keys in the statement if specified for the
             // dataset if not passed in as part of the given fields
-            List<String> keyIds = getIdPropertyNames();
-            if (keyIds != null && keyIds.size() > 0) {
-                for (String k : keyIds) {
-                    if (!fields.contains(k)) {
-                        if (ct++ > 0) {
-                            sql.append(',');
-                        }
-                        sql.append(k);
+            String idPropName = getIdPropertyName();
+            if (!StringUtils.isEmpty(idPropName)) {
+                 if (!fields.contains(idPropName)) {
+                    if (ct++ > 0) {
+                        sql.append(',');
                     }
-                }
+                    sql.append(idPropName);
+                 }
             }
 
             // Construct the values portion of the insert statement
@@ -498,14 +489,12 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
             // ensure to include value keys in the statement if
             // specified for the dataset and not passed in as
             // part of the given fields
-            if (keyIds != null && keyIds.size() > 0) {
-                for (String k : keyIds) {
-                    if (!fields.contains(k)) {
-                        if (ct++ > 0) {
-                            sql.append(',');
-                        }
-                        sql.append(':').append(k);
+            if (!StringUtils.isEmpty(idPropName)) {
+                if (!fields.contains(idPropName)) {
+                    if (ct++ > 0) {
+                        sql.append(',');
                     }
+                    sql.append(':').append(idPropName);
                 }
             }
 
@@ -532,9 +521,9 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
 
         SqlCommand cmd = null;
         Set<String> fields = values.keySet();
-        List<String> keyIds = getIdPropertyNames();
+        String idPropName = getIdPropertyName();
 
-        if (fields.size() > 0 && keyIds.size() > 0) {
+        if (!StringUtils.isEmpty(idPropName)) {
             StringBuilder sql = new StringBuilder(INIT_SQL_SIZE);
 
             // preamble
@@ -547,7 +536,7 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
             // set up the column=:value portion of the statement
             int ct = 0;
             for (String fld : fields) {
-                if (!keyIds.contains(fld) && isWritableProperty(fld)) { // exclude keys
+                if (!fld.equals(idPropName) && isWritableProperty(fld)) { // exclude keys
                     if (ct++ > 0) {
                         sql.append(',');
                     }
@@ -563,15 +552,9 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
             // If specified, use filters to select rows to update
             if (filters != null && filters.size() > 0) {
                 appendFilterWhereClause(filters, sql, false);
-            } else if (keyIds.size() > 0) { // Otherwise attempt to use keys
+            } else if (!StringUtils.isEmpty(idPropName)) { // Otherwise attempt to use keys
                 sql.append(" where ");
-                int count = 0;
-                for (String k : keyIds) {
-                    if (count++ > 0) {
-                        sql.append(" AND ");
-                    }
-                    sql.append(k).append("=:").append(k);
-                }
+                sql.append(idPropName).append("=:").append(idPropName);
             }
 
             cmd = new SqlCommand(sql.toString());
@@ -590,8 +573,8 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
     protected SqlCommand getDefaultDeleteCommand() {
         SqlCommand cmd = null;
 
-        List<String> keyIds = getIdPropertyNames();
-        if (getEntity() != null && keyIds != null) {
+        String idPropName = getIdPropertyName();
+        if (!StringUtils.isEmpty(idPropName)) {
             // preamble
             StringBuilder sql = new StringBuilder(INIT_SQL_SIZE);
             sql.append("delete from ");
@@ -601,13 +584,7 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
 
             // where clause
             sql.append(getEntity()).append(" where ");
-            int count = 0;
-            for (String k : keyIds) { // account for multiple keys
-                if (count++ > 0) {
-                    sql.append(" AND ");
-                }
-                sql.append(k).append("=:").append(k);
-            }
+            sql.append(idPropName).append("=:").append(idPropName);
 
             cmd = new SqlCommand(sql.toString());
         }
@@ -971,11 +948,14 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
      * 
      * @return A collection of name/value pairs representing the new keys and their values.
      */
-    protected Map<String, Object> getNewKeyValues(Map<String, Object> params) {
-        Map<String, Object> keyValues = new HashMap<String, Object>();
+    protected Object getNewKeyValue(Map<String, Object> params) {
+        Object keyValue = null;
 
-        List<String> keyIds = getIdPropertyNames();
-        if (keyIds != null && keyIds.size() > 0) {
+        String idPropName = getIdPropertyName();
+        if (!StringUtils.isEmpty(idPropName)) {
+	        List<String> keyIds = new ArrayList<String>(1);
+	        keyIds.add(idPropName);
+        
             SqlCommand keyCmd = newKeyCmd != null ? newKeyCmd : getDefaultNewKeyCommand();
             if (keyCmd != null) {
                 SingleRowHandler handler = new SingleRowHandler(this, keyIds);
@@ -983,18 +963,14 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
 
                 DataSetItem item = handler.getItem();
                 if (item != null) {
-                    for (String k : keyIds) {
-                        keyValues.put(k, item.get(k));
-                    }
+                	keyValue = item.get(idPropName);
                 }
             } else if (getKeyGenerator() != null) {
-                for (String k : keyIds) {
-                    keyValues.put(k, getKeyGenerator().generateKeyValue(this, k));
-                }
+            	keyValue = getKeyGenerator().generateKeyValue(this);
             }
         }
 
-        return keyValues;
+        return keyValue;
     }
 
     /**

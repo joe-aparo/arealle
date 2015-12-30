@@ -29,43 +29,43 @@ public class ToBsonLngUtils {
 	}
 
 	public static BsonInt64 shrt2Lng(Short val) {
-		return val != null ?new BsonInt64(ToLngUtils.shrt2Lng(val)) : null;
+		return val != null ? new BsonInt64(ToLngUtils.shrt2Lng(val)) : null;
 	}
 
 	public static BsonInt64 int2Lng(Integer val) {
-		return val != null ? Long.valueOf(val.longValue()) : null;
+		return val != null ? new BsonInt64(Long.valueOf(val.longValue())) : null;
 	}
 
 	public static BsonInt64 bgi2Lng(BigInteger val) {
-		return val != null ? Long.valueOf(val.longValue()) : null;
+		return val != null ? new BsonInt64(Long.valueOf(val.longValue())) : null;
 	}
 
 	public static BsonInt64 flt2Lng(Float val) {
-		return val != null ? Long.valueOf(val.longValue()) : null;
+		return val != null ? new BsonInt64(Long.valueOf(val.longValue())) : null;
 	}
 
 	public static BsonInt64 dbl2Lng(Double val) {
-		return val != null ? Long.valueOf(val.longValue()) : null;
+		return val != null ? new BsonInt64(Long.valueOf(val.longValue())) : null;
 	}
 
 	public static BsonInt64 bgd2Lng(BigDecimal val) {
-		return val != null ? Long.valueOf(val.longValue()) : null;
+		return val != null ? new BsonInt64(Long.valueOf(val.longValue())) : null;
 	}
 
 	public static BsonInt64 cal2Lng(Calendar val) {
-		return val != null ? Long.valueOf(val.getTimeInMillis()) : null;
+		return val != null ? new BsonInt64(Long.valueOf(val.getTimeInMillis())) : null;
 	}
 
 	public static BsonInt64 dt2Lng(Date val) {
-		return val != null ? Long.valueOf(val.getTime()) : null;
+		return val != null ? new BsonInt64(Long.valueOf(val.getTime())): null;
 	}
 
 	public static BsonInt64 ts2Lng(Timestamp val) {
-		return val != null ? Long.valueOf(val.getTime()) : null;
+		return val != null ? new BsonInt64(Long.valueOf(val.getTime())) : null;
 	}
 
 	public static BsonInt64 bool2Lng(Boolean val) {
-		return Long.valueOf(val != null && val ? 1 : 0);
+		return new BsonInt64(Long.valueOf(val != null && val ? 1 : 0));
 	}
 
 }

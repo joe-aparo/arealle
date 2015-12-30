@@ -21,6 +21,7 @@ public class DataSetProperty implements IDataSetProperty
     private boolean writable = true;
     private boolean filterable = true;
     private boolean sortable = true;
+    private boolean multiValued = true;
 
 	private Map<String, Object> attrs = new HashMap<String, Object>();
 	
@@ -208,5 +209,23 @@ public class DataSetProperty implements IDataSetProperty
 	 */
 	public void setSortable(boolean sortable) {
 		this.sortable = sortable;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetProperty#isMultiValued()
+	 */
+	@Override
+	public boolean isMultiValued() {
+		return multiValued;
+	}
+
+	/**
+	 * Set whether property can have multiple values.
+	 * 
+	 * @param multiValued An indicator
+	 */
+	public void setMultiValued(boolean multiValued) {
+		this.multiValued = multiValued;
 	}
 }

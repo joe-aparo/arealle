@@ -101,6 +101,15 @@ public class DataSetMetaData implements IDataSetMetaData {
 
 	/*
 	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getIdProperty()
+	 */
+	@Override
+	public IDataSetProperty getIdProperty() {
+		return getProperty(getIdPropertyName());
+	}
+	
+	/*
+	 * (non-Javadoc)
 	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getPropertyIndex(java.lang.String)
 	 */
 	@Override
@@ -124,8 +133,9 @@ public class DataSetMetaData implements IDataSetMetaData {
 	 * @see ind.jsa.crib.ds.api.IDataSetMetaData#getIdentityPropertyNames()
 	 */
 	@Override
-	public Collection<String> getIdPropertyNames() {
-		return filterProperties((IDataSetProperty p) -> p.isId());
+	public String getIdPropertyName() {
+		Collection<String> propNames = filterProperties((IDataSetProperty p) -> p.isId());
+		return !propNames.isEmpty() ? propNames.iterator().next() : null;
 	}
 
 	/*
