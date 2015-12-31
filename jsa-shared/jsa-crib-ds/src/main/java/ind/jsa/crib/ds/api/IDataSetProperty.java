@@ -64,4 +64,10 @@ public interface IDataSetProperty {
      * @return An indicator (true by default).
      */
     boolean isSortable();
+    
+    /**
+     * Indicates whether the property may have multiple values.
+     * @return An indicator (false by default).
+     */
+    boolean isMultiValued();
 }

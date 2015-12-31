@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import ind.jsa.crib.ds.api.IDataSet;
 import ind.jsa.crib.ds.api.IDataSetItem;
 import ind.jsa.crib.ds.api.IDataSetProperty;
@@ -40,6 +42,27 @@ public class DataSetItem implements IDataSetItem {
 		this(dataSet, null);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#setId(java.lang.Object)
+	 */
+	@Override
+	public void setId(Object value) {
+        String idPropName = dataSet.getMetaData().getIdPropertyName();
+        if (!StringUtils.isEmpty(idPropName)) {
+        	put(idPropName, value);
+        }
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getId()
+	 */
+	@Override
+	public Object getId() {
+        return get(dataSet.getMetaData().getIdPropertyName());
+	}
+	
 	/**
 	 * An item is connected to its containing DataSet in order to manage and
 	 * expose an internal array of values for the item.

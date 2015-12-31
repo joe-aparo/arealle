@@ -61,7 +61,7 @@ public class ToStrUtils {
 	}
 	
 	public static String bool2Str(Boolean val) {
-		return val.toString();
+		return val != null ? val.toString() : null;
 	}
 
 	/**
@@ -72,6 +72,10 @@ public class ToStrUtils {
 	 * @return A formatted date string
 	 */
 	public static String convertDateToStr(Date dt) {
+		if (dt == null) {
+			return null;
+		}
+		
 		String pattern = DateTimePattern.UNIVERSAL_DATETIME_PATTERN.toString();
         return new SimpleDateFormat(pattern).format(dt);		
 	}

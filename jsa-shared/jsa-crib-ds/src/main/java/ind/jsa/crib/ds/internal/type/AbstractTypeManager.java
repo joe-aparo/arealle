@@ -2,15 +2,58 @@ package ind.jsa.crib.ds.internal.type;
 
 import ind.jsa.crib.ds.api.ITypeManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.util.CollectionUtils;
+
+/**
+ * Base class for ITypeManager implementations. Supports the idea of 'plugins'
+ * that user used to initialize the type manager in a flexible manner.
+ * 
+ * @author jo26419
+ *
+ */
 public abstract class AbstractTypeManager implements ITypeManager {
 
 	private Map<String, Long> typeNatures = new HashMap<String, Long>();
 	private Map<String, Map<String, Function<Object, Object>>> typeConverters = 
 			new HashMap<String, Map<String, Function<Object, Object>>>();
+
+	public List<ITypeManagerPlugin> plugins = new ArrayList<ITypeManagerPlugin>();
+	
+	/**
+	 * Sets the plugins to be used for initialization. Must be called before the
+	 * call to initialize.
+	 * 
+	 * @param plugins
+	 */
+	public void addPlugins(List<ITypeManagerPlugin> plugins) {
+		this.plugins.addAll(plugins);
+	}
+	
+	/**
+	 * Add an individuall plugin. Must be called before the call to initialize.
+	 * 
+	 * @param plugin
+	 */
+	public void addPlugin(ITypeManagerPlugin plugin) {
+		this.plugins.add(plugin);
+	}
+	
+	/**
+	 * Initialize the type manager by registering any associated plugins.
+	 */
+	public void initialize() {
+		if (!CollectionUtils.isEmpty(plugins)) {
+			for (ITypeManagerPlugin plugin : plugins) {
+				plugin.register(this);
+			}
+		}
+	}
 	
 	/*
 	 * (non-Javadoc)

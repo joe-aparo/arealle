@@ -43,6 +43,13 @@ public interface IDataSetMetaData {
 	 */
 	Map<String, IDataSetProperty> getPropertyiesByName();
 
+	/**
+	 * Get the property designated as the identifier.
+	 * 
+	 * @return A property, or null if not specified
+	 */
+	IDataSetProperty getIdProperty();
+	
     /**
      * Get a property associated with the DataSet by ordinal index.
      *
@@ -60,12 +67,12 @@ public interface IDataSetMetaData {
 	String getPropertyName(int idx);
 	
 	/**
-	 * Get the names of properties representing the
-	 * item identifier (typically only one).
+	 * Get the name of property representing the
+	 * item identifier. Only one id property name is supported.
 	 * 
-	 * @return A collection of property names, or null if not specified.
+	 * @return A property name, or null if not specified.
 	 */
-	Collection<String> getIdPropertyNames();
+	String getIdPropertyName();
 	
 	/**
 	 * Get the names of properties that represent

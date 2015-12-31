@@ -16,7 +16,7 @@ public class GuidKeyGenerator implements IKeyGenerator {
      * @see com.jsa.crib.ds.api.IKeyGenerator#generateKeyValue(java.lang.String, java.lang.String)
      */
     @Override
-    public Object generateKeyValue(IDataSet dataSet, String keyField) {
+    public Object generateKeyValue(IDataSet dataSet) {
         String guid = UUID.randomUUID().toString();
 
         return guid;

@@ -104,14 +104,8 @@ public class MemoryDataSet extends AbstractDataSet {
         DataSetItem item = new DataSetItem(this, values);
 
         // If the dataset specifies a key, but no key value has been provided, generate one
-        List<String> keyNames = getIdPropertyNames();
-        if (!CollectionUtils.isEmpty(keyNames)) {
-        	for (String keyName : keyNames) {
-        		if (values.get(keyName) == null) {
-        			Object keyValue = getKeyGenerator().generateKeyValue(this, keyName);
-        			item.put(keyName, keyValue);
-        		}
-        	}
+        if (item.getId() == null && getKeyGenerator() != null) {
+        	item.setId(getKeyGenerator().generateKeyValue(this));
         }
         
         // put the new item in the cached list
@@ -136,40 +130,34 @@ public class MemoryDataSet extends AbstractDataSet {
 	 * @see ind.jsa.crib.ds.api.IDataSet#retrieve(java.util.Map)
 	 */
 	@Override
-	public IDataSetItem retrieve(Map<String, Object> keys) {
+	public IDataSetItem retrieve(Object id) {
 		
+        String idPropName = getMetaData().getIdPropertyName();
+
 		// Only works for datasets having a defined key
-		if (CollectionUtils.isEmpty(getIdPropertyNames())) {
+		if (StringUtils.isEmpty(idPropName)) {
+			return null;
+		}
+		
+		// Passing the value through a blank item will ensure that
+		// the given value is converted to the correct type
+		IDataSetItem blank = blankItem();
+		blank.setId(id);
+		Object idVal = blank.getId();
+		
+		// Value could not be converted
+		if (idVal == null) {
 			return null;
 		}
 		
         // assume empty query
         DataSetQuery query = new DataSetQuery();
+        query.putParam(idPropName, idVal);
 
-        // the item to return
-        DataSetItem item = null;
+        // filter the items
+        List<DataSetItem> items = filterItems(query);
 
-        Set<String> keyNames = new LinkedHashSet<String>(getIdPropertyNames());
-
-        // only use configured keys
-        for (Entry<String, Object> e : keys.entrySet()) {
-        	String propName = PropertyNameUtils.normalizeName(e.getKey());
-            if (keyNames.contains(propName)) {
-                query.putParam(propName, e.getValue());
-            }
-        }
-
-        // If we have keys to fetch on, look for items
-        if (query.getParams().size() > 0) {
-            // filter the items
-            List<DataSetItem> items = filterItems(query);
-
-            // grab the first one if > 0
-            item = items.size() > 0 ? items.get(0) : null;
-        }
-
-        return item;
-
+        return items.size() > 0 ? items.get(0) : null;
 	}
 
     /*
@@ -481,9 +469,9 @@ public class MemoryDataSet extends AbstractDataSet {
          * java.lang.String)
          */
         @Override
-        public Object generateKeyValue(IDataSet dataSet, String keyField) {
+        public Object generateKeyValue(IDataSet dataSet) {
             Integer val = Integer.valueOf(currentId++);
-            IDataSetProperty prop = dataSet.getMetaData().getProperty(keyField);
+            IDataSetProperty prop = dataSet.getMetaData().getIdProperty();
             if (prop != null) {
             	return dataSet.getTypeManager().convert(val, null, prop.getType(), prop.getVariant());
             }

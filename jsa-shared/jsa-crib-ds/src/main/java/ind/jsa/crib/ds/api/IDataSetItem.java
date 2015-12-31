@@ -23,6 +23,18 @@ public interface IDataSetItem extends Map<String, Object> {
 	 */
 	IDataSet getDataSet();
 	
+	/**
+	 * Set the value of the property designated as the id for the dataset.
+	 * 
+	 * @param value The value to set
+	 */
+	void setId(Object value);
+	
+	/**
+	 * Get the value of the property designated as the id for the dataset.
+	 */
+	Object getId();
+	
     /**
      * Get the value for a specified property index.
      * 

@@ -65,13 +65,12 @@ public interface IDataSet {
     void retrieve(IDataSetResultHandler handler);
 
     /**
-     * Retrieve a single item from the DataSet. Only 1 or 0 items will be returned. The given key values will
-     * be used to identify the item in question.
+     * Retrieve a single item from the DataSet. Only 1 or 0 items will be returned.
      * 
-     * @param keys The values used retrieve the single item
+     * @param id The id value used retrieve the single item
      * @return A single item from the DataSet, or null if no result
      */
-    IDataSetItem retrieve(Map<String, Object> keys);
+    IDataSetItem retrieve(Object id);
 
     /**
      * Retrieve all items from the dataset as a list.
@@ -89,6 +88,14 @@ public interface IDataSet {
      */
     IDataSetItem retrieve(int index);
 
+    /**
+     * Instantiate a blank item from the dataset. The item is not stored and exists
+     * only in memory.
+     * 
+     * @return An empty item consistent with the dataset.
+     */
+    IDataSetItem blankItem();
+    
     /**
      * Create a single item in the DataSet. The given values are presumed to represent the intended set of
      * values for the newly created item.
@@ -196,11 +203,11 @@ public interface IDataSet {
     List<String> getFilterablePropertyNames();
     
     /**
-     * Get a list of all identity property names for the dataset, in proper order.
+     * Get the identity property name for the dataset.
      * 
      * @return A list of data set properties
      */
-    List<String> getIdPropertyNames();
+    String getIdPropertyName();
     
     /**
      * Get a list of all reference property names for the dataset, in proper order.
