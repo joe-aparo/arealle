@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 
@@ -19,7 +20,7 @@ import ind.jsa.crib.ds.api.IDataSetProperty;
 import ind.jsa.crib.ds.api.IDataSetResultHandler;
 import ind.jsa.crib.ds.api.IKeyGenerator;
 import ind.jsa.crib.ds.api.ITypeManager;
-import ind.jsa.crib.ds.internal.type.DefaultTypeManager;
+import ind.jsa.crib.ds.internal.type.plugins.StdTypeManagerPlugin;
 import net.jsa.common.logging.LogUtils;
 
 import org.slf4j.Logger;
@@ -297,6 +298,24 @@ public abstract class AbstractDataSet implements IDataSet {
 		return new DataSetItem(this);
 	}
 	
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#exampleItem(java.util.Map)
+     */
+    @Override
+    public IDataSetItem exampleItem(Map<String, Object> values) {
+    	IDataSetItem item = blankItem();
+
+    	// Load values into blan item
+    	if (!CollectionUtils.isEmpty(values)) {
+	    	for (Entry<String, Object> entry : values.entrySet()) {
+	    		item.put(entry.getKey(), entry.getValue());
+	    	}
+    	}
+    	
+    	return item;
+    }
+    
 	/*
 	 * (non-Javadoc)
 	 * @see ind.jsa.crib.ds.api.IDataSet#create(java.util.Map)
@@ -381,10 +400,44 @@ public abstract class AbstractDataSet implements IDataSet {
 
     /*
      * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#retrieve(java.util.Map)
+     */
+    @Override
+    public IDataSetItem retrieve(Map<String, Object> params) {
+    	
+    	IDataSetItem item = exampleItem(params);
+    	
+        // Filter the dataset with a query initialized with the given keys
+        DataSetQuery query = new DataSetQuery();
+
+        // first store parameters in query and remove them from input map
+        for (String p : params.keySet()) {
+        	Object val = item.get(p);
+            if (val != null) {
+                query.putParam(p, val);
+            }
+        }
+
+        // Only return one row. If there are more that meet the criteria
+        // they are ignored.
+        query.setMaxRows(1);
+
+        ListDataSetResultHandler handler = new ListDataSetResultHandler(this, query);
+
+        // fetch the data and accumulate in the handler
+        retrieve(query, handler);
+
+        // return the first row
+        return handler.getItems().size() > 0 ? handler.getItems().get(0) : null;
+    }
+
+
+    /*
+     * (non-Javadoc)
      * @see ind.jsa.crib.ds.api.IDataSet#isAtomicProperty(java.lang.String)
      */
     public boolean isAtomicProperty(String name) {
-    	return propertyIsOfNature(name, DefaultTypeManager.ATOMIC_NATURE);
+    	return propertyIsOfNature(name, StdTypeManagerPlugin.ATOMIC_NATURE);
     }
 
     /*
@@ -393,7 +446,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
     @Override
     public boolean isStringProperty(String name) {
-    	return propertyIsOfNature(name, DefaultTypeManager.STRING_NATURE);
+    	return propertyIsOfNature(name, StdTypeManagerPlugin.STRING_NATURE);
     }
     
     /*
@@ -402,7 +455,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
     @Override
     public boolean isNumericProperty(String name) {
-       	return propertyIsOfNature(name, DefaultTypeManager.NUMERIC_NATURE);
+       	return propertyIsOfNature(name, StdTypeManagerPlugin.NUMERIC_NATURE);
     }
 
     /*
@@ -411,7 +464,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
     @Override
     public boolean isIntegerProperty(String name) {
-       	return propertyIsOfNature(name, DefaultTypeManager.INTEGER_NATURE);
+       	return propertyIsOfNature(name, StdTypeManagerPlugin.INTEGER_NATURE);
     }
 
     /*
@@ -420,7 +473,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
     @Override
     public boolean isDecimalProperty(String name) {
-       	return propertyIsOfNature(name, DefaultTypeManager.DECIMAL_NATURE);
+       	return propertyIsOfNature(name, StdTypeManagerPlugin.DECIMAL_NATURE);
     }
     
     /*
@@ -429,7 +482,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
     @Override
     public boolean isDateTimeProperty(String name) {
-       	return propertyIsOfNature(name, DefaultTypeManager.DATETIME_NATURE);
+       	return propertyIsOfNature(name, StdTypeManagerPlugin.DATETIME_NATURE);
     }
     
     /*
@@ -438,7 +491,7 @@ public abstract class AbstractDataSet implements IDataSet {
      */
     @Override
     public boolean isBooleanProperty(String name) {
-       	return propertyIsOfNature(name, DefaultTypeManager.BOOLEAN_NATURE);
+       	return propertyIsOfNature(name, StdTypeManagerPlugin.BOOLEAN_NATURE);
     }
 
     /**

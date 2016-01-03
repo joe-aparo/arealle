@@ -8,8 +8,6 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
-import net.jsa.common.logging.LogUtils;
-
 import org.bson.BsonInt64;
 
 public class ToBsonLngUtils {

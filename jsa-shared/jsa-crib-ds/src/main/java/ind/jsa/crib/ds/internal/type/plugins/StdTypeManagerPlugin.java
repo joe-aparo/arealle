@@ -35,7 +35,27 @@ import ind.jsa.crib.ds.internal.type.convert.std.ToTsUtils;
  */
 @Component(value="stdTypeManagerPlugin")
 public class StdTypeManagerPlugin implements ITypeManagerPlugin {
-
+	// Granular natures
+	public static final long ATOMIC_NATURE = 		0x01;
+	public static final long SCALAR_NATURE = 		0x02;
+	public static final long INTEGRAL_NATURE = 		0x04;
+	public static final long FRACTIONAL_NATURE = 	0x08;
+	public static final long SEQUENCED_NATURE = 	0x10;
+	public static final long BIT_NATURE = 			0x20;
+	public static final long CHARACTER_NATURE = 	0x40;
+	public static final long DATE_NATURE = 			0x80;
+	public static final long TIME_NATURE = 		  0x0100;
+	public static final long COMPOSITE_NATURE =   0x0200;
+	
+	// Aggregate natures
+	public static final long NUMERIC_NATURE = ATOMIC_NATURE & SCALAR_NATURE;
+	public static final long INTEGER_NATURE = NUMERIC_NATURE & INTEGRAL_NATURE;
+	public static final long DECIMAL_NATURE = NUMERIC_NATURE & FRACTIONAL_NATURE;
+	public static final long STRING_NATURE = ATOMIC_NATURE & SEQUENCED_NATURE & CHARACTER_NATURE;
+	public static final long DATETIME_NATURE = INTEGER_NATURE & DATE_NATURE & TIME_NATURE;
+	public static final long BOOLEAN_NATURE = ATOMIC_NATURE & BIT_NATURE;
+	public static final long BINARY_NATURE = ATOMIC_NATURE & BIT_NATURE & SEQUENCED_NATURE;
+	
 	/*
 	 * (non-Javadoc)
 	 * @see ind.jsa.crib.ds.api.ITypeManager.ITypeManagerPlugin#register(ind.jsa.crib.ds.api.ITypeManager)
@@ -43,49 +63,49 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	@Override
 	public void register(ITypeManager typeManager) {
 		// Set up default type natures
-		registerDefaultTypes(typeManager);
+		registerTypes(typeManager);
 		
 		// Set up default conversions
-		registerDefaultStringConversions(typeManager);
-		registerDefaultCharacterConversions(typeManager);		
-		registerDefaultByteConversions(typeManager);
-		registerDefaultShortConversions(typeManager);
-		registerDefaultIntegerConversions(typeManager);		
-		registerDefaultLongConversions(typeManager);		
-		registerDefaultBigIntegerConversions(typeManager);		
-		registerDefaultFloatConversions(typeManager);		
-		registerDefaultDoubleConversions(typeManager);		
-		registerDefaultBigDecimalConversions(typeManager);		
-		registerDefaultCalendarConversions(typeManager);		
-		registerDefaultDateConversions(typeManager);		
-		registerDefaultTimeStampConversions(typeManager);
-		registerDefaultBooleanConversions(typeManager);
+		registerStringConversions(typeManager);
+		registerCharacterConversions(typeManager);		
+		registerByteConversions(typeManager);
+		registerShortConversions(typeManager);
+		registerIntegerConversions(typeManager);		
+		registerLongConversions(typeManager);		
+		registerBigIntegerConversions(typeManager);		
+		registerFloatConversions(typeManager);		
+		registerDoubleConversions(typeManager);		
+		registerBigDecimalConversions(typeManager);		
+		registerCalendarConversions(typeManager);		
+		registerDateConversions(typeManager);		
+		registerTimeStampConversions(typeManager);
+		registerBooleanConversions(typeManager);
 	}
 	
 	/*
 	 * Register default types and natures.
 	 */
-	private void registerDefaultTypes(ITypeManager typeManager) {
-		typeManager.registerType(String.class, DefaultTypeManager.STRING_NATURE);
-		typeManager.registerType(Character.class, DefaultTypeManager.STRING_NATURE);
-		typeManager.registerType(Byte.class, DefaultTypeManager.INTEGER_NATURE);
-		typeManager.registerType(Short.class, DefaultTypeManager.INTEGER_NATURE);
-		typeManager.registerType(Integer.class, DefaultTypeManager.INTEGER_NATURE);
-		typeManager.registerType(Long.class, DefaultTypeManager.INTEGER_NATURE);
-		typeManager.registerType(BigInteger.class, DefaultTypeManager.INTEGER_NATURE);
-		typeManager.registerType(Float.class, DefaultTypeManager.DECIMAL_NATURE);
-		typeManager.registerType(Double.class, DefaultTypeManager.DECIMAL_NATURE);
-		typeManager.registerType(BigDecimal.class, DefaultTypeManager.DECIMAL_NATURE);
-		typeManager.registerType(GregorianCalendar.class, DefaultTypeManager.DATETIME_NATURE);
-		typeManager.registerType(Date.class, DefaultTypeManager.DATETIME_NATURE);
-		typeManager.registerType(Timestamp.class, DefaultTypeManager.DATETIME_NATURE);
-		typeManager.registerType(Boolean.class, DefaultTypeManager.BOOLEAN_NATURE);
+	private void registerTypes(ITypeManager typeManager) {
+		typeManager.registerType(String.class, STRING_NATURE);
+		typeManager.registerType(Character.class, STRING_NATURE);
+		typeManager.registerType(Byte.class, INTEGER_NATURE);
+		typeManager.registerType(Short.class, INTEGER_NATURE);
+		typeManager.registerType(Integer.class, INTEGER_NATURE);
+		typeManager.registerType(Long.class, INTEGER_NATURE);
+		typeManager.registerType(BigInteger.class, INTEGER_NATURE);
+		typeManager.registerType(Float.class, DECIMAL_NATURE);
+		typeManager.registerType(Double.class, DECIMAL_NATURE);
+		typeManager.registerType(BigDecimal.class, DECIMAL_NATURE);
+		typeManager.registerType(GregorianCalendar.class, DATETIME_NATURE);
+		typeManager.registerType(Date.class, DATETIME_NATURE);
+		typeManager.registerType(Timestamp.class, DATETIME_NATURE);
+		typeManager.registerType(Boolean.class, BOOLEAN_NATURE);
 	}
 	
 	/*
 	 * Register conversions from String.
 	 */
-	private void registerDefaultStringConversions(ITypeManager typeManager) {
+	private void registerStringConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(String.class, Character.class, (Object val) -> ToChrUtils.str2Chr((String) val));
 		typeManager.registerConverter(String.class, Byte.class, (Object val) -> ToByteUtils.str2Byte((String) val));
 		typeManager.registerConverter(String.class, Short.class, (Object val) -> ToShrtUtils.str2Shrt((String) val));
@@ -104,7 +124,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from Character.
 	 */
-	private void registerDefaultCharacterConversions(ITypeManager typeManager) {
+	private void registerCharacterConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(Character.class, String.class, (Object val) -> ToStrUtils.chr2Str((Character) val));
 		typeManager.registerConverter(Character.class, Byte.class, (Object val) -> ToByteUtils.chr2Byte((Character) val));
 		typeManager.registerConverter(Character.class, Short.class, (Object val) -> ToShrtUtils.chr2Shrt((Character) val));
@@ -120,7 +140,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from Byte.
 	 */
-	private void registerDefaultByteConversions(ITypeManager typeManager) {
+	private void registerByteConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(Byte.class, String.class, (Object val) -> ToStrUtils.byte2Str((Byte) val));
 		typeManager.registerConverter(Byte.class, Character.class, (Object val) -> ToChrUtils.byte2Chr((Byte) val));
 		typeManager.registerConverter(Byte.class, Short.class, (Object val) -> ToShrtUtils.byte2Shrt((Byte) val));
@@ -136,7 +156,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from Short.
 	 */
-	private void registerDefaultShortConversions(ITypeManager typeManager) {
+	private void registerShortConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(Short.class, String.class, (Object val) -> ToStrUtils.shrt2Str((Short) val));
 		typeManager.registerConverter(Short.class, Byte.class, (Object val) -> ToByteUtils.shrt2Byte((Short) val));
 		typeManager.registerConverter(Short.class, Character.class, (Object val) -> ToChrUtils.shrt2Chr((Short) val));
@@ -152,7 +172,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from Integer.
 	 */
-	private void registerDefaultIntegerConversions(ITypeManager typeManager) {
+	private void registerIntegerConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(Integer.class, String.class, (Object val) -> ToStrUtils.int2Str((Integer) val));
 		typeManager.registerConverter(Integer.class, Byte.class, (Object val) -> ToByteUtils.int2Byte((Integer) val));
 		typeManager.registerConverter(Integer.class, Character.class, (Object val) -> ToChrUtils.int2Chr((Integer) val));
@@ -168,7 +188,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from Long.
 	 */
-	private void registerDefaultLongConversions(ITypeManager typeManager) {
+	private void registerLongConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(Long.class, String.class, (Object val) -> ToStrUtils.lng2Str((Long) val));
 		typeManager.registerConverter(Long.class, Character.class, (Object val) -> ToChrUtils.lng2Chr((Long) val));
 		typeManager.registerConverter(Long.class, Byte.class, (Object val) -> ToByteUtils.lng2Byte((Long) val));
@@ -187,7 +207,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from Integer.
 	 */
-	private void registerDefaultBigIntegerConversions(ITypeManager typeManager) {
+	private void registerBigIntegerConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(BigInteger.class, String.class, (Object val) -> ToStrUtils.bgi2Str((BigInteger) val));
 		typeManager.registerConverter(BigInteger.class, Character.class, (Object val) -> ToChrUtils.bgi2Chr((BigInteger) val));
 		typeManager.registerConverter(BigInteger.class, Byte.class, (Object val) -> ToByteUtils.bgi2Byte((BigInteger) val));
@@ -206,7 +226,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from Float.
 	 */
-	private void registerDefaultFloatConversions(ITypeManager typeManager) {
+	private void registerFloatConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(Float.class, String.class, (Object val) -> ToStrUtils.flt2Str((Float) val));
 		typeManager.registerConverter(Float.class, Character.class, (Object val) -> ToChrUtils.flt2Chr((Float) val));
 		typeManager.registerConverter(Float.class, Byte.class, (Object val) -> ToByteUtils.flt2Byte((Float) val));
@@ -222,7 +242,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from Double.
 	 */
-	private void registerDefaultDoubleConversions(ITypeManager typeManager) {
+	private void registerDoubleConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(Double.class, String.class, (Object val) -> ToStrUtils.dbl2Str((Double) val));
 		typeManager.registerConverter(Double.class, Character.class, (Object val) -> ToChrUtils.dbl2Chr((Double) val));
 		typeManager.registerConverter(Double.class, Byte.class, (Object val) -> ToByteUtils.dbl2Byte((Double) val));
@@ -238,7 +258,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from BigDecimal.
 	 */
-	private void registerDefaultBigDecimalConversions(ITypeManager typeManager) {
+	private void registerBigDecimalConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(BigDecimal.class, String.class, (Object val) -> ToStrUtils.bgd2Str((BigDecimal) val));
 		typeManager.registerConverter(BigDecimal.class, Character.class, (Object val) -> ToChrUtils.bgd2Chr((BigDecimal) val));
 		typeManager.registerConverter(BigDecimal.class, Byte.class, (Object val) -> ToByteUtils.bgd2Byte((BigDecimal) val));
@@ -254,7 +274,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from Calendar.
 	 */
-	private void registerDefaultCalendarConversions(ITypeManager typeManager) {
+	private void registerCalendarConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(Calendar.class, String.class, (Object val) -> ToStrUtils.cal2Str((Calendar) val));
 		typeManager.registerConverter(Calendar.class, Long.class, (Object val) -> ToLngUtils.cal2Lng((Calendar) val));
 		typeManager.registerConverter(Calendar.class, BigInteger.class, (Object val) -> ToBgiUtils.cal2Bgi((Calendar) val));
@@ -266,7 +286,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from Date.
 	 */
-	private void registerDefaultDateConversions(ITypeManager typeManager) {
+	private void registerDateConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(Date.class, String.class, (Object val) -> ToStrUtils.dt2Str((Date) val));
 		typeManager.registerConverter(Date.class, Long.class, (Object val) -> ToLngUtils.dt2Lng((Date) val));
 		typeManager.registerConverter(Date.class, BigInteger.class, (Object val) -> ToBgiUtils.dt2Bgi((Date) val));
@@ -278,7 +298,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from Timestamp.
 	 */
-	private void registerDefaultTimeStampConversions(ITypeManager typeManager) {
+	private void registerTimeStampConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(Timestamp.class, String.class, (Object val) -> ToStrUtils.ts2Str((Timestamp) val));
 		typeManager.registerConverter(Timestamp.class, Long.class, (Object val) -> ToLngUtils.ts2Lng((Timestamp) val));
 		typeManager.registerConverter(Timestamp.class, BigInteger.class, (Object val) -> ToBgiUtils.ts2Bgi((Timestamp) val));
@@ -290,7 +310,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	/*
 	 * Register conversions from Boolean.
 	 */
-	private void registerDefaultBooleanConversions(ITypeManager typeManager) {
+	private void registerBooleanConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(Boolean.class, String.class, (Object val) -> ToStrUtils.bool2Str((Boolean) val));
 		typeManager.registerConverter(Boolean.class, Byte.class, (Object val) -> ToByteUtils.bool2Byte((Boolean) val));		
 		typeManager.registerConverter(Boolean.class, Character.class, (Object val) -> ToChrUtils.bool2Chr((Boolean) val));

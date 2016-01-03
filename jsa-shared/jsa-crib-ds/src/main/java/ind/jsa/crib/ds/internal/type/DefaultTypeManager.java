@@ -1,5 +1,6 @@
 package ind.jsa.crib.ds.internal.type;
 
+import ind.jsa.crib.ds.internal.type.plugins.StdTypeManagerPlugin;
 import ind.jsa.crib.ds.internal.type.plugins.TypeManagerPluginCollection;
 
 import javax.annotation.PostConstruct;
@@ -16,26 +17,6 @@ import org.springframework.stereotype.Component;
  */
 @Component(value="defaultTypeManager")
 public class DefaultTypeManager extends AbstractTypeManager {
-	
-	// Granular natures
-	public static final long ATOMIC_NATURE = 		0x01;
-	public static final long SCALAR_NATURE = 		0x02;
-	public static final long INTEGRAL_NATURE = 		0x04;
-	public static final long FRACTIONAL_NATURE = 	0x08;
-	public static final long SEQUENCED_NATURE = 	0x10;
-	public static final long BINARY_NATURE = 		0x20;
-	public static final long CHARACTER_NATURE = 	0x40;
-	public static final long DATE_NATURE = 			0x80;
-	public static final long TIME_NATURE = 		  0x0100;
-	public static final long COMPOSITE_NATURE =   0x0200;
-	
-	// Aggregate natures
-	public static final long NUMERIC_NATURE = ATOMIC_NATURE & SCALAR_NATURE;
-	public static final long INTEGER_NATURE = NUMERIC_NATURE & INTEGRAL_NATURE;
-	public static final long DECIMAL_NATURE = NUMERIC_NATURE & FRACTIONAL_NATURE;
-	public static final long STRING_NATURE = ATOMIC_NATURE & SEQUENCED_NATURE & CHARACTER_NATURE;
-	public static final long DATETIME_NATURE = INTEGER_NATURE & DATE_NATURE & TIME_NATURE;
-	public static final long BOOLEAN_NATURE = ATOMIC_NATURE & BINARY_NATURE;
 	
 	@Resource(name="stdTypeManagerPlugin")
 	private ITypeManagerPlugin stdTypeManagerPlugin;
@@ -76,7 +57,7 @@ public class DefaultTypeManager extends AbstractTypeManager {
 	 * @return An indicator
 	 */
 	public static boolean isAtomicNature(long nature) {
-		return (nature & ATOMIC_NATURE) != 0;
+		return (nature & StdTypeManagerPlugin.ATOMIC_NATURE) != 0;
 	}
 
 	/**
@@ -86,7 +67,7 @@ public class DefaultTypeManager extends AbstractTypeManager {
 	 * @return An indicator
 	 */
 	public static boolean isNumericNature(long nature) {
-		return (nature & NUMERIC_NATURE) != 0;
+		return (nature & StdTypeManagerPlugin.NUMERIC_NATURE) != 0;
 	}
 	
 	/**
@@ -96,7 +77,7 @@ public class DefaultTypeManager extends AbstractTypeManager {
 	 * @return An indicator
 	 */
 	public static boolean isIntegerNature(long nature) {
-		return (nature & INTEGER_NATURE) != 0;
+		return (nature & StdTypeManagerPlugin.INTEGER_NATURE) != 0;
 	}
 	
 	/**
@@ -106,7 +87,7 @@ public class DefaultTypeManager extends AbstractTypeManager {
 	 * @return An indicator
 	 */
 	public static boolean isDecimalNature(long nature) {
-		return (nature & DECIMAL_NATURE) != 0;
+		return (nature & StdTypeManagerPlugin.DECIMAL_NATURE) != 0;
 	}
 	
 	/**
@@ -116,7 +97,7 @@ public class DefaultTypeManager extends AbstractTypeManager {
 	 * @return An indicator
 	 */
 	public static boolean isStringNature(long nature) {
-		return (nature & STRING_NATURE) != 0;
+		return (nature & StdTypeManagerPlugin.STRING_NATURE) != 0;
 	}
 	
 	/**
@@ -126,7 +107,7 @@ public class DefaultTypeManager extends AbstractTypeManager {
 	 * @return An indicator
 	 */
 	public static boolean isDateTimeNature(long nature) {
-		return (nature & DATETIME_NATURE) != 0;
+		return (nature & StdTypeManagerPlugin.DATETIME_NATURE) != 0;
 	}
 	
 	/**
@@ -136,7 +117,7 @@ public class DefaultTypeManager extends AbstractTypeManager {
 	 * @return An indicator
 	 */
 	public static boolean isBooleanNature(long nature) {
-		return (nature & BOOLEAN_NATURE) != 0;
+		return (nature & StdTypeManagerPlugin.BOOLEAN_NATURE) != 0;
 	}
 	
 	/*

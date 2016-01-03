@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.IDataSet;
@@ -124,41 +122,6 @@ public class MemoryDataSet extends AbstractDataSet {
     public void retrieve(IDataSetResultHandler handler) {
         processItems(cachedItems, handler);
     }
-
-	/*
-	 * (non-Javadoc)
-	 * @see ind.jsa.crib.ds.api.IDataSet#retrieve(java.util.Map)
-	 */
-	@Override
-	public IDataSetItem retrieve(Object id) {
-		
-        String idPropName = getMetaData().getIdPropertyName();
-
-		// Only works for datasets having a defined key
-		if (StringUtils.isEmpty(idPropName)) {
-			return null;
-		}
-		
-		// Passing the value through a blank item will ensure that
-		// the given value is converted to the correct type
-		IDataSetItem blank = blankItem();
-		blank.setId(id);
-		Object idVal = blank.getId();
-		
-		// Value could not be converted
-		if (idVal == null) {
-			return null;
-		}
-		
-        // assume empty query
-        DataSetQuery query = new DataSetQuery();
-        query.putParam(idPropName, idVal);
-
-        // filter the items
-        List<DataSetItem> items = filterItems(query);
-
-        return items.size() > 0 ? items.get(0) : null;
-	}
 
     /*
      * (non-Javadoc)

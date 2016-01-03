@@ -216,13 +216,12 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
         }
     }
 
-    /**
-     * Retrieve an item from the dataset.
-     * 
-     * @param keyMap The key to use for retrieval.
-     * @return The retrieved item
+    /*
+     * (non-Javadoc)
+     * @see ind.jsa.crib.ds.api.IDataSet#retrieve(java.util.Map)
      */
-    public IDataSetItem retrieve(Map<String, Object> keyMap) {
+    @Override
+    public IDataSetItem retrieve(Map<String, Object> params) {
         SqlCommand cmd = retrieveCmd != null ? retrieveCmd : getDefaultRetrieveCommand();
 
         if (cmd == null) {
@@ -234,15 +233,9 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
 
         // first store parameters in query and remove them from input map
         for (String p : cmd.getParams()) {
-            if (keyMap.containsKey(p)) {
-                query.putParam(p, keyMap.get(p));
-                keyMap.remove(p);
+            if (params.containsKey(p)) {
+                query.putParam(p, params.get(p));
             }
-        }
-
-        // store remaining entries in map as filters
-        for (Map.Entry<String, Object> keyItem : keyMap.entrySet()) {
-            query.putFilter(keyItem.getKey(), FilterOperator.EQUAL, keyItem.getValue());
         }
 
         // Only return one row. If there are more that meet the criteria
