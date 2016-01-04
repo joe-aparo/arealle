@@ -76,126 +76,195 @@ public class BsonTypeManagerPlugin implements ITypeManagerPlugin {
 	 */
 	private void registerStringConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(BsonString.class, Character.class, 
-				(Object val) -> val != null ? ToChrUtils.str2Chr(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToChrUtils.str2Chr(((BsonString) val).toString()) : null);
 		typeManager.registerConverter(BsonString.class, Byte.class, 
-				(Object val) -> val != null ? ToByteUtils.str2Byte(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToByteUtils.str2Byte(((BsonString) val).toString()) : null);
 		typeManager.registerConverter(BsonString.class, Short.class, 
-				(Object val) -> val != null ? ToShrtUtils.str2Shrt(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToShrtUtils.str2Shrt(((BsonString) val).toString()) : null);
 		typeManager.registerConverter(BsonString.class, Integer.class, 
-				(Object val) -> val != null ? ToIntUtils.str2Int(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToIntUtils.str2Int(((BsonString) val).toString()) : null);
 		typeManager.registerConverter(BsonString.class, Long.class, 
-				(Object val) -> val != null ? ToLngUtils.str2Lng(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToLngUtils.str2Lng(((BsonString) val).toString()) : null);
 		typeManager.registerConverter(BsonString.class, BigInteger.class, 
-				(Object val) -> val != null ? ToBgiUtils.str2Bgi(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToBgiUtils.str2Bgi(((BsonString) val).toString()) : null);
 		typeManager.registerConverter(BsonString.class, Float.class, 
-				(Object val) -> val != null ? ToFltUtils.str2Flt(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToFltUtils.str2Flt(((BsonString) val).toString()) : null);
 		typeManager.registerConverter(BsonString.class, Double.class, 
-				(Object val) -> val != null ? ToDblUtils.str2Dbl(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToDblUtils.str2Dbl(((BsonString) val).toString()) : null);
 		typeManager.registerConverter(BsonString.class, BigDecimal.class, 
-				(Object val) -> val != null ? ToBgdUtils.str2Bgd(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToBgdUtils.str2Bgd(((BsonString) val).toString()) : null);
 		typeManager.registerConverter(BsonString.class, GregorianCalendar.class, 
-				(Object val) -> val != null ? ToCalUtils.str2Cal(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToCalUtils.str2Cal(((BsonString) val).toString()) : null);
 		typeManager.registerConverter(BsonString.class, Date.class, 
-				(Object val) -> val != null ? ToDtUtils.str2Dt(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToDtUtils.str2Dt(((BsonString) val).toString()) : null);
 		typeManager.registerConverter(BsonString.class, Timestamp.class, 
-				(Object val) -> val != null ? ToTsUtils.str2Ts(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToTsUtils.str2Ts(((BsonString) val).toString()) : null);
 		typeManager.registerConverter(BsonString.class, Boolean.class, 
-				(Object val) -> val != null ? ToBoolUtils.str2Bool(((BsonString) val).toString()) : null);
+			(Object val) -> val != null ? ToBoolUtils.str2Bool(((BsonString) val).toString()) : null);
 	}
 	
 	/*
 	 * Register conversions from Integer.
 	 */
 	private void registerIntegerConversions(ITypeManager typeManager) {
-		typeManager.registerConverter(BsonInt32.class, String.class, (Object val) -> ToStrUtils.int2Str((Integer) val));
-		typeManager.registerConverter(BsonInt32.class, Byte.class, (Object val) -> ToByteUtils.int2Byte((Integer) val));
-		typeManager.registerConverter(BsonInt32.class, Character.class, (Object val) -> ToChrUtils.int2Chr((Integer) val));
-		typeManager.registerConverter(BsonInt32.class, Short.class, (Object val) -> ToShrtUtils.int2Shrt((Integer) val));
-		typeManager.registerConverter(BsonInt32.class, Long.class, (Object val) -> ToLngUtils.int2Lng((Integer) val));
-		typeManager.registerConverter(BsonInt32.class, BigInteger.class, (Object val) -> ToBgiUtils.int2Bgi((Integer) val));
-		typeManager.registerConverter(BsonInt32.class, Float.class, (Object val) -> ToFltUtils.int2Flt((Integer) val));
-		typeManager.registerConverter(BsonInt32.class, Double.class, (Object val) -> ToDblUtils.int2Dbl((Integer) val));
-		typeManager.registerConverter(BsonInt32.class, BigDecimal.class, (Object val) -> ToBgdUtils.int2Bgd((Integer) val));
-		typeManager.registerConverter(BsonInt32.class, Boolean.class, (Object val) -> ToBoolUtils.int2Bool((Integer) val));
+		typeManager.registerConverter(BsonInt32.class, String.class, 
+			(Object val) -> val != null ? ToStrUtils.lng2Str(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, Byte.class, 
+			(Object val) -> val != null ? ToByteUtils.lng2Byte(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, Character.class, 
+			(Object val) -> val != null ? ToChrUtils.lng2Chr(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, Short.class, 
+			(Object val) -> val != null ? ToShrtUtils.lng2Shrt(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, Integer.class, 
+			(Object val) -> val != null ? ToIntUtils.lng2Int(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, Long.class, 
+			(Object val) -> val != null ? Long.valueOf(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, BigInteger.class, 
+			(Object val) -> val != null ? ToBgiUtils.lng2Bgi(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, Float.class, 
+			(Object val) -> val != null ? ToFltUtils.lng2Flt(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, Double.class, 
+			(Object val) -> val != null ? ToDblUtils.lng2Dbl(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, BigDecimal.class, 
+			(Object val) -> val != null ? ToBgdUtils.lng2Bgd(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, GregorianCalendar.class, 
+			(Object val) -> val != null ? ToCalUtils.lng2Cal(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, Date.class, 
+			(Object val) -> val != null ? ToDtUtils.lng2Dt(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, Timestamp.class, 
+			(Object val) -> val != null ? ToTsUtils.lng2Ts(((BsonInt32) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt32.class, Boolean.class, 
+			(Object val) -> val != null ? ToBoolUtils.lng2Bool(((BsonInt32) val).longValue()) : null);
 	}
 	
 	/*
 	 * Register conversions from Long.
 	 */
 	private void registerLongConversions(ITypeManager typeManager) {
-		typeManager.registerConverter(BsonInt64.class, String.class, (Object val) -> ToStrUtils.lng2Str((Long) val));
-		typeManager.registerConverter(BsonInt64.class, Character.class, (Object val) -> ToChrUtils.lng2Chr((Long) val));
-		typeManager.registerConverter(BsonInt64.class, Byte.class, (Object val) -> ToByteUtils.lng2Byte((Long) val));
-		typeManager.registerConverter(BsonInt64.class, Short.class, (Object val) -> ToShrtUtils.lng2Shrt((Long) val));
-		typeManager.registerConverter(BsonInt64.class, Integer.class, (Object val) -> ToIntUtils.lng2Int((Long) val));
-		typeManager.registerConverter(BsonInt64.class, BigInteger.class, (Object val) -> ToBgiUtils.lng2Bgi((Long) val));
-		typeManager.registerConverter(BsonInt64.class, Float.class, (Object val) -> ToFltUtils.lng2Flt((Long) val));
-		typeManager.registerConverter(BsonInt64.class, Double.class, (Object val) -> ToDblUtils.lng2Dbl((Long) val));
-		typeManager.registerConverter(BsonInt64.class, BigDecimal.class, (Object val) -> ToBgdUtils.lng2Bgd((Long) val));
-		typeManager.registerConverter(BsonInt64.class, GregorianCalendar.class, (Object val) -> ToCalUtils.lng2Cal((Long) val));
-		typeManager.registerConverter(BsonInt64.class, Date.class, (Object val) -> ToDtUtils.lng2Dt((Long) val));
-		typeManager.registerConverter(BsonInt64.class, Timestamp.class, (Object val) -> ToTsUtils.lng2Ts((Long) val));
-		typeManager.registerConverter(BsonInt64.class, Boolean.class, (Object val) -> ToBoolUtils.lng2Bool((Long) val));
+		typeManager.registerConverter(BsonInt64.class, String.class, 
+			(Object val) -> val != null ? ToStrUtils.lng2Str(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, Byte.class, 
+			(Object val) -> val != null ? ToByteUtils.lng2Byte(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, Character.class, 
+			(Object val) -> val != null ? ToChrUtils.lng2Chr(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, Short.class, 
+			(Object val) -> val != null ? ToShrtUtils.lng2Shrt(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, Integer.class, 
+			(Object val) -> val != null ? ToIntUtils.lng2Int(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, Long.class, 
+			(Object val) -> val != null ? Long.valueOf(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, BigInteger.class, 
+			(Object val) -> val != null ? ToBgiUtils.lng2Bgi(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, Float.class, 
+			(Object val) -> val != null ? ToFltUtils.lng2Flt(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, Double.class, 
+			(Object val) -> val != null ? ToDblUtils.lng2Dbl(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, BigDecimal.class, 
+			(Object val) -> val != null ? ToBgdUtils.lng2Bgd(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, GregorianCalendar.class, 
+			(Object val) -> val != null ? ToCalUtils.lng2Cal(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, Date.class, 
+			(Object val) -> val != null ? ToDtUtils.lng2Dt(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, Timestamp.class, 
+			(Object val) -> val != null ? ToTsUtils.lng2Ts(((BsonInt64) val).longValue()) : null);
+		typeManager.registerConverter(BsonInt64.class, Boolean.class, 
+			(Object val) -> val != null ? ToBoolUtils.lng2Bool(((BsonInt64) val).longValue()) : null);
 	}
 	
 	/*
 	 * Register conversions from Double.
 	 */
 	private void registerDoubleConversions(ITypeManager typeManager) {
-		typeManager.registerConverter(BsonDouble.class, String.class, (Object val) -> ToStrUtils.dbl2Str((Double) val));
-		typeManager.registerConverter(BsonDouble.class, Character.class, (Object val) -> ToChrUtils.dbl2Chr((Double) val));
-		typeManager.registerConverter(BsonDouble.class, Byte.class, (Object val) -> ToByteUtils.dbl2Byte((Double) val));
-		typeManager.registerConverter(BsonDouble.class, Short.class, (Object val) -> ToShrtUtils.dbl2Shrt((Double) val));
-		typeManager.registerConverter(BsonDouble.class, Integer.class, (Object val) -> ToIntUtils.dbl2Int((Double) val));
-		typeManager.registerConverter(BsonDouble.class, Long.class, (Object val) -> ToLngUtils.dbl2Lng((Double) val));
-		typeManager.registerConverter(BsonDouble.class, BigInteger.class, (Object val) -> ToBgiUtils.dbl2Bgi((Double) val));
-		typeManager.registerConverter(BsonDouble.class, Float.class, (Object val) -> ToFltUtils.dbl2Flt((Double) val));
-		typeManager.registerConverter(BsonDouble.class, BigDecimal.class, (Object val) -> ToBgdUtils.dbl2Bgd((Double) val));
-		typeManager.registerConverter(BsonDouble.class, Boolean.class, (Object val) -> ToBoolUtils.dbl2Bool((Double) val));
+		typeManager.registerConverter(BsonDouble.class, String.class, 
+			(Object val) -> val != null ? ToStrUtils.dbl2Str(((BsonDouble) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonDouble.class, Character.class, 
+			(Object val) -> val != null ? ToChrUtils.dbl2Chr(((BsonDouble) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonDouble.class, Byte.class, 
+			(Object val) -> val != null ? ToByteUtils.dbl2Byte(((BsonDouble) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonDouble.class, Short.class, 
+			(Object val) -> val != null ? ToShrtUtils.dbl2Shrt(((BsonDouble) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonDouble.class, Integer.class, 
+			(Object val) -> val != null ? ToIntUtils.dbl2Int(((BsonDouble) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonDouble.class, Long.class, 
+			(Object val) -> val != null ? ToLngUtils.dbl2Lng(((BsonDouble) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonDouble.class, BigInteger.class, 
+			(Object val) -> val != null ? ToBgiUtils.dbl2Bgi(((BsonDouble) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonDouble.class, Float.class, 
+			(Object val) -> val != null ? ToFltUtils.dbl2Flt(((BsonDouble) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonDouble.class, BigDecimal.class, 
+			(Object val) -> val != null ? ToBgdUtils.dbl2Bgd(((BsonDouble) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonDouble.class, Boolean.class, 
+			(Object val) -> val != null ? ToBoolUtils.dbl2Bool(((BsonDouble) val).doubleValue()) : null);
 	}
 		
 	/*
 	 * Register conversions from Double.
 	 */
 	private void registeNumberConversions(ITypeManager typeManager) {
-		typeManager.registerConverter(BsonNumber.class, String.class, (Object val) -> ToStrUtils.dbl2Str((Double) val));
-		typeManager.registerConverter(BsonNumber.class, Character.class, (Object val) -> ToChrUtils.dbl2Chr((Double) val));
-		typeManager.registerConverter(BsonNumber.class, Byte.class, (Object val) -> ToByteUtils.dbl2Byte((Double) val));
-		typeManager.registerConverter(BsonNumber.class, Short.class, (Object val) -> ToShrtUtils.dbl2Shrt((Double) val));
-		typeManager.registerConverter(BsonNumber.class, Integer.class, (Object val) -> ToIntUtils.dbl2Int((Double) val));
-		typeManager.registerConverter(BsonNumber.class, Long.class, (Object val) -> ToLngUtils.dbl2Lng((Double) val));
-		typeManager.registerConverter(BsonNumber.class, BigInteger.class, (Object val) -> ToBgiUtils.dbl2Bgi((Double) val));
-		typeManager.registerConverter(BsonNumber.class, Float.class, (Object val) -> ToFltUtils.dbl2Flt((Double) val));
-		typeManager.registerConverter(BsonNumber.class, BigDecimal.class, (Object val) -> ToBgdUtils.dbl2Bgd((Double) val));
-		typeManager.registerConverter(BsonNumber.class, Boolean.class, (Object val) -> ToBoolUtils.dbl2Bool((Double) val));
+		typeManager.registerConverter(BsonNumber.class, String.class, 
+			(Object val) -> val != null ? ToStrUtils.dbl2Str(((BsonNumber) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonNumber.class, Character.class, 
+			(Object val) -> val != null ? ToChrUtils.dbl2Chr(((BsonNumber) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonNumber.class, Byte.class, 
+			(Object val) -> val != null ? ToByteUtils.dbl2Byte(((BsonNumber) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonNumber.class, Short.class, 
+			(Object val) -> val != null ? ToShrtUtils.dbl2Shrt(((BsonNumber) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonNumber.class, Integer.class, 
+			(Object val) -> val != null ? ToIntUtils.dbl2Int(((BsonNumber) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonNumber.class, Long.class, 
+			(Object val) -> val != null ? ToLngUtils.dbl2Lng(((BsonNumber) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonNumber.class, BigInteger.class, 
+			(Object val) -> val != null ? ToBgiUtils.dbl2Bgi(((BsonNumber) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonNumber.class, Float.class, 
+			(Object val) -> val != null ? ToFltUtils.dbl2Flt(((BsonNumber) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonNumber.class, BigDecimal.class, 
+			(Object val) -> val != null ? ToBgdUtils.dbl2Bgd(((BsonNumber) val).doubleValue()) : null);
+		typeManager.registerConverter(BsonNumber.class, Boolean.class, 
+			(Object val) -> val != null ? ToBoolUtils.dbl2Bool(((BsonNumber) val).doubleValue()) : null);
 	}
 		
 	/*
 	 * Register conversions from Date.
 	 */
 	private void registerDateConversions(ITypeManager typeManager) {
-		typeManager.registerConverter(BsonDateTime.class, String.class, (Object val) -> ToStrUtils.dt2Str((Date) val));
-		typeManager.registerConverter(BsonDateTime.class, Long.class, (Object val) -> ToLngUtils.dt2Lng((Date) val));
-		typeManager.registerConverter(BsonDateTime.class, BigInteger.class, (Object val) -> ToBgiUtils.dt2Bgi((Date) val));
-		typeManager.registerConverter(BsonDateTime.class, BigDecimal.class, (Object val) -> ToBgdUtils.dt2Bgd((Date) val));
-		typeManager.registerConverter(BsonDateTime.class, Calendar.class, (Object val) -> ToCalUtils.dt2Cal((Date) val));
-		typeManager.registerConverter(BsonDateTime.class, Timestamp.class, (Object val) -> ToTsUtils.dt2Ts((Date) val));
+		typeManager.registerConverter(BsonDateTime.class, String.class, 
+			(Object val) -> val != null ? ToStrUtils.dt2Str(new Date(((BsonDateTime) val).getValue())) : null);
+		typeManager.registerConverter(BsonDateTime.class, Long.class, 
+			(Object val) -> val != null ? Long.valueOf(((BsonDateTime) val).getValue()) : null);
+		typeManager.registerConverter(BsonDateTime.class, BigInteger.class, 
+			(Object val) -> val != null ? ToBgiUtils.lng2Bgi(((BsonDateTime) val).getValue()) : null);
+		typeManager.registerConverter(BsonDateTime.class, BigDecimal.class, 
+			(Object val) -> val != null ? ToBgdUtils.lng2Bgd(((BsonDateTime) val).getValue()) : null);
+		typeManager.registerConverter(BsonDateTime.class, Calendar.class, 
+			(Object val) -> val != null ? ToCalUtils.lng2Cal(((BsonDateTime) val).getValue()) : null);
+		typeManager.registerConverter(BsonDateTime.class, Timestamp.class, 
+			(Object val) -> val != null ? ToTsUtils.lng2Ts(((BsonDateTime) val).getValue()) : null);
 	}
 	
 	/*
 	 * Register conversions from Boolean.
 	 */
 	private void registerBooleanConversions(ITypeManager typeManager) {
-		typeManager.registerConverter(BsonBoolean.class, String.class, (Object val) -> ToStrUtils.bool2Str((Boolean) val));
-		typeManager.registerConverter(BsonBoolean.class, Byte.class, (Object val) -> ToByteUtils.bool2Byte((Boolean) val));		
-		typeManager.registerConverter(BsonBoolean.class, Character.class, (Object val) -> ToChrUtils.bool2Chr((Boolean) val));
-		typeManager.registerConverter(BsonBoolean.class, Short.class, (Object val) -> ToShrtUtils.bool2Shrt((Boolean) val));
-		typeManager.registerConverter(BsonBoolean.class, Integer.class, (Object val) -> ToIntUtils.bool2Int((Boolean) val));
-		typeManager.registerConverter(BsonBoolean.class, Long.class, (Object val) -> ToLngUtils.bool2Lng((Boolean) val));
-		typeManager.registerConverter(BsonBoolean.class, BigInteger.class, (Object val) -> ToBgiUtils.bool2Bgi((Boolean) val));
-		typeManager.registerConverter(BsonBoolean.class, Float.class, (Object val) -> ToFltUtils.bool2Flt((Boolean) val));
-		typeManager.registerConverter(BsonBoolean.class, Double.class, (Object val) -> ToDblUtils.bool2Dbl((Boolean) val));
-		typeManager.registerConverter(BsonBoolean.class, BigDecimal.class, (Object val) -> ToBgdUtils.bool2Bgd((Boolean) val));
+		typeManager.registerConverter(BsonBoolean.class, String.class, 
+			(Object val) -> val != null ? ToStrUtils.bool2Str(((BsonBoolean) val).getValue()) : null);
+		typeManager.registerConverter(BsonBoolean.class, Byte.class, 
+			(Object val) -> val != null ? ToByteUtils.bool2Byte(((BsonBoolean) val).getValue()) : null);
+		typeManager.registerConverter(BsonBoolean.class, Character.class, 
+			(Object val) -> val != null ? ToChrUtils.bool2Chr(((BsonBoolean) val).getValue()) : null);
+		typeManager.registerConverter(BsonBoolean.class, Short.class, 
+			(Object val) -> val != null ? ToShrtUtils.bool2Shrt(((BsonBoolean) val).getValue()) : null);
+		typeManager.registerConverter(BsonBoolean.class, Integer.class, 
+			(Object val) -> val != null ? ToIntUtils.bool2Int(((BsonBoolean) val).getValue()) : null);
+		typeManager.registerConverter(BsonBoolean.class, Long.class, 
+			(Object val) -> val != null ? ToLngUtils.bool2Lng(((BsonBoolean) val).getValue()) : null);
+		typeManager.registerConverter(BsonBoolean.class, BigInteger.class, 
+			(Object val) -> val != null ? ToBgiUtils.bool2Bgi(((BsonBoolean) val).getValue()) : null);
+		typeManager.registerConverter(BsonBoolean.class, Float.class, 
+			(Object val) -> val != null ? ToFltUtils.bool2Flt(((BsonBoolean) val).getValue()) : null);
+		typeManager.registerConverter(BsonBoolean.class, Double.class, 
+			(Object val) -> val != null ? ToDblUtils.bool2Dbl(((BsonBoolean) val).getValue()) : null);
+		typeManager.registerConverter(BsonBoolean.class, BigDecimal.class, 
+			(Object val) -> val != null ? ToBgdUtils.bool2Bgd(((BsonBoolean) val).getValue()) : null);
 	}
 
 	private void registerDocConversions(ITypeManager typeManager) {
