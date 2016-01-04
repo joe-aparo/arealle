@@ -75,19 +75,32 @@ public class BsonTypeManagerPlugin implements ITypeManagerPlugin {
 	 * Register conversions from String.
 	 */
 	private void registerStringConversions(ITypeManager typeManager) {
-		typeManager.registerConverter(BsonString.class, Character.class, (Object val) -> ToChrUtils.str2Chr((String) val));
-		typeManager.registerConverter(BsonString.class, Byte.class, (Object val) -> ToByteUtils.str2Byte((String) val));
-		typeManager.registerConverter(BsonString.class, Short.class, (Object val) -> ToShrtUtils.str2Shrt((String) val));
-		typeManager.registerConverter(BsonString.class, Integer.class, (Object val) -> ToIntUtils.str2Int((String) val));
-		typeManager.registerConverter(BsonString.class, Long.class, (Object val) -> ToLngUtils.str2Lng((String) val));
-		typeManager.registerConverter(BsonString.class, BigInteger.class, (Object val) -> ToBgiUtils.str2Bgi((String) val));
-		typeManager.registerConverter(BsonString.class, Float.class, (Object val) -> ToFltUtils.str2Flt((String) val));
-		typeManager.registerConverter(BsonString.class, Double.class, (Object val) -> ToDblUtils.str2Dbl((String) val));
-		typeManager.registerConverter(BsonString.class, BigDecimal.class, (Object val) -> ToBgdUtils.str2Bgd((String) val));
-		typeManager.registerConverter(BsonString.class, GregorianCalendar.class, (Object val) -> ToCalUtils.str2Cal((String) val));
-		typeManager.registerConverter(BsonString.class, Date.class, (Object val) -> ToDtUtils.str2Dt((String) val));
-		typeManager.registerConverter(BsonString.class, Timestamp.class, (Object val) -> ToTsUtils.str2Ts((String) val));
-		typeManager.registerConverter(BsonString.class, Boolean.class, (Object val) -> ToBoolUtils.str2Bool((String) val));
+		typeManager.registerConverter(BsonString.class, Character.class, 
+				(Object val) -> val != null ? ToChrUtils.str2Chr(((BsonString) val).toString()) : null);
+		typeManager.registerConverter(BsonString.class, Byte.class, 
+				(Object val) -> val != null ? ToByteUtils.str2Byte(((BsonString) val).toString()) : null);
+		typeManager.registerConverter(BsonString.class, Short.class, 
+				(Object val) -> val != null ? ToShrtUtils.str2Shrt(((BsonString) val).toString()) : null);
+		typeManager.registerConverter(BsonString.class, Integer.class, 
+				(Object val) -> val != null ? ToIntUtils.str2Int(((BsonString) val).toString()) : null);
+		typeManager.registerConverter(BsonString.class, Long.class, 
+				(Object val) -> val != null ? ToLngUtils.str2Lng(((BsonString) val).toString()) : null);
+		typeManager.registerConverter(BsonString.class, BigInteger.class, 
+				(Object val) -> val != null ? ToBgiUtils.str2Bgi(((BsonString) val).toString()) : null);
+		typeManager.registerConverter(BsonString.class, Float.class, 
+				(Object val) -> val != null ? ToFltUtils.str2Flt(((BsonString) val).toString()) : null);
+		typeManager.registerConverter(BsonString.class, Double.class, 
+				(Object val) -> val != null ? ToDblUtils.str2Dbl(((BsonString) val).toString()) : null);
+		typeManager.registerConverter(BsonString.class, BigDecimal.class, 
+				(Object val) -> val != null ? ToBgdUtils.str2Bgd(((BsonString) val).toString()) : null);
+		typeManager.registerConverter(BsonString.class, GregorianCalendar.class, 
+				(Object val) -> val != null ? ToCalUtils.str2Cal(((BsonString) val).toString()) : null);
+		typeManager.registerConverter(BsonString.class, Date.class, 
+				(Object val) -> val != null ? ToDtUtils.str2Dt(((BsonString) val).toString()) : null);
+		typeManager.registerConverter(BsonString.class, Timestamp.class, 
+				(Object val) -> val != null ? ToTsUtils.str2Ts(((BsonString) val).toString()) : null);
+		typeManager.registerConverter(BsonString.class, Boolean.class, 
+				(Object val) -> val != null ? ToBoolUtils.str2Bool(((BsonString) val).toString()) : null);
 	}
 	
 	/*
