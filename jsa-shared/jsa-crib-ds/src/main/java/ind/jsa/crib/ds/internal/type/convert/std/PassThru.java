@@ -1,6 +1,6 @@
 package ind.jsa.crib.ds.internal.type.convert.std;
 
-import net.jsa.crib.ds.api.ILogicalTypeConverter;
+import ind.jsa.crib.ds.api.ILogicalTypeConverter;
 
 /**
  * Simple converter implementation that does nothing

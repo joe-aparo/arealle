@@ -9,12 +9,13 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import net.jsa.crib.ds.api.DataSetQuery;
-import net.jsa.crib.ds.api.IDataSet;
-import net.jsa.crib.ds.api.IDataSetItem;
-import net.jsa.crib.ds.api.IDataSetProperty;
-import net.jsa.crib.ds.api.FilterExpression.FilterOperator;
-import net.jsa.crib.ds.impl.ListDataSetResultHandler;
+import ind.jsa.crib.ds.api.DataSetQuery;
+import ind.jsa.crib.ds.api.IDataSet;
+import ind.jsa.crib.ds.api.IDataSetItem;
+import ind.jsa.crib.ds.api.IDataSetProperty;
+import ind.jsa.crib.ds.api.DataSetQuery.FilterExpression;
+import ind.jsa.crib.ds.api.DataSetQuery.FilterOperator;
+import ind.jsa.crib.ds.internal.ListDataSetResultHandler;
 
 import org.junit.Assert;
 

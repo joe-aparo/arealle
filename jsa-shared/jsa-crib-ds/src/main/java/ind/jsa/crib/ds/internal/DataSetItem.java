@@ -441,6 +441,15 @@ public class DataSetItem implements IDataSetItem {
 
 	/*
 	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getMap(java.lang.String)
+	 */
+	@Override
+	public Map<String, Object> getMap(String name) {
+		return getMap(dataSet.getMetaData().getPropertyIndex(name));
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see ind.jsa.crib.ds.api.IDataSetItem#getString(int)
 	 */
 	@Override
@@ -564,7 +573,16 @@ public class DataSetItem implements IDataSetItem {
 	public Boolean getBoolean(int idx) {
 		return (Boolean) getValueAsType(idx, Boolean.class);
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see ind.jsa.crib.ds.api.IDataSetItem#getMap(int)
+	 */
+	@Override
+	public Map<String, Object> getMap(int idx) {
+		return (Map<String, Object>) getValueAsType(idx, Map.class);
+	}
+
 	/*
 	 * Support method top coerce a value for a property to
 	 * a specified type

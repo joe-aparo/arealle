@@ -183,6 +183,14 @@ public interface IDataSetItem extends Map<String, Object> {
 	Boolean getBoolean(String name);
 	
 	/**
+     * Get the named property value as a Map.
+	 * 
+     * @param name Property name
+	 * @return A Map value, or null if unavailable
+	 */
+	Map<String, Object> getMap(String name);
+	
+	/**
      * Get the indexed property value as a String.
      * 
 	 * @param idx Property index
@@ -293,4 +301,12 @@ public interface IDataSetItem extends Map<String, Object> {
      * @return A Boolean value, or null if unavailable
 	 */
 	Boolean getBoolean(int idx);
+	
+	/**
+     * Get the indexed property value as a Map.
+	 * 
+	 * @param idx Property index
+     * @return A Map value, or null if unavailable
+	 */
+	Map<String, Object> getMap(int idx);
 }
