@@ -1,5 +1,6 @@
-package com.jsa.crib.ds.api;
+package ind.jsa.crib.ds.api;
 
+import ind.jsa.crib.ds.api.ITypeManager;
 import ind.jsa.crib.ds.internal.type.convert.std.DateTimePattern;
 import ind.jsa.crib.ds.internal.type.convert.std.ToBgdUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToBgiUtils;
@@ -23,8 +24,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import net.jsa.crib.ds.api.ILogicalTypeRegistry;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -140,17 +139,7 @@ public class TestTypeRegistry {
 	}
 
 	@Autowired
-	ILogicalTypeRegistry typeRegistry;
-	
-	@Test
-	public void testLogicalMappings() {
-		Assert.assertTrue(typeRegistry.getMappedLogicalTypes().size() > 0);
-	}
-	
-	@Test
-	public void testClassMappings() {
-		Assert.assertTrue(typeRegistry.getMappedNativeTypes().size() > 0);
-	}
+	ITypeManager typeManager;
 	
 	@Test
 	public void test_str2Byte() {

@@ -1,4 +1,4 @@
-package ind.jsa.crib.ds.test;
+package ind.jsa.crib.ds.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,16 +7,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.IDataSet;
 import ind.jsa.crib.ds.api.IDataSetItem;
-import ind.jsa.crib.ds.api.IDataSetProperty;
 import ind.jsa.crib.ds.api.DataSetQuery.FilterOperator;
 import ind.jsa.crib.ds.internal.ListDataSetResultHandler;
 
 import org.junit.Assert;
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 /**
  * DataSet test.
@@ -39,18 +38,10 @@ public abstract class AbstractDataSetTest {
         TEST_CREATE_RECORD.put(TestConstants.BOOLEAN_COL, Boolean.FALSE);
     }
 
-    @Autowired
+    @Resource(name="testDs")
     private IDataSet dataSet;
 
     private List<IDataSetItem> addedItems = new ArrayList<IDataSetItem>();
-
-    /**
-     * Property test.
-     */
-    protected void dataSetPropertyTest() {
-        IDataSetProperty prop = dataSet.getMetaData().getProperty(TestConstants.NAME_COL);
-        assert (prop != null);
-    }
 
     /**
      * Integrated test.
@@ -112,7 +103,7 @@ public abstract class AbstractDataSetTest {
      */
     private void idRetrieveTest() {
         Map<String, Object> key = new HashMap<String, Object>();
-        key.put(TestConstants.ID_COL, addedItems.get(0).getInteger(TestConstants.ID_COL));
+        key.put(TestConstants.ID_COL, addedItems.get(0).getString(TestConstants.ID_COL));
 
         IDataSetItem item = dataSet.retrieve(key);
 
@@ -134,7 +125,7 @@ public abstract class AbstractDataSetTest {
     private void idUpdateTest() {
         Map<String, Object> vals = new HashMap<String, Object>(TEST_UPDATE_RECORD);
 
-        vals.put(TestConstants.ID_COL, addedItems.get(0).getInteger(TestConstants.ID_COL));
+        vals.put(TestConstants.ID_COL, addedItems.get(0).getString(TestConstants.ID_COL));
 
         IDataSetItem item = dataSet.update(vals);
 
@@ -160,7 +151,7 @@ public abstract class AbstractDataSetTest {
 
         // update the first item based on a query
         DataSetQuery query = new DataSetQuery();
-        Integer idVal = addedItems.get(0).getInteger(TestConstants.ID_COL);
+        String idVal = addedItems.get(0).getString(TestConstants.ID_COL);
         query.putFilter(TestConstants.ID_COL, FilterOperator.EQUAL, idVal);
 
         dataSet.update(query, values);
@@ -181,7 +172,7 @@ public abstract class AbstractDataSetTest {
     public void deleteTest() {
         Map<String, Object> keys = new HashMap<String, Object>();
         for (IDataSetItem item : addedItems) {
-            keys.put(TestConstants.ID_COL, item.getInteger(TestConstants.ID_COL));
+            keys.put(TestConstants.ID_COL, item.getString(TestConstants.ID_COL));
             dataSet.delete(keys);
         }
 

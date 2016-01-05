@@ -1,4 +1,4 @@
-package com.jsa.crib.ds.impl;
+package ind.jsa.crib.ds.impl;
 
 /**
  * Test constants.
