@@ -3,6 +3,8 @@ package ind.jsa.crib.ds.internal.sql;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
 import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.IDataSetProperty;
 
@@ -27,8 +29,8 @@ public class MySqlDataSet extends AbstractSqlDataSet {
 		GEOMETRY_TYPES.add("SURFACE");
 	}
 	
-	public MySqlDataSet(String entity, String domain) {
-		super(entity, domain);
+	public MySqlDataSet(String entity, String domain, NamedParameterJdbcTemplate dbclient) {
+		super(entity, domain, dbclient);
 	}
 	
     /*

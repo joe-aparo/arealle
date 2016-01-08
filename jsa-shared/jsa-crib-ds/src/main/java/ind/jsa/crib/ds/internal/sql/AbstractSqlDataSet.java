@@ -88,8 +88,10 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
     private Pattern idNamePattern;
     private Pattern idRefNamePattern;
     
-	public AbstractSqlDataSet(String entity, String domain) {
+	public AbstractSqlDataSet(String entity, String domain, NamedParameterJdbcTemplate dbclient) {
 		super(entity, domain);
+		
+        this.dbclient = dbclient;
 		
 		idNamePattern = Pattern.compile(idNameRegex);
 		idRefNamePattern = Pattern.compile(idRefNameRegex);
@@ -112,16 +114,6 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
      */
     public String getSequence() {
         return sequence;
-    }
-
-    /**
-     * Establish the client database connection object. This implementation relies specifically on Spring's
-     * NamedParameterJdbcTemplate to invoke JDBC sql commands.
-     * 
-     * @param client The database connection client
-     */
-    public void setDbClient(NamedParameterJdbcTemplate client) {
-        this.dbclient = client;
     }
 
     /**
@@ -1238,15 +1230,12 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
     	// If the caller has provided an explicit retrieval command, then use this command
     	// to represent the entire set of readable properties.
     	if (retrieveCmd != null) { 
-    		// Caller has explicitly set a retrieval command, with replaceable parameters
-    		// So use it to get a list of all those properties and consider these properties
-    		// to be readonly.
      		dbclient.query(retrieveCmd.getSql(), 
      			getDefaultCommandParameters(retrieveCmd), 
      				new MetaDataPropertyLoader(readableProperties));
      		
      		for (DataSetProperty prop : readableProperties) {
-     			// By default, properties are writable, sortable, and filterable. But
+     			// Generally, properties are writable, sortable, and filterable. But
      			// for SQL datasets, assume these values are false unless overridden further below
      			prop.setWritable(false);
      			prop.setFilterable(false);

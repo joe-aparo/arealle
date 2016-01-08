@@ -1,5 +1,7 @@
 package ind.jsa.crib.ds.internal.sql;
 
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
 import ind.jsa.crib.ds.api.DataSetQuery;
 
 /**
@@ -8,8 +10,8 @@ import ind.jsa.crib.ds.api.DataSetQuery;
  */
 public class SqlServerDataSet extends AbstractSqlDataSet {
 
-	public SqlServerDataSet(String domain, String entity) {
-		super(domain, entity);
+	public SqlServerDataSet(String domain, String entity, NamedParameterJdbcTemplate dbclient) {
+		super(domain, entity, dbclient);
 	}
 	
     /*

@@ -51,7 +51,6 @@ public class BsonTypeManagerPlugin implements ITypeManagerPlugin {
 		registerBooleanConversions(typeManager);
 		registerBinaryConversions(typeManager);
 		registerBsonDocConversions(typeManager);
-		registerDocConversions(typeManager);
 	}
 
 	/*
@@ -65,9 +64,7 @@ public class BsonTypeManagerPlugin implements ITypeManagerPlugin {
 		typeManager.registerType(BsonNumber.class, StdTypeManagerPlugin.DECIMAL_NATURE);
 		typeManager.registerType(BsonDateTime.class, StdTypeManagerPlugin.DATETIME_NATURE);
 		typeManager.registerType(BsonBoolean.class, StdTypeManagerPlugin.BOOLEAN_NATURE);
-		
 		typeManager.registerType(BsonBinary.class, StdTypeManagerPlugin.BINARY_NATURE);
-		typeManager.registerType(Document.class, StdTypeManagerPlugin.COMPOSITE_NATURE);
 		typeManager.registerType(BsonDocument.class, StdTypeManagerPlugin.COMPOSITE_NATURE);
 	}
 	
@@ -265,11 +262,6 @@ public class BsonTypeManagerPlugin implements ITypeManagerPlugin {
 			(Object val) -> val != null ? ToDblUtils.bool2Dbl(((BsonBoolean) val).getValue()) : null);
 		typeManager.registerConverter(BsonBoolean.class, BigDecimal.class, 
 			(Object val) -> val != null ? ToBgdUtils.bool2Bgd(((BsonBoolean) val).getValue()) : null);
-	}
-
-	private void registerDocConversions(ITypeManager typeManager) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	private void registerBsonDocConversions(ITypeManager typeManager) {

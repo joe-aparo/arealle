@@ -6,6 +6,10 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.stereotype.Component;
 
@@ -21,7 +25,9 @@ import ind.jsa.crib.ds.internal.type.convert.std.ToDblUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToDtUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToFltUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToIntUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToJsonUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToLngUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToMapUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToShrtUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToStrUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToTsUtils;
@@ -41,10 +47,12 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	public static final long FRACTIONAL_NATURE = 	0x08;
 	public static final long SEQUENCED_NATURE = 	0x10;
 	public static final long BIT_NATURE = 			0x20;
-	public static final long CHARACTER_NATURE = 	0x40;
-	public static final long DATE_NATURE = 			0x80;
-	public static final long TIME_NATURE = 		  0x0100;
-	public static final long COMPOSITE_NATURE =   0x0200;
+	public static final long BYTE_NATURE = 			0x40;
+	public static final long CHARACTER_NATURE = 	0x80;
+	public static final long DATE_NATURE = 		  0x0100;
+	public static final long TIME_NATURE = 		  0x0200;
+	public static final long ARRAY_NATURE = 	  0x0400;
+	public static final long COMPOSITE_NATURE =   0x0600;
 	
 	// Aggregate natures
 	public static final long NUMERIC_NATURE = ATOMIC_NATURE & SCALAR_NATURE;
@@ -53,7 +61,9 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	public static final long STRING_NATURE = ATOMIC_NATURE & SEQUENCED_NATURE & CHARACTER_NATURE;
 	public static final long DATETIME_NATURE = INTEGER_NATURE & DATE_NATURE & TIME_NATURE;
 	public static final long BOOLEAN_NATURE = ATOMIC_NATURE & BIT_NATURE;
-	public static final long BINARY_NATURE = ATOMIC_NATURE & BIT_NATURE & SEQUENCED_NATURE;
+	public static final long BINARY_NATURE = ATOMIC_NATURE & BYTE_NATURE;
+	
+	public static final String JSON_STR_VARIANT = "text.json";
 	
 	/*
 	 * (non-Javadoc)
@@ -79,6 +89,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		registerDateConversions(typeManager);		
 		registerTimeStampConversions(typeManager);
 		registerBooleanConversions(typeManager);
+		registerMapConversions(typeManager);
 	}
 	
 	/*
@@ -99,6 +110,10 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		typeManager.registerType(Date.class, DATETIME_NATURE);
 		typeManager.registerType(Timestamp.class, DATETIME_NATURE);
 		typeManager.registerType(Boolean.class, BOOLEAN_NATURE);
+		typeManager.registerType(Map.class, COMPOSITE_NATURE);
+		typeManager.registerType(HashMap.class, COMPOSITE_NATURE);
+		typeManager.registerType(LinkedHashMap.class, COMPOSITE_NATURE);
+		typeManager.registerType(TreeMap.class, COMPOSITE_NATURE);
 	}
 	
 	/*
@@ -118,6 +133,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		typeManager.registerConverter(String.class, Date.class, (Object val) -> ToDtUtils.str2Dt((String) val));
 		typeManager.registerConverter(String.class, Timestamp.class, (Object val) -> ToTsUtils.str2Ts((String) val));
 		typeManager.registerConverter(String.class, Boolean.class, (Object val) -> ToBoolUtils.str2Bool((String) val));
+		typeManager.registerConverter(String.class, JSON_STR_VARIANT, Map.class, null, (Object val) -> ToMapUtils.jsonToMap((String) val));
 	}
 	
 	/*
@@ -320,5 +336,15 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		typeManager.registerConverter(Boolean.class, Float.class, (Object val) -> ToFltUtils.bool2Flt((Boolean) val));
 		typeManager.registerConverter(Boolean.class, Double.class, (Object val) -> ToDblUtils.bool2Dbl((Boolean) val));
 		typeManager.registerConverter(Boolean.class, BigDecimal.class, (Object val) -> ToBgdUtils.bool2Bgd((Boolean) val));
+	}
+	
+	/*
+	 * Register conversions from Map.
+	 */
+	private void registerMapConversions(ITypeManager typeManager) {
+		typeManager.registerConverter(Map.class, null, String.class, JSON_STR_VARIANT, (Object val) -> ToJsonUtils.mapToJson((Map<?,?>) val));
+		typeManager.registerConverter(HashMap.class, null, String.class, JSON_STR_VARIANT, (Object val) -> ToJsonUtils.mapToJson((Map<?,?>) val));
+		typeManager.registerConverter(TreeMap.class, null, String.class, JSON_STR_VARIANT, (Object val) -> ToJsonUtils.mapToJson((Map<?,?>) val));
+		typeManager.registerConverter(LinkedHashMap.class, null, String.class, JSON_STR_VARIANT, (Object val) -> ToJsonUtils.mapToJson((Map<?,?>) val));
 	}
 }

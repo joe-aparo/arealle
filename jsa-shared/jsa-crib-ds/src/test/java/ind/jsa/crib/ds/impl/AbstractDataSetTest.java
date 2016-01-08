@@ -58,6 +58,10 @@ public abstract class AbstractDataSetTest {
         deleteTest();
     }
 
+    protected IDataSet getDataSet() {
+    	return dataSet;
+    }
+    
     /**
      * Create test.
      */

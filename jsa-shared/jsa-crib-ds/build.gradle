@@ -9,4 +9,7 @@ dependencies {
 
 	testCompile "org.springframework:spring-context:${springFrameworkVersion}"
 	testCompile "org.springframework:spring-test:${springFrameworkVersion}"
+	
+	testRuntime "commons-dbcp:commons-dbcp:${dbcpVersion}"
+	testRuntime "postgresql:postgresql:${postgresJdbcVersion}"
 }

@@ -1,6 +1,7 @@
 package ind.jsa.crib.ds.internal.sql;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import ind.jsa.crib.ds.api.DataSetQuery;
 
@@ -9,8 +10,8 @@ import ind.jsa.crib.ds.api.DataSetQuery;
  */
 public class PostgresDataSet extends AbstractSqlDataSet {
 
-	public PostgresDataSet(String entity, String domain) {
-		super(entity, domain);
+	public PostgresDataSet(String entity, String domain, NamedParameterJdbcTemplate dbclient) {
+		super(entity, domain, dbclient);
 	}
 	
     /*
