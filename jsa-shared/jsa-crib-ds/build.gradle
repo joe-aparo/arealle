@@ -2,10 +2,11 @@ task "jsa-crib-ds"(type: Jar)
 
 dependencies {
 	compile 'net.jsa:jsa-common:1.0'
-	compile 'org.apache.poi:poi:3.9'
-	compile 'org.apache.poi:poi-ooxml:3.9'
+	compile "org.apache.poi:poi:${poiVersion}"
+	compile "org.apache.poi:poi-ooxml:${poiVersion}"
 	compile "org.springframework:spring-jdbc:${springFrameworkVersion}"
-	compile 'org.mongodb:mongodb-driver:3.2.0'
+	compile "org.mongodb:mongodb-driver:${mongoDbVersion}"
+	compile "io.fastjson:boon:${boonJsonVersion}"
 
 	testCompile "org.springframework:spring-context:${springFrameworkVersion}"
 	testCompile "org.springframework:spring-test:${springFrameworkVersion}"
