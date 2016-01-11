@@ -56,6 +56,10 @@ public class ToStrUtils {
 		return convertDateToStr(val);
 	}
 	
+	public static String sqlDt2Str(Date val) {
+		return convertDateToStr(val);
+	}
+	
 	public static String ts2Str(Timestamp val) {
 		return convertDateToStr(val);
 	}

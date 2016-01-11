@@ -1,5 +1,6 @@
 package ind.jsa.crib.ds.internal.type.convert.bson;
 
+import org.bson.BsonBoolean;
 import org.bson.BsonDouble;
 import org.bson.BsonInt32;
 import org.bson.BsonInt64;
@@ -32,5 +33,10 @@ public class ToFltUtils {
 	public static Float bsonNbr2Flt(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.std.ToFltUtils.dbl2Flt(((BsonNumber) val).doubleValue()) : null;
+	}
+	
+	public static Float bsonBool2Flt(BsonBoolean val) {
+		return val != null ? 
+			ind.jsa.crib.ds.internal.type.convert.std.ToFltUtils.bool2Flt(((BsonBoolean) val).getValue()) : null;
 	}
 }

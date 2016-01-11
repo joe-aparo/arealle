@@ -437,7 +437,7 @@ public abstract class AbstractDataSet implements IDataSet {
      * @see ind.jsa.crib.ds.api.IDataSet#isAtomicProperty(java.lang.String)
      */
     public boolean isAtomicProperty(String name) {
-    	return propertyIsOfNature(name, StdTypeManagerPlugin.ATOMIC_NATURE);
+    	return propertyIsOfNature(name, StdTypeManagerPlugin.SIMPLE_NATURE);
     }
 
     /*

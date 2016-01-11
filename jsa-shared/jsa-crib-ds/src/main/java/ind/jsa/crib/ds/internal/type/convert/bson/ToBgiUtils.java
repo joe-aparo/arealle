@@ -2,6 +2,8 @@ package ind.jsa.crib.ds.internal.type.convert.bson;
 
 import java.math.BigInteger;
 
+import org.bson.BsonBoolean;
+import org.bson.BsonDateTime;
 import org.bson.BsonDouble;
 import org.bson.BsonInt32;
 import org.bson.BsonInt64;
@@ -34,5 +36,15 @@ public class ToBgiUtils {
 	public static BigInteger bsonNbr2Bgi(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.std.ToBgiUtils.dbl2Bgi(((BsonNumber) val).doubleValue()) : null;
+	}
+	
+	public static BigInteger bsonDt2Bgi(BsonDateTime val) {
+		return val != null ? 
+			ind.jsa.crib.ds.internal.type.convert.std.ToBgiUtils.lng2Bgi(((BsonDateTime) val).getValue()) : null;
+	}
+	
+	public static BigInteger bsonBool2Bgi(BsonBoolean val) {
+		return val != null ? 
+			ind.jsa.crib.ds.internal.type.convert.std.ToBgiUtils.bool2Bgi(((BsonBoolean) val).getValue()) : null;
 	}
 }

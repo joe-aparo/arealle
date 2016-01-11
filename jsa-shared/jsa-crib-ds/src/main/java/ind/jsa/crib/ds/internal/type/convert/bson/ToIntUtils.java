@@ -1,5 +1,6 @@
 package ind.jsa.crib.ds.internal.type.convert.bson;
 
+import org.bson.BsonBoolean;
 import org.bson.BsonDouble;
 import org.bson.BsonInt32;
 import org.bson.BsonInt64;
@@ -15,8 +16,7 @@ public class ToIntUtils {
 	}
 	
 	public Integer bsonInt2Int(BsonInt32 val) {
-		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToIntUtils.lng2Int(((BsonInt32) val).longValue()) : null;
+		return val != null ? Integer.valueOf(((BsonInt32) val).getValue()) : null;
 	}
 	
 	public Integer bsonLng2Int(BsonInt64 val) {
@@ -32,5 +32,10 @@ public class ToIntUtils {
 	public Integer bsonNbr2Int(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.std.ToIntUtils.dbl2Int(((BsonNumber) val).doubleValue()) : null;
+	}
+	
+	public Integer bsonBool2Int(BsonBoolean val) {
+		return val != null ? 
+			ind.jsa.crib.ds.internal.type.convert.std.ToIntUtils.bool2Int(((BsonBoolean) val).getValue()) : null;
 	}
 }

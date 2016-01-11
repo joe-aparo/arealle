@@ -1,8 +1,8 @@
 package ind.jsa.crib.ds.internal.type.convert.bson;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
+import org.bson.BsonDateTime;
 import org.bson.BsonInt32;
 import org.bson.BsonInt64;
 import org.bson.BsonString;
@@ -23,5 +23,10 @@ public class ToCalUtils {
 	public static Calendar bsonLng2Cal(BsonInt64 val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.std.ToCalUtils.lng2Cal(((BsonInt64) val).longValue()) : null;
+	}
+	
+	public static Calendar bsonDt2Cal(BsonDateTime val) {
+		return val != null ? 
+			ind.jsa.crib.ds.internal.type.convert.std.ToCalUtils.lng2Cal(((BsonDateTime) val).getValue()) : null;
 	}
 }

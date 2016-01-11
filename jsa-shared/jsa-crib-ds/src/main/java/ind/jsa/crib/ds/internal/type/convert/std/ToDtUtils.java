@@ -38,6 +38,10 @@ public class ToDtUtils {
 		return val != null ? new Date(val.longValue()) : null;
 	}
 
+	public static Date sqlDt2Dt(java.sql.Date val) {
+		return val != null ? new Date(val.getTime()) : null;
+	}
+
 	public static Date cal2Dt(Calendar val) {
 		return val != null ? new Date(val.getTimeInMillis()) : null;
 	}

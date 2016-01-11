@@ -1,5 +1,9 @@
 package ind.jsa.crib.ds.internal.type.convert.bson;
 
+import java.util.Date;
+
+import org.bson.BsonBoolean;
+import org.bson.BsonDateTime;
 import org.bson.BsonDouble;
 import org.bson.BsonInt32;
 import org.bson.BsonInt64;
@@ -31,5 +35,15 @@ public class ToStrUtils {
 	public static String bsonNbr2Str(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.std.ToStrUtils.dbl2Str(((BsonNumber) val).doubleValue()) : null;
+	}
+	
+	public static String bsonDtToStr(BsonDateTime val) {
+		return val != null ? 
+			ind.jsa.crib.ds.internal.type.convert.std.ToStrUtils.dt2Str(new Date(((BsonDateTime) val).getValue())) : null;
+	}
+	
+	public static String bsonBool2Str(BsonBoolean val) {
+		return val != null ? 
+			ind.jsa.crib.ds.internal.type.convert.std.ToStrUtils.bool2Str(((BsonBoolean) val).getValue()) : null;
 	}
 }

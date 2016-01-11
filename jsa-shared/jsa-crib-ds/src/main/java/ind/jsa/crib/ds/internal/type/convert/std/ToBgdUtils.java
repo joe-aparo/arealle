@@ -73,6 +73,10 @@ public class ToBgdUtils {
 		return val != null ? BigDecimal.valueOf(val.getTime()) : null;
 	}
 
+	public static BigDecimal sqlDt2Bgd(java.sql.Date val) {
+		return val != null ? BigDecimal.valueOf(val.getTime()) : null;
+	}
+
 	public static BigDecimal ts2Bgd(Timestamp val) {
 		return val != null ? BigDecimal.valueOf(val.getTime()) : null;
 	}

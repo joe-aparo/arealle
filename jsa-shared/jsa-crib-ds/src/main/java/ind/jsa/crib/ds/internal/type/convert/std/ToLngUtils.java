@@ -64,6 +64,10 @@ public class ToLngUtils {
 		return val != null ? Long.valueOf(val.getTime()) : null;
 	}
 
+	public static Long sqlDt2Lng(java.sql.Date val) {
+		return val != null ? Long.valueOf(val.getTime()) : null;
+	}
+
 	public static Long ts2Lng(Timestamp val) {
 		return val != null ? Long.valueOf(val.getTime()) : null;
 	}

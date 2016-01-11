@@ -1,5 +1,6 @@
 package ind.jsa.crib.ds.internal.type.convert.bson;
 
+import org.bson.BsonBoolean;
 import org.bson.BsonDouble;
 import org.bson.BsonInt32;
 import org.bson.BsonInt64;
@@ -33,5 +34,10 @@ public class ToShrtUtils {
 	public static Short bsonNbr2Shrt(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.std.ToShrtUtils.dbl2Shrt(((BsonNumber) val).doubleValue()) : null;
+	}
+	
+	public static Short bsonBool2Shrt(BsonBoolean val) {
+		return val != null ? 
+			ind.jsa.crib.ds.internal.type.convert.std.ToShrtUtils.bool2Shrt(((BsonBoolean) val).getValue()) : null;
 	}
 }

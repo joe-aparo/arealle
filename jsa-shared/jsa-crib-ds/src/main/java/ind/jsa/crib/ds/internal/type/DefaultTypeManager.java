@@ -57,7 +57,7 @@ public class DefaultTypeManager extends AbstractTypeManager {
 	 * @return An indicator
 	 */
 	public static boolean isAtomicNature(long nature) {
-		return (nature & StdTypeManagerPlugin.ATOMIC_NATURE) != 0;
+		return (nature & StdTypeManagerPlugin.SIMPLE_NATURE) != 0;
 	}
 
 	/**

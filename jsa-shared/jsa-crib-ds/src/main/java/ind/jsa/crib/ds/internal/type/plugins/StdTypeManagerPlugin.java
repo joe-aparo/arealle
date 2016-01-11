@@ -29,6 +29,7 @@ import ind.jsa.crib.ds.internal.type.convert.std.ToJsonUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToLngUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToMapUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToShrtUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToSqlDtUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToStrUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToTsUtils;
 
@@ -41,7 +42,7 @@ import ind.jsa.crib.ds.internal.type.convert.std.ToTsUtils;
 @Component(value="stdTypeManagerPlugin")
 public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	// Granular natures
-	public static final long ATOMIC_NATURE = 		0x01;
+	public static final long SIMPLE_NATURE = 		0x01;
 	public static final long SCALAR_NATURE = 		0x02;
 	public static final long INTEGRAL_NATURE = 		0x04;
 	public static final long FRACTIONAL_NATURE = 	0x08;
@@ -55,13 +56,13 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	public static final long COMPOSITE_NATURE =   0x0600;
 	
 	// Aggregate natures
-	public static final long NUMERIC_NATURE = ATOMIC_NATURE & SCALAR_NATURE;
-	public static final long INTEGER_NATURE = NUMERIC_NATURE & INTEGRAL_NATURE;
-	public static final long DECIMAL_NATURE = NUMERIC_NATURE & FRACTIONAL_NATURE;
-	public static final long STRING_NATURE = ATOMIC_NATURE & SEQUENCED_NATURE & CHARACTER_NATURE;
-	public static final long DATETIME_NATURE = INTEGER_NATURE & DATE_NATURE & TIME_NATURE;
-	public static final long BOOLEAN_NATURE = ATOMIC_NATURE & BIT_NATURE;
-	public static final long BINARY_NATURE = ATOMIC_NATURE & BYTE_NATURE;
+	public static final long NUMERIC_NATURE = SIMPLE_NATURE | SCALAR_NATURE;
+	public static final long INTEGER_NATURE = NUMERIC_NATURE | INTEGRAL_NATURE;
+	public static final long DECIMAL_NATURE = NUMERIC_NATURE | FRACTIONAL_NATURE;
+	public static final long STRING_NATURE = SIMPLE_NATURE | SEQUENCED_NATURE | CHARACTER_NATURE;
+	public static final long DATETIME_NATURE = INTEGER_NATURE | DATE_NATURE | TIME_NATURE;
+	public static final long BOOLEAN_NATURE = SIMPLE_NATURE | BIT_NATURE;
+	public static final long BINARY_NATURE = SEQUENCED_NATURE | BYTE_NATURE;
 	
 	public static final String JSON_STR_VARIANT = "text.json";
 	
@@ -87,6 +88,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		registerBigDecimalConversions(typeManager);		
 		registerCalendarConversions(typeManager);		
 		registerDateConversions(typeManager);		
+		registerSqlDateConversions(typeManager);		
 		registerTimeStampConversions(typeManager);
 		registerBooleanConversions(typeManager);
 		registerMapConversions(typeManager);
@@ -96,6 +98,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 	 * Register default types and natures.
 	 */
 	private void registerTypes(ITypeManager typeManager) {
+		typeManager.registerType(Object.class, COMPOSITE_NATURE);
 		typeManager.registerType(String.class, STRING_NATURE);
 		typeManager.registerType(Character.class, STRING_NATURE);
 		typeManager.registerType(Byte.class, INTEGER_NATURE);
@@ -108,12 +111,15 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		typeManager.registerType(BigDecimal.class, DECIMAL_NATURE);
 		typeManager.registerType(GregorianCalendar.class, DATETIME_NATURE);
 		typeManager.registerType(Date.class, DATETIME_NATURE);
+		typeManager.registerType(java.sql.Date.class, DATETIME_NATURE);
 		typeManager.registerType(Timestamp.class, DATETIME_NATURE);
 		typeManager.registerType(Boolean.class, BOOLEAN_NATURE);
 		typeManager.registerType(Map.class, COMPOSITE_NATURE);
 		typeManager.registerType(HashMap.class, COMPOSITE_NATURE);
 		typeManager.registerType(LinkedHashMap.class, COMPOSITE_NATURE);
 		typeManager.registerType(TreeMap.class, COMPOSITE_NATURE);
+		typeManager.registerType(java.sql.Array.class, ARRAY_NATURE);
+		typeManager.registerType(java.sql.Time.class, TIME_NATURE);
 	}
 	
 	/*
@@ -131,6 +137,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		typeManager.registerConverter(String.class, BigDecimal.class, (Object val) -> ToBgdUtils.str2Bgd((String) val));
 		typeManager.registerConverter(String.class, GregorianCalendar.class, (Object val) -> ToCalUtils.str2Cal((String) val));
 		typeManager.registerConverter(String.class, Date.class, (Object val) -> ToDtUtils.str2Dt((String) val));
+		typeManager.registerConverter(String.class, java.sql.Date.class, (Object val) -> ToDtUtils.str2Dt((String) val));
 		typeManager.registerConverter(String.class, Timestamp.class, (Object val) -> ToTsUtils.str2Ts((String) val));
 		typeManager.registerConverter(String.class, Boolean.class, (Object val) -> ToBoolUtils.str2Bool((String) val));
 		typeManager.registerConverter(String.class, JSON_STR_VARIANT, Map.class, null, (Object val) -> ToMapUtils.jsonToMap((String) val));
@@ -215,6 +222,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		typeManager.registerConverter(Long.class, BigDecimal.class, (Object val) -> ToBgdUtils.lng2Bgd((Long) val));
 		typeManager.registerConverter(Long.class, GregorianCalendar.class, (Object val) -> ToCalUtils.lng2Cal((Long) val));
 		typeManager.registerConverter(Long.class, Date.class, (Object val) -> ToDtUtils.lng2Dt((Long) val));
+		typeManager.registerConverter(Long.class, java.sql.Date.class, (Object val) -> ToSqlDtUtils.lng2SqlDt((Long) val));
 		typeManager.registerConverter(Long.class, Timestamp.class, (Object val) -> ToTsUtils.lng2Ts((Long) val));
 		typeManager.registerConverter(Long.class, Boolean.class, (Object val) -> ToBoolUtils.lng2Bool((Long) val));
 	}
@@ -234,6 +242,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		typeManager.registerConverter(BigInteger.class, BigDecimal.class, (Object val) -> ToBgdUtils.bgi2Bgd((BigInteger) val));
 		typeManager.registerConverter(BigInteger.class, GregorianCalendar.class, (Object val) -> ToCalUtils.bgi2Cal((BigInteger) val));
 		typeManager.registerConverter(BigInteger.class, Date.class, (Object val) -> ToDtUtils.bgi2Dt((BigInteger) val));
+		typeManager.registerConverter(BigInteger.class, java.sql.Date.class, (Object val) -> ToSqlDtUtils.bgi2SqlDt((BigInteger) val));
 		typeManager.registerConverter(BigInteger.class, Timestamp.class, (Object val) -> ToTsUtils.bgi2Ts((BigInteger) val));
 		typeManager.registerConverter(BigInteger.class, Boolean.class, (Object val) -> ToBoolUtils.bgi2Bool((BigInteger) val));
 	}
@@ -295,6 +304,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		typeManager.registerConverter(Calendar.class, BigInteger.class, (Object val) -> ToBgiUtils.cal2Bgi((Calendar) val));
 		typeManager.registerConverter(Calendar.class, BigDecimal.class, (Object val) -> ToBgdUtils.cal2Bgd((Calendar) val));
 		typeManager.registerConverter(Calendar.class, Date.class, (Object val) -> ToDtUtils.cal2Dt((Calendar) val));
+		typeManager.registerConverter(Calendar.class, java.sql.Date.class, (Object val) -> ToSqlDtUtils.cal2SqlDt((Calendar) val));
 		typeManager.registerConverter(Calendar.class, Timestamp.class, (Object val) -> ToTsUtils.cal2Ts((Calendar) val));
 	}
 	
@@ -307,7 +317,21 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		typeManager.registerConverter(Date.class, BigInteger.class, (Object val) -> ToBgiUtils.dt2Bgi((Date) val));
 		typeManager.registerConverter(Date.class, BigDecimal.class, (Object val) -> ToBgdUtils.dt2Bgd((Date) val));
 		typeManager.registerConverter(Date.class, Calendar.class, (Object val) -> ToCalUtils.dt2Cal((Date) val));
+		typeManager.registerConverter(Date.class, java.sql.Date.class, (Object val) -> ToSqlDtUtils.dt2SqlDt((Date) val));
 		typeManager.registerConverter(Date.class, Timestamp.class, (Object val) -> ToTsUtils.dt2Ts((Date) val));
+	}
+	
+	/*
+	 * Register conversions from Date.
+	 */
+	private void registerSqlDateConversions(ITypeManager typeManager) {
+		typeManager.registerConverter(java.sql.Date.class, String.class, (Object val) -> ToStrUtils.sqlDt2Str((java.sql.Date) val));
+		typeManager.registerConverter(java.sql.Date.class, Long.class, (Object val) -> ToLngUtils.sqlDt2Lng((java.sql.Date) val));
+		typeManager.registerConverter(java.sql.Date.class, BigInteger.class, (Object val) -> ToBgiUtils.dt2Bgi((java.sql.Date) val));
+		typeManager.registerConverter(java.sql.Date.class, BigDecimal.class, (Object val) -> ToBgdUtils.sqlDt2Bgd((java.sql.Date) val));
+		typeManager.registerConverter(java.sql.Date.class, Calendar.class, (Object val) -> ToCalUtils.sqlDt2Cal((java.sql.Date) val));
+		typeManager.registerConverter(java.sql.Date.class, Date.class, (Object val) -> ToDtUtils.sqlDt2Dt((java.sql.Date) val));
+		typeManager.registerConverter(java.sql.Date.class, Timestamp.class, (Object val) -> ToTsUtils.sqlDt2Ts((java.sql.Date) val));
 	}
 	
 	/*
@@ -320,6 +344,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		typeManager.registerConverter(Timestamp.class, BigDecimal.class, (Object val) -> ToBgdUtils.ts2Bgd((Timestamp) val));
 		typeManager.registerConverter(Timestamp.class, Calendar.class, (Object val) -> ToCalUtils.ts2Cal((Timestamp) val));
 		typeManager.registerConverter(Timestamp.class, Date.class, (Object val) -> ToDtUtils.ts2Dt((Timestamp) val));
+		typeManager.registerConverter(Timestamp.class, java.sql.Date.class, (Object val) -> ToSqlDtUtils.ts2SqlDt((Timestamp) val));
 	}
 
 	/*

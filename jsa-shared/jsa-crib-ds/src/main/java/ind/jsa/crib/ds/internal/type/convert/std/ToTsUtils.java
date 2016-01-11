@@ -49,6 +49,10 @@ public class ToTsUtils {
 		return val != null ? convertLngToTs(val.getTime()) : null;
 	}
 	
+	public static Timestamp sqlDt2Ts(java.sql.Date val) {
+		return val != null ? convertLngToTs(val.getTime()) : null;
+	}
+	
 	private static Timestamp convertLngToTs(long val) {
 		return new Timestamp(new Date(val).getTime());
 	}

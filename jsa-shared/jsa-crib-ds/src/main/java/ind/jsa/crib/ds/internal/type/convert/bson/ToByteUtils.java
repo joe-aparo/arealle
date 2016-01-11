@@ -1,5 +1,6 @@
 package ind.jsa.crib.ds.internal.type.convert.bson;
 
+import org.bson.BsonBoolean;
 import org.bson.BsonDouble;
 import org.bson.BsonInt32;
 import org.bson.BsonInt64;
@@ -33,5 +34,10 @@ public class ToByteUtils {
 	public Byte bsonNbr2Byte(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.std.ToByteUtils.dbl2Byte(((BsonNumber) val).doubleValue()) : null;
+	}
+	
+	public Byte bsonBool2Byte(BsonBoolean val) {
+		return val != null ? 
+			ind.jsa.crib.ds.internal.type.convert.std.ToByteUtils.bool2Byte(((BsonBoolean) val).getValue()) : null;
 	}
 }

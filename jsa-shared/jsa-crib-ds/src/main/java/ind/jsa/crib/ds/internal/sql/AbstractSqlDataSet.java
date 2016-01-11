@@ -34,6 +34,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import ind.jsa.crib.ds.internal.sql.SqlCommand;
+import ind.jsa.crib.ds.internal.type.plugins.StdTypeManagerPlugin;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
@@ -1289,9 +1290,12 @@ public abstract class AbstractSqlDataSet extends AbstractDataSet {
     			prop.setIdRef(true);    			
     		}
     		
-    		// A property will be considered sortable and filterable if it
-    		// is a simple, atomic type
-    		if (isAtomicProperty(prop.getName())) {
+    		// A property will be considered sortable and filterable if it is a simple type
+    		long nature = getTypeManager().getTypeNature(prop.getType());
+    		long simpleNature = StdTypeManagerPlugin.SIMPLE_NATURE;
+    		long res = nature & simpleNature;
+    		
+    		if (res > 0) {
     			prop.setFilterable(true);
     			prop.setSortable(true);
     		}

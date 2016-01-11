@@ -1,5 +1,6 @@
 package ind.jsa.crib.ds.internal.type.convert.bson;
 
+import org.bson.BsonBoolean;
 import org.bson.BsonDouble;
 import org.bson.BsonInt32;
 import org.bson.BsonInt64;
@@ -30,5 +31,10 @@ public class ToChrUtils {
 	public Character bsonNbr2Chr(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.std.ToChrUtils.dbl2Chr(((BsonNumber) val).doubleValue()) : null;
+	}
+	
+	public Character bsonBool2Chr(BsonBoolean val) {
+		return val != null ? 
+			ind.jsa.crib.ds.internal.type.convert.std.ToChrUtils.bool2Chr(((BsonBoolean) val).getValue()) : null;
 	}
 }

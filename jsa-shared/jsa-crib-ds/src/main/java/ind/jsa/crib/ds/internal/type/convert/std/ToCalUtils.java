@@ -46,6 +46,10 @@ public class ToCalUtils {
 		return val != null ? convertLngToCal(val.getTime()) : null;
 	}
 
+	public static Calendar sqlDt2Cal(Date val) {
+		return val != null ? convertLngToCal(val.getTime()) : null;
+	}
+
 	public static Calendar ts2Cal(Timestamp val) {
 		return val != null ? convertLngToCal(val.getTime()) : null;
 	}

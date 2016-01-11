@@ -69,6 +69,10 @@ public class ToBgiUtils {
 		return val != null ? BigInteger.valueOf(val.getTime()) : null;
 	}
 	
+	public static BigInteger sqlDt2Bgi(java.sql.Date val) {
+		return val != null ? BigInteger.valueOf(val.getTime()) : null;
+	}
+	
 	public static BigInteger ts2Bgi(Timestamp val) {
 		return val != null ? BigInteger.valueOf(val.getTime()) : null;
 	}

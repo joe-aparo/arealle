@@ -22,7 +22,7 @@ public class SqlDataSetTest extends AbstractDataSetTest {
 		IDataSetMetaData metaData = dataSet.getMetaData();
 		
 		for (IDataSetProperty prop : metaData.getProperties()) {
-			System.out.println(prop.getName() + ":" + prop.getType().getName());
+			System.out.println(prop.getName() + " - " + prop.getType().getName() + ":" + prop.getVariant());
 		}
     }
 }

@@ -1,5 +1,7 @@
 package ind.jsa.crib.ds.internal.type.convert.bson;
 
+import org.bson.BsonBoolean;
+import org.bson.BsonDateTime;
 import org.bson.BsonDouble;
 import org.bson.BsonInt32;
 import org.bson.BsonInt64;
@@ -30,5 +32,14 @@ public class ToLngUtils {
 	public static Long bsonNbr2Lng(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.std.ToLngUtils.dbl2Lng(((BsonNumber) val).doubleValue()) : null;
+	}
+	
+	public static Long bsonDtToLng(BsonDateTime val) {
+		return val != null ? Long.valueOf(((BsonDateTime) val).getValue()) : null;
+	}
+	
+	public static Long bsonBool2Lng(BsonBoolean val) {
+		return val != null ? 
+			ind.jsa.crib.ds.internal.type.convert.std.ToLngUtils.bool2Lng(((BsonBoolean) val).getValue()) : null;
 	}
 }
