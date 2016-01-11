@@ -12,21 +12,21 @@ public class ToSqlDtUtils {
 	
 	public static Date bsonStr2SqlDt(BsonString val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.sql.ToSqlDtUtils.str2SqlDt(((BsonString) val).toString()) : null;
+			ind.jsa.crib.ds.internal.type.convert.std.ToSqlDtUtils.str2SqlDt(((BsonString) val).toString()) : null;
 	}
 	
 	public static Date bsonInt2SqlDt(BsonInt32 val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.sql.ToSqlDtUtils.lng2SqlDt(((BsonInt32) val).longValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.std.ToSqlDtUtils.lng2SqlDt(((BsonInt32) val).longValue()) : null;
 	}
 	
 	public static Date bsonLng2SqlDt(BsonInt64 val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.sql.ToSqlDtUtils.lng2SqlDt(((BsonInt64) val).longValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.std.ToSqlDtUtils.lng2SqlDt(((BsonInt64) val).longValue()) : null;
 	}
 	
 	public static Date bsonDt2SqlDt(BsonDateTime val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.sql.ToSqlDtUtils.lng2SqlDt(((BsonDateTime) val).getValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.std.ToSqlDtUtils.lng2SqlDt(((BsonDateTime) val).getValue()) : null;
 	}
 }

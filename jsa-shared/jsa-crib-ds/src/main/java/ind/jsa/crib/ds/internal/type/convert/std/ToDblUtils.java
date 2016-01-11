@@ -2,6 +2,7 @@ package ind.jsa.crib.ds.internal.type.convert.std;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 
 import net.jsa.common.logging.LogUtils;
 
@@ -54,5 +55,13 @@ public class ToDblUtils {
 
 	public static Double bool2Dbl(Boolean val) {
 		return Double.valueOf(val != null && val ? 1 : 0);
+	}
+
+	public static Double sqlDt2Bgd(java.sql.Date val) {
+		return val != null ? Double.valueOf(val.getTime()) : null;
+	}
+
+	public static Double ts2Bgd(Timestamp val) {
+		return val != null ? Double.valueOf(val.getTime()) : null;
 	}
 }

@@ -2,6 +2,7 @@ package ind.jsa.crib.ds.internal.type.convert.std;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,6 +44,14 @@ public class ToCalUtils {
 
 	public static Calendar dt2Cal(Date val) {
 		return val != null ? convertLngToCal(val.getTime()) : null;
+	}
+
+	public static Calendar sqlDt2Cal(Date val) {
+		return val != null ? ind.jsa.crib.ds.internal.type.convert.std.ToCalUtils.convertLngToCal(val.getTime()) : null;
+	}
+
+	public static Calendar ts2Cal(Timestamp val) {
+		return val != null ? ind.jsa.crib.ds.internal.type.convert.std.ToCalUtils.convertLngToCal(val.getTime()) : null;
 	}
 
 	public static Calendar convertLngToCal(long val) {

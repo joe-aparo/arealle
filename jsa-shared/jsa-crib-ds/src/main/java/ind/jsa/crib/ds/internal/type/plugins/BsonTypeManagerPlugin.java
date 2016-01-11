@@ -20,7 +20,6 @@ import org.bson.Document;
 
 import ind.jsa.crib.ds.api.ITypeManager;
 import ind.jsa.crib.ds.api.ITypeManager.ITypeManagerPlugin;
-import ind.jsa.crib.ds.internal.type.convert.sql.ToTsUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToBgdUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToBgiUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToBoolUtils;
@@ -34,6 +33,7 @@ import ind.jsa.crib.ds.internal.type.convert.std.ToIntUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToLngUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToShrtUtils;
 import ind.jsa.crib.ds.internal.type.convert.std.ToStrUtils;
+import ind.jsa.crib.ds.internal.type.convert.std.ToTsUtils;
 
 public class BsonTypeManagerPlugin implements ITypeManagerPlugin {
 
