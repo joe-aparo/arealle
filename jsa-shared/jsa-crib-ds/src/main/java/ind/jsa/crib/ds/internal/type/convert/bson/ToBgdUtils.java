@@ -15,36 +15,36 @@ public class ToBgdUtils {
 	
 	public static BigDecimal bsonStr2Bgd(BsonString val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToBgdUtils.str2Bgd(((BsonString) val).toString()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToBgdUtils.str2Bgd(((BsonString) val).toString()) : null;
 	}
 	
 	public static BigDecimal bsonInt2Bgd(BsonInt32 val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToBgdUtils.lng2Bgd(((BsonInt32) val).longValue()) : null;		
+			ind.jsa.crib.ds.internal.type.convert.core.ToBgdUtils.lng2Bgd(((BsonInt32) val).longValue()) : null;		
 	}
 	
 	public static BigDecimal bsonLng2Bgd(BsonInt64 val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToBgdUtils.lng2Bgd(((BsonInt64) val).longValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToBgdUtils.lng2Bgd(((BsonInt64) val).longValue()) : null;
 	}
 	
 	public static BigDecimal bsonDbl2Bgd(BsonDouble val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToBgdUtils.dbl2Bgd(((BsonDouble) val).doubleValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToBgdUtils.dbl2Bgd(((BsonDouble) val).doubleValue()) : null;
 	}
 	
 	public static BigDecimal bsonNbr2Bgd(BsonNumber val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToBgdUtils.dbl2Bgd(((BsonNumber) val).doubleValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToBgdUtils.dbl2Bgd(((BsonNumber) val).doubleValue()) : null;
 	}
 	
 	public static BigDecimal bsonDt2Bgd(BsonDateTime val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToBgdUtils.lng2Bgd(((BsonDateTime) val).getValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToBgdUtils.lng2Bgd(((BsonDateTime) val).getValue()) : null;
 	}
 	
 	public static BigDecimal bsonBool2Bgd(BsonBoolean val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToBgdUtils.bool2Bgd(((BsonBoolean) val).getValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToBgdUtils.bool2Bgd(((BsonBoolean) val).getValue()) : null;
 	}
 }

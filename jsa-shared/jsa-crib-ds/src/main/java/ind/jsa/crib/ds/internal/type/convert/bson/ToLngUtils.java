@@ -13,7 +13,7 @@ public class ToLngUtils {
 	
 	public static Long bsonStr2Lng(BsonString val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToLngUtils.str2Lng(((BsonString) val).toString()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToLngUtils.str2Lng(((BsonString) val).toString()) : null;
 	}
 	
 	public static Long bsonInt2Lng(BsonInt32 val) {
@@ -26,12 +26,12 @@ public class ToLngUtils {
 	
 	public static Long bsonDbl2Lng(BsonDouble val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToLngUtils.dbl2Lng(((BsonDouble) val).doubleValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToLngUtils.dbl2Lng(((BsonDouble) val).doubleValue()) : null;
 	}
 	
 	public static Long bsonNbr2Lng(BsonNumber val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToLngUtils.dbl2Lng(((BsonNumber) val).doubleValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToLngUtils.dbl2Lng(((BsonNumber) val).doubleValue()) : null;
 	}
 	
 	public static Long bsonDtToLng(BsonDateTime val) {
@@ -40,6 +40,6 @@ public class ToLngUtils {
 	
 	public static Long bsonBool2Lng(BsonBoolean val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToLngUtils.bool2Lng(((BsonBoolean) val).getValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToLngUtils.bool2Lng(((BsonBoolean) val).getValue()) : null;
 	}
 }

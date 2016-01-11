@@ -5,7 +5,7 @@ import net.jsa.common.logging.LogUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
-import ind.jsa.crib.ds.internal.type.convert.std.ToIntUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToIntUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;

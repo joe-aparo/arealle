@@ -1,4 +1,4 @@
-package ind.jsa.crib.ds.internal.type.convert.std;
+package ind.jsa.crib.ds.internal.type.convert.core;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -47,11 +47,11 @@ public class ToCalUtils {
 	}
 
 	public static Calendar sqlDt2Cal(Date val) {
-		return val != null ? ind.jsa.crib.ds.internal.type.convert.std.ToCalUtils.convertLngToCal(val.getTime()) : null;
+		return val != null ? ind.jsa.crib.ds.internal.type.convert.core.ToCalUtils.convertLngToCal(val.getTime()) : null;
 	}
 
 	public static Calendar ts2Cal(Timestamp val) {
-		return val != null ? ind.jsa.crib.ds.internal.type.convert.std.ToCalUtils.convertLngToCal(val.getTime()) : null;
+		return val != null ? ind.jsa.crib.ds.internal.type.convert.core.ToCalUtils.convertLngToCal(val.getTime()) : null;
 	}
 
 	public static Calendar convertLngToCal(long val) {

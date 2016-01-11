@@ -12,31 +12,31 @@ public class ToFltUtils {
 	
 	public static Float bsonStr2Flt(BsonString val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToFltUtils.str2Flt(((BsonString) val).toString()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToFltUtils.str2Flt(((BsonString) val).toString()) : null;
 	}
 	
 	public static Float bsonInt2Flt(BsonInt32 val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToFltUtils.lng2Flt(((BsonInt32) val).longValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToFltUtils.lng2Flt(((BsonInt32) val).longValue()) : null;
 	}
 	
 	public static Float bsonLng2Flt(BsonInt64 val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToFltUtils.lng2Flt(((BsonInt64) val).longValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToFltUtils.lng2Flt(((BsonInt64) val).longValue()) : null;
 	}
 	
 	public static Float bsonDbl2Flt(BsonDouble val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToFltUtils.dbl2Flt(((BsonDouble) val).doubleValue()) : null;	
+			ind.jsa.crib.ds.internal.type.convert.core.ToFltUtils.dbl2Flt(((BsonDouble) val).doubleValue()) : null;	
 	}
 	
 	public static Float bsonNbr2Flt(BsonNumber val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToFltUtils.dbl2Flt(((BsonNumber) val).doubleValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToFltUtils.dbl2Flt(((BsonNumber) val).doubleValue()) : null;
 	}
 	
 	public static Float bsonBool2Flt(BsonBoolean val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToFltUtils.bool2Flt(((BsonBoolean) val).getValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToFltUtils.bool2Flt(((BsonBoolean) val).getValue()) : null;
 	}
 }

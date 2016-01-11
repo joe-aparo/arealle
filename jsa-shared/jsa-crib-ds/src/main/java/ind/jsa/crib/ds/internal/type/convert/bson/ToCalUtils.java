@@ -12,21 +12,21 @@ public class ToCalUtils {
 	
 	public static Calendar bsonStr2Cal(BsonString val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToCalUtils.str2Cal(((BsonString) val).toString()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToCalUtils.str2Cal(((BsonString) val).toString()) : null;
 	}
 	
 	public static Calendar bsonInt2Cal(BsonInt32 val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToCalUtils.lng2Cal(((BsonInt32) val).longValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToCalUtils.lng2Cal(((BsonInt32) val).longValue()) : null;
 	}
 	
 	public static Calendar bsonLng2Cal(BsonInt64 val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToCalUtils.lng2Cal(((BsonInt64) val).longValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToCalUtils.lng2Cal(((BsonInt64) val).longValue()) : null;
 	}
 	
 	public static Calendar bsonDt2Cal(BsonDateTime val) {
 		return val != null ? 
-			ind.jsa.crib.ds.internal.type.convert.std.ToCalUtils.lng2Cal(((BsonDateTime) val).getValue()) : null;
+			ind.jsa.crib.ds.internal.type.convert.core.ToCalUtils.lng2Cal(((BsonDateTime) val).getValue()) : null;
 	}
 }

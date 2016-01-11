@@ -1,4 +1,4 @@
-package ind.jsa.crib.ds.internal.type.convert.std;
+package ind.jsa.crib.ds.internal.type.convert.core;
 
 import java.util.HashMap;
 import java.util.Map;

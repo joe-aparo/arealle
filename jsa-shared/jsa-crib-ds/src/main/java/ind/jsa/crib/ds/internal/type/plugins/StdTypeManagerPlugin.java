@@ -15,23 +15,23 @@ import org.springframework.stereotype.Component;
 
 import ind.jsa.crib.ds.api.ITypeManager;
 import ind.jsa.crib.ds.api.ITypeManager.ITypeManagerPlugin;
-import ind.jsa.crib.ds.internal.type.convert.std.ToBgdUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToBgiUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToBoolUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToByteUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToCalUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToChrUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToDblUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToDtUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToFltUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToIntUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToJsonUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToLngUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToMapUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToShrtUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToSqlDtUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToStrUtils;
-import ind.jsa.crib.ds.internal.type.convert.std.ToTsUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToBgdUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToBgiUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToBoolUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToByteUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToCalUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToChrUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToDblUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToDtUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToFltUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToIntUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToJsonUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToLngUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToMapUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToShrtUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToSqlDtUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToStrUtils;
+import ind.jsa.crib.ds.internal.type.convert.core.ToTsUtils;
 
 /**
  * Configures standard types and converters in the type manager.
