@@ -2,7 +2,6 @@ package ind.jsa.crib.ds.internal.type.convert.std;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -70,14 +69,6 @@ public class ToBgdUtils {
 	}
 
 	public static BigDecimal dt2Bgd(Date val) {
-		return val != null ? BigDecimal.valueOf(val.getTime()) : null;
-	}
-
-	public static BigDecimal sqlDt2Bgd(java.sql.Date val) {
-		return val != null ? BigDecimal.valueOf(val.getTime()) : null;
-	}
-
-	public static BigDecimal ts2Bgd(Timestamp val) {
 		return val != null ? BigDecimal.valueOf(val.getTime()) : null;
 	}
 

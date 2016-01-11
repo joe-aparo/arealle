@@ -2,7 +2,6 @@ package ind.jsa.crib.ds.internal.type.convert.std;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,15 +37,7 @@ public class ToDtUtils {
 		return val != null ? new Date(val.longValue()) : null;
 	}
 
-	public static Date sqlDt2Dt(java.sql.Date val) {
-		return val != null ? new Date(val.getTime()) : null;
-	}
-
 	public static Date cal2Dt(Calendar val) {
 		return val != null ? new Date(val.getTimeInMillis()) : null;
-	}
-
-	public static Date ts2Dt(Timestamp val) {
-		return val != null ? new Date(val.getTime()) : null;
 	}
 }

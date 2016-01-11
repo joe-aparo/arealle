@@ -2,7 +2,7 @@ package ind.jsa.crib.ds.internal.type.convert.std;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Timestamp;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -61,14 +61,6 @@ public class ToLngUtils {
 	}
 
 	public static Long dt2Lng(Date val) {
-		return val != null ? Long.valueOf(val.getTime()) : null;
-	}
-
-	public static Long sqlDt2Lng(java.sql.Date val) {
-		return val != null ? Long.valueOf(val.getTime()) : null;
-	}
-
-	public static Long ts2Lng(Timestamp val) {
 		return val != null ? Long.valueOf(val.getTime()) : null;
 	}
 
