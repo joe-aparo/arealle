@@ -10,22 +10,22 @@ import org.bson.BsonString;
 public class ToSqlDtUtils {
 	private ToSqlDtUtils() {}
 	
-	public static Date bsonStr2Dt(BsonString val) {
+	public static Date bsonStr2SqlDt(BsonString val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.sql.ToSqlDtUtils.str2SqlDt(((BsonString) val).toString()) : null;
 	}
 	
-	public static Date bsonInt2Dt(BsonInt32 val) {
+	public static Date bsonInt2SqlDt(BsonInt32 val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.sql.ToSqlDtUtils.lng2SqlDt(((BsonInt32) val).longValue()) : null;
 	}
 	
-	public static Date bsonLng2Dt(BsonInt64 val) {
+	public static Date bsonLng2SqlDt(BsonInt64 val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.sql.ToSqlDtUtils.lng2SqlDt(((BsonInt64) val).longValue()) : null;
 	}
 	
-	public static Date bsonDt2Dt(BsonDateTime val) {
+	public static Date bsonDt2SqlDt(BsonDateTime val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.sql.ToSqlDtUtils.lng2SqlDt(((BsonDateTime) val).getValue()) : null;
 	}
