@@ -1,4 +1,6 @@
-package ind.jsa.crib.ds.internal.type.convert.std;
+package ind.jsa.crib.ds.internal.type.convert.sql;
+
+import ind.jsa.crib.ds.internal.type.convert.std.DateTimePattern;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
