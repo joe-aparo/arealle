@@ -1,7 +1,6 @@
 package ind.jsa.crib.ds.internal.type.convert.bson;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -9,10 +8,6 @@ import org.bson.BsonBinary;
 import org.bson.BsonBoolean;
 import org.bson.BsonDateTime;
 import org.bson.BsonDocument;
-import org.bson.BsonDouble;
-import org.bson.BsonInt32;
-import org.bson.BsonInt64;
-import org.bson.BsonString;
 import org.bson.BsonValue;
 
 public class ToBsonDocUtils {

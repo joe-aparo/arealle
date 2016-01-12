@@ -57,11 +57,11 @@ public class ToDblUtils {
 		return Double.valueOf(val != null && val ? 1 : 0);
 	}
 
-	public static Double sqlDt2Bgd(java.sql.Date val) {
+	public static Double sqlDt2Dbl(java.sql.Date val) {
 		return val != null ? Double.valueOf(val.getTime()) : null;
 	}
 
-	public static Double ts2Bgd(Timestamp val) {
+	public static Double ts2Dbl(Timestamp val) {
 		return val != null ? Double.valueOf(val.getTime()) : null;
 	}
 }
