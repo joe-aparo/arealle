@@ -10,8 +10,8 @@ import org.bson.BsonInt64;
 import org.bson.BsonNumber;
 import org.bson.BsonString;
 
-public class ToBgiUtils {
-	private ToBgiUtils() {}
+public class ToCoreBgiUtils {
+	private ToCoreBgiUtils() {}
 	
 	public static BigInteger bsonStr2Bgi(BsonString val) {
 		return val != null ? 
@@ -33,7 +33,7 @@ public class ToBgiUtils {
 			ind.jsa.crib.ds.internal.type.convert.core.ToBgiUtils.dbl2Bgi(((BsonDouble) val).doubleValue()) : null;
 	}
 	
-	public static BigInteger bsonNbr2Bgi(BsonNumber val) {
+	public static BigInteger bsonNum2Bgi(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToBgiUtils.dbl2Bgi(((BsonNumber) val).doubleValue()) : null;
 	}

@@ -33,7 +33,7 @@ public class ToCoreStrUtils {
 			ind.jsa.crib.ds.internal.type.convert.core.ToStrUtils.dbl2Str(((BsonDouble) val).doubleValue()) : null;
 	}
 	
-	public static String bsonNbr2Str(BsonNumber val) {
+	public static String bsonNum2Str(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToStrUtils.dbl2Str(((BsonNumber) val).doubleValue()) : null;
 	}

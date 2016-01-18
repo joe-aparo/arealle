@@ -30,7 +30,7 @@ public class ToCoreFltUtils {
 			ind.jsa.crib.ds.internal.type.convert.core.ToFltUtils.dbl2Flt(((BsonDouble) val).doubleValue()) : null;	
 	}
 	
-	public static Float bsonNbr2Flt(BsonNumber val) {
+	public static Float bsonNum2Flt(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToFltUtils.dbl2Flt(((BsonNumber) val).doubleValue()) : null;
 	}

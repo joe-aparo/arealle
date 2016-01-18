@@ -29,7 +29,7 @@ public class ToCoreLngUtils {
 			ind.jsa.crib.ds.internal.type.convert.core.ToLngUtils.dbl2Lng(((BsonDouble) val).doubleValue()) : null;
 	}
 	
-	public static Long bsonNbr2Lng(BsonNumber val) {
+	public static Long bsonNum2Lng(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToLngUtils.dbl2Lng(((BsonNumber) val).doubleValue()) : null;
 	}

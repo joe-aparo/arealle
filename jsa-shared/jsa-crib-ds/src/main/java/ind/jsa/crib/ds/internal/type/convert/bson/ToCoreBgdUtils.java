@@ -10,8 +10,8 @@ import org.bson.BsonInt64;
 import org.bson.BsonNumber;
 import org.bson.BsonString;
 
-public class ToBgdUtils {
-	public ToBgdUtils() {}
+public class ToCoreBgdUtils {
+	public ToCoreBgdUtils() {}
 	
 	public static BigDecimal bsonStr2Bgd(BsonString val) {
 		return val != null ? 
@@ -33,7 +33,7 @@ public class ToBgdUtils {
 			ind.jsa.crib.ds.internal.type.convert.core.ToBgdUtils.dbl2Bgd(((BsonDouble) val).doubleValue()) : null;
 	}
 	
-	public static BigDecimal bsonNbr2Bgd(BsonNumber val) {
+	public static BigDecimal bsonNum2Bgd(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToBgdUtils.dbl2Bgd(((BsonNumber) val).doubleValue()) : null;
 	}

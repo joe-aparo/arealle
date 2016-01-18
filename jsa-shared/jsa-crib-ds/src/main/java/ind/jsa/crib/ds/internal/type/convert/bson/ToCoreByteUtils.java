@@ -11,32 +11,32 @@ public class ToCoreByteUtils {
 	private ToCoreByteUtils() {
 	}
 	
-	public Byte bsonString2Byte(BsonString val) {
+	public static Byte bsonStr2Byte(BsonString val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToByteUtils.str2Byte(((BsonString) val).toString()) : null;
 	}
 	
-	public Byte bsonInt2Byte(BsonInt32 val) {
+	public static Byte bsonInt2Byte(BsonInt32 val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToByteUtils.lng2Byte(((BsonInt32) val).longValue()) : null;
 	}
 	
-	public Byte bsonLng2Byte(BsonInt64 val) {
+	public static Byte bsonLng2Byte(BsonInt64 val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToByteUtils.lng2Byte(((BsonInt64) val).longValue()) : null;
 	}
 	
-	public Byte bsonDbl2Byte(BsonDouble val) {
+	public static Byte bsonDbl2Byte(BsonDouble val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToByteUtils.dbl2Byte(((BsonDouble) val).doubleValue()) : null;
 	}
 	
-	public Byte bsonNbr2Byte(BsonNumber val) {
+	public static Byte bsonNum2Byte(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToByteUtils.dbl2Byte(((BsonNumber) val).doubleValue()) : null;
 	}
 	
-	public Byte bsonBool2Byte(BsonBoolean val) {
+	public static Byte bsonBool2Byte(BsonBoolean val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToByteUtils.bool2Byte(((BsonBoolean) val).getValue()) : null;
 	}

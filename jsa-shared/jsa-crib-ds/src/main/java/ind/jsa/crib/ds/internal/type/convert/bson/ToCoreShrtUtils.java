@@ -31,7 +31,7 @@ public class ToCoreShrtUtils {
 			ind.jsa.crib.ds.internal.type.convert.core.ToShrtUtils.dbl2Shrt(((BsonDouble) val).doubleValue()) : null;
 	}
 	
-	public static Short bsonNbr2Shrt(BsonNumber val) {
+	public static Short bsonNum2Shrt(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToShrtUtils.dbl2Shrt(((BsonNumber) val).doubleValue()) : null;
 	}

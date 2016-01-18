@@ -6,8 +6,8 @@ import org.bson.BsonInt64;
 import org.bson.BsonNumber;
 import org.bson.BsonString;
 
-public class ToBoolUtils {
-	private ToBoolUtils() {}
+public class ToCoreBoolUtils {
+	private ToCoreBoolUtils() {}
 	
 	public static Boolean bsonStr2Bool(BsonString val) {
 		return val != null ? 
@@ -29,7 +29,7 @@ public class ToBoolUtils {
 			ind.jsa.crib.ds.internal.type.convert.core.ToBoolUtils.dbl2Bool(((BsonDouble) val).doubleValue()) : null;
 	}
 	
-	public static Boolean bsonNbr2Bool(BsonNumber val) {
+	public static Boolean bsonNum2Bool(BsonNumber val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToBoolUtils.dbl2Bool(((BsonNumber) val).doubleValue()) : null;
 	}
