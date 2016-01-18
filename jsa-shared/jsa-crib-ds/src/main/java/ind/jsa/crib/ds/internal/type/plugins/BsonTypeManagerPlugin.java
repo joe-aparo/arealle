@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Map;
 
 import org.bson.BsonBinary;
 import org.bson.BsonBoolean;
@@ -20,6 +21,9 @@ import org.bson.Document;
 
 import ind.jsa.crib.ds.api.ITypeManager;
 import ind.jsa.crib.ds.api.ITypeManager.ITypeManagerPlugin;
+import ind.jsa.crib.ds.internal.type.convert.bson.ToBsonDocUtils;
+import ind.jsa.crib.ds.internal.type.convert.bson.ToCoreStrUtils;
+import ind.jsa.crib.ds.internal.type.convert.bson.ToCoreMapUtils;
 import ind.jsa.crib.ds.internal.type.convert.core.ToBgdUtils;
 import ind.jsa.crib.ds.internal.type.convert.core.ToBgiUtils;
 import ind.jsa.crib.ds.internal.type.convert.core.ToBoolUtils;
@@ -265,12 +269,15 @@ public class BsonTypeManagerPlugin implements ITypeManagerPlugin {
 	}
 
 	private void registerBsonDocConversions(ITypeManager typeManager) {
-		// TODO Auto-generated method stub
-		
+		typeManager.registerConverter(BsonDocument.class, Map.class, 
+			(Object val) -> val != null ? ToCoreMapUtils.bsonDocToMap(((BsonDocument) val)) : null);
+		typeManager.registerConverter(Map.class, BsonDocument.class,
+			(Object val) -> val != null ? ToBsonDocUtils.mapToBsonDoc(((Map) val)) : null);
+	}
+	
+	private void registerBinaryConversions(ITypeManager typeManager) {
+		typeManager.registerConverter(BsonBinary.class, String.class, 
+			(Object val) -> val != null ? ToCoreStrUtils.bsonBinary2Str(((BsonBinary) val)) : null);
 	}
 
-	private void registerBinaryConversions(ITypeManager typeManager) {
-		// TODO Auto-generated method stub
-		
-	}
 }

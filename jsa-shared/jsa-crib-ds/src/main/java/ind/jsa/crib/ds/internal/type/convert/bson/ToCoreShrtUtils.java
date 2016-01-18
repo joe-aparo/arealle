@@ -7,8 +7,8 @@ import org.bson.BsonInt64;
 import org.bson.BsonNumber;
 import org.bson.BsonString;
 
-public class ToShrtUtils {
-	private ToShrtUtils() {
+public class ToCoreShrtUtils {
+	private ToCoreShrtUtils() {
 	}
 	
 	public static Short bsonStr2Shrt(BsonString val) {

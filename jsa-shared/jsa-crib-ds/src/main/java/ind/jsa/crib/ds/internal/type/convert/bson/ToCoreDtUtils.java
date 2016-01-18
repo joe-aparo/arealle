@@ -7,8 +7,8 @@ import org.bson.BsonInt32;
 import org.bson.BsonInt64;
 import org.bson.BsonString;
 
-public class ToDtUtils {
-	private ToDtUtils() {}
+public class ToCoreDtUtils {
+	private ToCoreDtUtils() {}
 	
 	public static Date bsonStr2Dt(BsonString val) {
 		return val != null ? 

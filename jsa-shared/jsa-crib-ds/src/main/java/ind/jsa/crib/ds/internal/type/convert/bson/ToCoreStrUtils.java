@@ -2,6 +2,7 @@ package ind.jsa.crib.ds.internal.type.convert.bson;
 
 import java.util.Date;
 
+import org.bson.BsonBinary;
 import org.bson.BsonBoolean;
 import org.bson.BsonDateTime;
 import org.bson.BsonDouble;
@@ -10,8 +11,8 @@ import org.bson.BsonInt64;
 import org.bson.BsonNumber;
 import org.bson.BsonString;
 
-public class ToStrUtils {
-	private ToStrUtils() {}
+public class ToCoreStrUtils {
+	private ToCoreStrUtils() {}
 	
 	public static String bsonStr2Str(BsonString val) {
 		return val != null ? val.getValue() : null;
@@ -45,5 +46,9 @@ public class ToStrUtils {
 	public static String bsonBool2Str(BsonBoolean val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToStrUtils.bool2Str(((BsonBoolean) val).getValue()) : null;
+	}
+	
+	public static String bsonBinary2Str(BsonBinary val) {
+		return val != null ? val.asString().toString() : null;
 	}
 }

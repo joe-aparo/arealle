@@ -7,8 +7,8 @@ import org.bson.BsonInt32;
 import org.bson.BsonInt64;
 import org.bson.BsonString;
 
-public class ToCalUtils {
-	private ToCalUtils() {}
+public class ToCoreCalUtils {
+	private ToCoreCalUtils() {}
 	
 	public static Calendar bsonStr2Cal(BsonString val) {
 		return val != null ? 

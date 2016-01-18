@@ -7,8 +7,8 @@ import org.bson.BsonInt32;
 import org.bson.BsonInt64;
 import org.bson.BsonString;
 
-public class ToTsUtils {
-	private ToTsUtils() {}
+public class ToCoreTsUtils {
+	private ToCoreTsUtils() {}
 	
 	public static Timestamp bsonStr2Ts(BsonString val) {
 		return val != null ? 

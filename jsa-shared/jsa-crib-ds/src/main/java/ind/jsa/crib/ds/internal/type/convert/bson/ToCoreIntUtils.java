@@ -7,8 +7,8 @@ import org.bson.BsonInt64;
 import org.bson.BsonNumber;
 import org.bson.BsonString;
 
-public class ToIntUtils {
-	private ToIntUtils() {}
+public class ToCoreIntUtils {
+	private ToCoreIntUtils() {}
 	
 	public Integer bsonStr2Int(BsonString val) {
 		return val != null ? 

@@ -7,8 +7,8 @@ import org.bson.BsonInt64;
 import org.bson.BsonNumber;
 import org.bson.BsonString;
 
-public class ToFltUtils {
-	private ToFltUtils() {}
+public class ToCoreFltUtils {
+	private ToCoreFltUtils() {}
 	
 	public static Float bsonStr2Flt(BsonString val) {
 		return val != null ? 

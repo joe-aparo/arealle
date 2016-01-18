@@ -7,8 +7,8 @@ import org.bson.BsonInt32;
 import org.bson.BsonInt64;
 import org.bson.BsonString;
 
-public class ToSqlDtUtils {
-	private ToSqlDtUtils() {}
+public class ToCoreSqlDtUtils {
+	private ToCoreSqlDtUtils() {}
 	
 	public static Date bsonStr2SqlDt(BsonString val) {
 		return val != null ? 

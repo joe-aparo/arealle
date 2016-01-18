@@ -7,7 +7,7 @@ import org.bson.BsonInt64;
 import org.bson.BsonNumber;
 import org.bson.BsonString;
 
-public class ToChrUtils {
+public class ToCoreChrUtils {
 	public Character bsonStr2Chr(BsonString val) {
 		return val != null ? 
 			ind.jsa.crib.ds.internal.type.convert.core.ToChrUtils.str2Chr(((BsonString) val).toString()) : null;

@@ -8,8 +8,8 @@ import org.bson.BsonInt64;
 import org.bson.BsonNumber;
 import org.bson.BsonString;
 
-public class ToLngUtils {
-	private ToLngUtils() {}
+public class ToCoreLngUtils {
+	private ToCoreLngUtils() {}
 	
 	public static Long bsonStr2Lng(BsonString val) {
 		return val != null ? 

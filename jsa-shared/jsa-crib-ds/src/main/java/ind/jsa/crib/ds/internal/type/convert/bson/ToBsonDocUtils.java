@@ -8,6 +8,11 @@ import org.bson.BsonBinary;
 import org.bson.BsonBoolean;
 import org.bson.BsonDateTime;
 import org.bson.BsonDocument;
+import org.bson.BsonDouble;
+import org.bson.BsonInt32;
+import org.bson.BsonInt64;
+import org.bson.BsonNull;
+import org.bson.BsonString;
 import org.bson.BsonValue;
 
 public class ToBsonDocUtils {
@@ -49,25 +54,27 @@ public class ToBsonDocUtils {
 	
 	private static BsonValue convertNativeValToBsonVal(Object value) {
 
+		if (value == null) {
+			return new BsonNull();
+		}
+		
 		if (value instanceof Byte[]) {
 			return new BsonBinary((byte[]) value);
 		} else if (value instanceof Boolean) {
 			return new BsonBoolean((Boolean) value);			
 		} else if (value instanceof Date) {
 			return new BsonDateTime(((Date) value).getTime());
-		} /* else if (bsonValue instanceof BsonDouble) {
-			return Double.valueOf(((BsonDouble) bsonValue).getValue());
-		} else if (bsonValue instanceof BsonInt32) {
-			return Integer.valueOf(((BsonInt32) bsonValue).getValue());
-		} else if (bsonValue instanceof BsonInt64) {
-			return Long.valueOf(((BsonInt64) bsonValue).getValue());
-		} else if (bsonValue instanceof BsonString) {
-			return ((BsonString) bsonValue).getValue();
+		} else if (value instanceof Double) {
+			return new BsonDouble((Double) value);
+		} else if (value instanceof Integer) {
+			return new BsonInt32((Integer) value);
+		} else if (value instanceof Long) {
+			return new BsonInt64((Long) value);
+		} else if (value instanceof String) {
+			return new BsonString((String) value);
 		} else {
-			return null; // unsupported
+			return new BsonNull(); // unsupported
 		}
-		*/
-		return null;
 	}
 
 }

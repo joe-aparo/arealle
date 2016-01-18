@@ -7,8 +7,8 @@ import org.bson.BsonInt64;
 import org.bson.BsonNumber;
 import org.bson.BsonString;
 
-public class ToByteUtils {
-	private ToByteUtils() {
+public class ToCoreByteUtils {
+	private ToCoreByteUtils() {
 	}
 	
 	public Byte bsonString2Byte(BsonString val) {

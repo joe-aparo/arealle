@@ -6,8 +6,8 @@ import org.bson.BsonInt32;
 import org.bson.BsonInt64;
 import org.bson.BsonString;
 
-public class ToDblUtils {
-	private ToDblUtils() {}
+public class ToCoreDblUtils {
+	private ToCoreDblUtils() {}
 	
 	public static Double bsonStr2Dbl(BsonString val) {
 		return val != null ? 

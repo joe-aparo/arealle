@@ -15,8 +15,8 @@ import org.bson.BsonInt64;
 import org.bson.BsonString;
 import org.bson.BsonValue;
 
-public class ToMapUtils {
-	private ToMapUtils() {
+public class ToCoreMapUtils {
+	private ToCoreMapUtils() {
 	}
 		
 	public static Map<String, Object> bsonDocToMap(BsonDocument doc) {
