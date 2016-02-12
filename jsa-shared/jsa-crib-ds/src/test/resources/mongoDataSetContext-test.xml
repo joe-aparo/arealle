@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+    <context:property-placeholder location="classpath*:test.properties"/>
+
+    <context:component-scan base-package="ind.jsa.crib.ds.internal.*" />
+    
+    <bean id="typeManagerPluginCollectin" class="ind.jsa.crib.ds.internal.type.plugins.TypeManagerPluginCollection">
+        <property name="plugins">
+            <list>
+                <bean class="ind.jsa.crib.ds.internal.type.plugins.BsonTypeManagerPlugin"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="keyGenerator" class="ind.jsa.crib.ds.internal.MemoryDataSet.MemoryKeyGenerator" />
+    
+	<bean id="testDs" class="ind.jsa.crib.ds.internal.MemoryDataSet">
+		<constructor-arg name="entity" value="testDs" />
+		<constructor-arg name="metaData">
+			<bean class="ind.jsa.crib.ds.internal.DataSetMetaData">
+				<property name="properties">
+				    <list>
+				        <bean class="ind.jsa.crib.ds.internal.DataSetProperty">
+				            <constructor-arg name="name" value="id" />
+				            <constructor-arg name="className" value="java.lang.Integer" />
+				        </bean>
+				        <bean class="ind.jsa.crib.ds.internal.DataSetProperty">
+				            <constructor-arg name="name" value="name_fld" />
+				            <constructor-arg name="className" value="java.lang.String" />
+				        </bean>
+				        <bean class="ind.jsa.crib.ds.internal.DataSetProperty">
+				            <constructor-arg name="name" value="date_fld" />
+				            <constructor-arg name="className" value="java.util.Date" />
+				        </bean>
+				        <bean class="ind.jsa.crib.ds.internal.DataSetProperty">
+				            <constructor-arg name="name" value="double_fld" />
+				            <constructor-arg name="className" value="java.lang.Double" />
+				        </bean>
+				        <bean class="ind.jsa.crib.ds.internal.DataSetProperty">
+				            <constructor-arg name="name" value="boolean_fld" />
+				            <constructor-arg name="className" value="java.lang.Boolean" />
+				        </bean> 
+					</list>
+				</property>
+			</bean>	    
+		</constructor-arg>
+		<constructor-arg name="options">
+			<bean class="ind.jsa.crib.ds.internal.DataSetOptions">
+			    <property name="identityProperties">
+			        <list>
+			            <value>id</value>
+			        </list>
+			    </property>
+		    </bean>		    
+		</constructor-arg>
+	</bean>
+</beans>
