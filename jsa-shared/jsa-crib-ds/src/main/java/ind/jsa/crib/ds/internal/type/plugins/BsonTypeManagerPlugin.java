@@ -6,7 +6,10 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.bson.BsonBinary;
 import org.bson.BsonBoolean;
@@ -51,8 +54,8 @@ public class BsonTypeManagerPlugin implements ITypeManagerPlugin {
 		registeNumberConversions(typeManager);
 		registerDateConversions(typeManager);		
 		registerBooleanConversions(typeManager);
-		registerBinaryConversions(typeManager);
 		registerBsonDocConversions(typeManager);
+		registerMapConversion(typeManager);
 	}
 
 	/*
@@ -102,6 +105,8 @@ public class BsonTypeManagerPlugin implements ITypeManagerPlugin {
 			(Object val) -> ToCoreBoolUtils.bsonStr2Bool((BsonString) val));
 		typeManager.registerConverter(BsonBinary.class, String.class, 
 			(Object val) -> ToCoreStrUtils.bsonBinary2Str((BsonBinary) val));
+		typeManager.registerConverter(BsonDocument.class, String.class, 
+			(Object val) -> ToCoreStrUtils.bsonDoc2Str((BsonDocument) val));
 	}
 	
 	/*
@@ -271,12 +276,17 @@ public class BsonTypeManagerPlugin implements ITypeManagerPlugin {
 	private void registerBsonDocConversions(ITypeManager typeManager) {
 		typeManager.registerConverter(BsonDocument.class, Map.class, 
 			(Object val) -> ToCoreMapUtils.bsonDocToMap((BsonDocument) val));
-		typeManager.registerConverter(Map.class, BsonDocument.class,
-			(Object val) -> ToBsonDocUtils.mapToBsonDoc((Map) val));
 	}
 	
-	private void registerBinaryConversions(ITypeManager typeManager) {
-		typeManager.registerConverter(BsonBinary.class, String.class, 
-			(Object val) -> ToCoreStrUtils.bsonBinary2Str((BsonBinary) val));
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void registerMapConversion(ITypeManager typeManager) {
+		typeManager.registerConverter(Map.class, BsonDocument.class,
+			(Object val) -> ToBsonDocUtils.mapToBsonDoc((Map) val));		
+		typeManager.registerConverter(LinkedHashMap.class, BsonDocument.class,
+			(Object val) -> ToBsonDocUtils.mapToBsonDoc((LinkedHashMap) val));		
+		typeManager.registerConverter(HashMap.class, BsonDocument.class,
+			(Object val) -> ToBsonDocUtils.mapToBsonDoc((HashMap) val));		
+		typeManager.registerConverter(TreeMap.class, BsonDocument.class,
+			(Object val) -> ToBsonDocUtils.mapToBsonDoc((TreeMap) val));		
 	}
 }

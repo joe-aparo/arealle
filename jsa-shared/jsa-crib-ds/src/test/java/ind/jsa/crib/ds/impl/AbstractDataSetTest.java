@@ -12,6 +12,8 @@ import javax.annotation.Resource;
 import ind.jsa.crib.ds.api.DataSetQuery;
 import ind.jsa.crib.ds.api.IDataSet;
 import ind.jsa.crib.ds.api.IDataSetItem;
+import ind.jsa.crib.ds.api.IDataSetMetaData;
+import ind.jsa.crib.ds.api.IDataSetProperty;
 import ind.jsa.crib.ds.api.DataSetQuery.FilterOperator;
 import ind.jsa.crib.ds.internal.ListDataSetResultHandler;
 
@@ -47,6 +49,7 @@ public abstract class AbstractDataSetTest {
      * Integrated test.
      */
     protected void orchestratedDataSetTest() {
+    	displayMetaData();
         createTest();
         retrieveAllTest();
         queryRetrieveTest();
@@ -60,6 +63,15 @@ public abstract class AbstractDataSetTest {
 
     protected IDataSet getDataSet() {
     	return dataSet;
+    }
+    
+    private void displayMetaData() {
+		IDataSet dataSet = getDataSet();
+		IDataSetMetaData metaData = dataSet.getMetaData();
+		
+		for (IDataSetProperty prop : metaData.getProperties()) {
+			System.out.println(prop.getName() + " - " + prop.getType().getName() + ":" + prop.getVariant());
+		}    	
     }
     
     /**

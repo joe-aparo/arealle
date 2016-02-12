@@ -1,5 +1,7 @@
 package ind.jsa.crib.ds.internal.type.convert.bson;
 
+import ind.jsa.crib.ds.internal.type.convert.core.ToMapUtils;
+
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -20,10 +22,14 @@ public class ToBsonDocUtils {
 	}
 	
 	public static BsonDocument jsonToBsonDoc(String json) {
-		return null;
+		return mapToBsonDoc(ToMapUtils.jsonToMap(json));
 	}
 	
 	public static BsonDocument mapToBsonDoc(Map<String,Object> map) {
+		if (map == null) {
+			return null;
+		}
+		
 		BsonDocument toDoc = new BsonDocument();
 		
 		loadBsonDocFromMap(toDoc, map);
@@ -31,6 +37,7 @@ public class ToBsonDocUtils {
 		return toDoc;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private static void loadBsonDocFromMap(BsonDocument toDoc, Map<String, Object> map) {
 		Set<String> keys = map.keySet();
 		

@@ -578,6 +578,7 @@ public class DataSetItem implements IDataSetItem {
 	 * (non-Javadoc)
 	 * @see ind.jsa.crib.ds.api.IDataSetItem#getMap(int)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Object> getMap(int idx) {
 		return (Map<String, Object>) getValueAsType(idx, Map.class);

@@ -13,7 +13,8 @@ public class ToMapUtils {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Map<String, Object> jsonToMap(String json) {
-		return mapper.fromJson(json, Map.class);
+		return json != null ? (Map<String, Object>) mapper.fromJson(json, Map.class) : null;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import org.bson.BsonBinary;
 import org.bson.BsonBoolean;
 import org.bson.BsonDateTime;
+import org.bson.BsonDocument;
 import org.bson.BsonDouble;
 import org.bson.BsonInt32;
 import org.bson.BsonInt64;
@@ -50,5 +51,9 @@ public class ToCoreStrUtils {
 	
 	public static String bsonBinary2Str(BsonBinary val) {
 		return val != null ? val.asString().toString() : null;
+	}
+	
+	public static String bsonDoc2Str(BsonDocument val) {
+		return val != null ? val.toJson() : null;
 	}
 }
