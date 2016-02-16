@@ -49,7 +49,6 @@ public abstract class AbstractDataSetTest {
      * Integrated test.
      */
     protected void orchestratedDataSetTest() {
-    	displayMetaData();
         createTest();
         retrieveAllTest();
         queryRetrieveTest();
@@ -65,10 +64,12 @@ public abstract class AbstractDataSetTest {
     	return dataSet;
     }
     
-    private void displayMetaData() {
+    protected void displayMetaData() {
 		IDataSet dataSet = getDataSet();
 		IDataSetMetaData metaData = dataSet.getMetaData();
 		
+		System.out.println("DataSet: " + dataSet.getDomain() + "." + dataSet.getEntity());
+		System.out.println("Properties...");
 		for (IDataSetProperty prop : metaData.getProperties()) {
 			System.out.println(prop.getName() + " - " + prop.getType().getName() + ":" + prop.getVariant());
 		}    	

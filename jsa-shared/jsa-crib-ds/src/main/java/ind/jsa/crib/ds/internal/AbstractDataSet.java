@@ -36,11 +36,13 @@ public abstract class AbstractDataSet implements IDataSet {
 	
 	private static final int DFT_PROPERTY_LIST_SIZE = 50;
 	
+	@Autowired
+	private ITypeManager typeManager;
+
 	private IKeyGenerator keyGenerator;
 	private IDataSetMetaData metaData;
 	private String entity = null;
 	private String domain = null;
-	private ITypeManager typeManager;
 	private Map<String, Object> defaultParamValues = new LinkedHashMap<String, Object>();
 	private boolean caseInsensitiveSearch = false;
 	private List<String> propertyOrder;
@@ -59,7 +61,6 @@ public abstract class AbstractDataSet implements IDataSet {
 		this.domain = domain;
 	}
 	
-	@Autowired
 	public void setTypeManager(ITypeManager typeManager) {
 		this.typeManager = typeManager;
 	}

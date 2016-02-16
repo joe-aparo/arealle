@@ -164,7 +164,7 @@ public class DefaultTypeManager extends AbstractTypeManager {
 	}
 	
 	/*
-	 * Support method fo comparing two arbitrarily null object values.
+	 * Support method for comparing two arbitrarily null object values.
 	 *  
 	 * @param o1 First value
 	 * @param o2 Second value

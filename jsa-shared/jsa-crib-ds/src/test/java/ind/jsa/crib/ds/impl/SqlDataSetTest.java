@@ -14,6 +14,6 @@ public class SqlDataSetTest extends AbstractDataSetTest {
 	
 	@Test
     public void runTest() {
-		this.orchestratedDataSetTest();
+		displayMetaData();
     }
 }

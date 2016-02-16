@@ -120,6 +120,7 @@ public class StdTypeManagerPlugin implements ITypeManagerPlugin {
 		typeManager.registerType(TreeMap.class, COMPOSITE_NATURE);
 		typeManager.registerType(java.sql.Array.class, ARRAY_NATURE);
 		typeManager.registerType(java.sql.Time.class, TIME_NATURE);
+		typeManager.registerType(byte[].class, BINARY_NATURE);
 	}
 	
 	/*
