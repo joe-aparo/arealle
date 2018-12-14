@@ -1,5 +1,5 @@
 # arealle
-This project was developed as an exercise for using Java to interact with various databases engines, in combination with a modern JavaScript library for creating single page applications.  The exercise models physical real estate plots and amenities within their proximity. For example, it can be determined that plot X, on street Y, is within distance Z to desirable amenities such as a beach, conservation area, or public transportation.
+This project was developed as an exercise for using Java to interact with various databases engines, in combination with a modern JavaScript library for creating single page applications.  The exercise models physical real estate plots and amenities within their proximity. For example, it can be determined that plot X, on street Y, is within distance Z to desirable amenities such as a beach, conservation area, or public transportation. The name of the project is a play on the words "Aerial" and "Area".
 
 Data was imported from generally available MassGIS ESRI datasets, including plot plans and various features sets for bodies of water, conservation areas, public transportation etc.
 
