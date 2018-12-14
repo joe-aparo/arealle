@@ -3,9 +3,9 @@ This project was developed as an exercise for using Java to interact with variou
 
 Data was imported from generally available MassGIS ESRI datasets, including plot plans and various features sets for bodies of water, conservation areas, public transportation etc.
 
-Processes were developed to parse the datasets, load them into a combination of relational and non-relational stores as a basis for a service APIs used to support a front-end.
+Processes were developed to parse the datasets, load them into a combination of relational and non-relational stores as a basis for a service APIs used to support a front-end.  The Geometry extension of MySQL was also used to store ESRI GeoPoints that were eventually converted to Google Lat/Lng values.
 
-Back-end data is consumed via several dedicated tasks that first break data down into relational records. The cleaned records are then fed into a Mongo database for storing property documents (eg. a plot at a street address with various dwelling attributes), and a SOLR store used solely to store GEO coordinates for properties and amenities, and to perform proximity calculations between them.
+Back-end data is consumed via several dedicated tasks that first break data down into relational records. The cleaned records are then fed into a Mongo database for storing property documents (eg. a plot, at a street address, with various dwelling attributes), and a SOLR store used solely to store GEO coordinates for properties and amenities, and to perform proximity-based searches between them.
 
 The UI, built on the data service, is a single-page application developed primarily using the Backbone and Marionette JavaScript libraries, and the GoogleMaps API. 
 
