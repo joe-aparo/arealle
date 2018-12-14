@@ -7,4 +7,4 @@ Processes were developed to parse out the ESRI datasets, load them into a combin
 
 Back-end data is consumed via several dedicated tasks that first break data down into relational records, which are then fed into a Mongo database which contains property documents (eg. a house at an address with various attributes), and a SOLR store which is used to manage GEO coordinates for properties in the Mongo store.
 
-On top of these data stores is a service which is used to support a single-page application developed in a JavaScript library called Marionette, to 
+On top of these data stores is a service which is used to support a single-page application developed in JavaScript libraries, primarily Backbone and Marionette.
